@@ -40,6 +40,7 @@ public class TilemapContoller : MonoBehaviour
     const int path = 0;
 
     int[,] maze;
+
     void Start()
     {
         //ñ_ì|Çµñ@
@@ -54,7 +55,6 @@ public class TilemapContoller : MonoBehaviour
             mazeDigMethod.Initialize(30, 30);
             maze = mazeDigMethod.CreateMaze();
         }
-        //
 
         //ï«êLÇŒÇµñ@
         if (isMazeWallMethod)
@@ -65,7 +65,7 @@ public class TilemapContoller : MonoBehaviour
         
         //ñ¿òHÇÃï`âÊ
         SetTile(maze);
-        
+
         pathPosition=GetPathPosition(maze);
         
         //ÉvÉåÉCÉÑÅ[ÇÃê∂ê¨
@@ -76,11 +76,12 @@ public class TilemapContoller : MonoBehaviour
 #if UNITY_EDITOR
     void Update()
     {
-        pathPosition.Clear();
         //ñ¿òHÇÃçƒê∂ê¨
         if (Input.GetKeyDown(KeyCode.R))
         {
             Destroy(GameObject.Find("Player(Clone)"));
+            pathPosition.Clear();
+
             //ñ_ì|Çµñ@
             if (isMazeBarMethod)
             {
@@ -93,7 +94,6 @@ public class TilemapContoller : MonoBehaviour
                 mazeDigMethod.Initialize(30, 30);
                 maze = mazeDigMethod.CreateMaze();
             }
-            //
 
             //ï«êLÇŒÇµñ@
             if (isMazeWallMethod)
@@ -102,7 +102,7 @@ public class TilemapContoller : MonoBehaviour
                 maze = mazeWallMethod.CreateMaze();
             }
 
-            GetPathPosition(maze);
+            pathPosition = GetPathPosition(maze);
             Debug.Log(pathPosition.Count);
             //ñ¿òHÇÃï`âÊ
             SetTile(maze);
@@ -150,7 +150,7 @@ public class TilemapContoller : MonoBehaviour
         }
     }
 
-    void GetPathPosition(int[,] setmaze)
+    List<Vector2Int> GetPathPosition(int[,] setmaze)
     {
         List<Vector2Int> position=new List<Vector2Int>(); ;
         
@@ -158,12 +158,13 @@ public class TilemapContoller : MonoBehaviour
         {
             for(int x = 0;x < setmaze.GetLength(0); x++)
             {
-                if (setmaze[x, y] == path)
+                if (setmaze[y, x] == path)
                 {
                     position.Add(new Vector2Int(x, y));
                 }
             }
         }
+        return position;
     }
 
     void CreatePlayer()

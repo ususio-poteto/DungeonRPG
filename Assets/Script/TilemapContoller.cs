@@ -177,5 +177,10 @@ public class TilemapContoller : MonoBehaviour
         Debug.Log(worldPosition);
         Instantiate(player, worldPosition, Quaternion.identity);
     }
+
+    public int[,] Getmaze()
+    {
+        return maze;
+    }
 }
 

@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 using UnityEngine.Tilemaps;
 using Unity.VisualScripting;
 
-public class PlayerContoller : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private int moveSpeed;
@@ -16,9 +16,9 @@ public class PlayerContoller : MonoBehaviour
 
     public Rigidbody2D rb;
 
-    [SerializeField] Tilemap tilemap;
+    Tilemap tilemap;
 
-    TilemapContoller tilemapContoller;
+    TilemapController tilemapController;
 
     const int wall = 1;
 
@@ -30,7 +30,9 @@ public class PlayerContoller : MonoBehaviour
 
     void Start()
     {
-        maze = tilemapContoller.Getmaze();
+        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+        tilemapController = GameObject.Find("TilemapController").GetComponent<TilemapController>();
+        maze = tilemapController.Getmaze();
         SetwallPosition(maze);
     }
 
@@ -72,6 +74,8 @@ public class PlayerContoller : MonoBehaviour
     {
         playerAnim.SetFloat("X", 0);
         playerAnim.SetFloat("Y", 1);
+        var tartgetpos = new Vector3(transform.position.x, transform.position.y + 1, 0);
+        transform.position = Vector3.MoveTowards(transform.position, tartgetpos, moveSpeed);
     }
 
     void MoveDown()

@@ -13,7 +13,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 
-public class TilemapContoller : MonoBehaviour
+public class TilemapController : MonoBehaviour
 {
     [Header("ñ¿òHÇÃëfçﬁ")]
     [SerializeField] Tilemap tilemap;

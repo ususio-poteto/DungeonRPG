@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 581389540}
   - component: {fileID: 581389539}
   m_Layer: 0
-  m_Name: TilemapContoller
+  m_Name: TilemapController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

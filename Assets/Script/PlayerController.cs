@@ -20,9 +20,11 @@ public class PlayerController : MonoBehaviour
 
     TilemapController tilemapController;
 
-    const int wall = 1;
+    bool isMoving = false;
 
-    int[,] maze;
+    public float moveTime = 0.2f;
+
+    Vector3Int currentGridPosition;
     
     //迷路の壁の位置を入れておく。座標系はワールド座標
     List<Vector3> worldWallPosition = new List<Vector3>();
@@ -31,82 +33,69 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        tilemapController = GameObject.Find("TilemapController").GetComponent<TilemapController>();
-        maze = tilemapController.Getmaze();
-        SetwallPosition(maze);
+
+        Vector3 worldPosition = transform.position;
+        currentGridPosition = tilemap.WorldToCell(worldPosition);
+        transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isMoving) return;
+        
+        Vector3Int direction = Vector3Int.zero;
 
-        //playerの移動（velocityはRigidBodyの速度ベクトル、normalizedは正規化をしています）
-        rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * moveSpeed;
-
-        //速度が0でない時、キー入力に合わせてアニメーション用のパラメーターを更新する
-        if (rb.velocity != Vector2.zero)
+        if (Input.GetKeyDown(KeyCode.W)||Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (Input.GetAxisRaw("Horizontal") > 0)
-            {
-                MoveRight();
-            }
-            else if (Input.GetAxisRaw("Horizontal") < 0)
-            {
-                MoveLeft();
-            }
-            else if (Input.GetAxisRaw("Vertical") > 0)
-            {
-                MoveUp();
-            }
-            else
-            {
-                MoveDown();
-            }
+            direction = Vector3Int.up;
         }
-        else
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            playerAnim.SetFloat("X", 0);
-            playerAnim.SetFloat("Y", 0);
+            direction = Vector3Int.down;
+        }
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            direction = Vector3Int.left;
+        }
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            direction = Vector3Int.right;
+        }
+
+        if(direction!=Vector3Int.zero)
+        {
+            StartCoroutine(MoveToCell(direction));
         }
     }
-
-    void MoveUp()
+    
+    System.Collections.IEnumerator MoveToCell(Vector3Int direction)
     {
-        playerAnim.SetFloat("X", 0);
-        playerAnim.SetFloat("Y", 1);
-        var tartgetpos = new Vector3(transform.position.x, transform.position.y + 1, 0);
-        transform.position = Vector3.MoveTowards(transform.position, tartgetpos, moveSpeed);
-    }
+        isMoving = true;
 
-    void MoveDown()
-    {
-        playerAnim.SetFloat("X", 0);
-        playerAnim.SetFloat("Y", -1);
-    }
+        // 移動先のグリッド座標を計算
+        Vector3Int targetGridPosition = currentGridPosition + direction;
 
-    void MoveRight()
-    {
-        playerAnim.SetFloat("X", 1f);
-        playerAnim.SetFloat("Y", 0);
-    }
-
-    void MoveLeft()
-    {
-        playerAnim.SetFloat("X", -1f);
-        playerAnim.SetFloat("Y", 0);
-    }
-
-    void SetwallPosition(int[,] maze)
-    {
-        for (int y = 0; y < maze.GetLength(1); y++)
+        // 移動可能なタイルであるかを確認（必要に応じて条件を変更）
+        if (tilemap.HasTile(targetGridPosition))
         {
-            for (int x = 0; x < maze.GetLength(0); x++)
+            Vector3 targetPosition = tilemap.GetCellCenterWorld(targetGridPosition);
+
+            // 移動アニメーション
+            float elapsedTime = 0f;
+            Vector3 startPosition = transform.position;
+
+            while (elapsedTime < moveTime)
             {
-                if (maze[y, x] == wall)
-                {
-                    worldWallPosition.Add(tilemap.GetCellCenterLocal(new Vector3Int(x, y, 0)));
-                }
+                transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / moveTime);
+                elapsedTime += Time.deltaTime;
+                yield return null;
             }
+
+            transform.position = targetPosition;
+            currentGridPosition = targetGridPosition; // 現在のグリッド位置を更新
         }
+
+        isMoving = false;
     }
 }

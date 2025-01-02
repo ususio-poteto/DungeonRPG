@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
     public float moveTime = 0.2f;
 
     Vector3Int currentGridPosition;
+
+    [SerializeField]
+    TileBase pass_tile;
     
     //迷路の壁の位置を入れておく。座標系はワールド座標
     List<Vector3> worldWallPosition = new List<Vector3>();
@@ -73,11 +76,13 @@ public class PlayerController : MonoBehaviour
     {
         isMoving = true;
 
+        Vector3Int targetGridPositioin = currentGridPosition + direction;
+
         // 移動先のグリッド座標を計算
         Vector3Int targetGridPosition = currentGridPosition + direction;
 
         // 移動可能なタイルであるかを確認（必要に応じて条件を変更）
-        if (tilemap.HasTile(targetGridPosition))
+        if (CanMoveToTile(targetGridPosition))
         {
             Vector3 targetPosition = tilemap.GetCellCenterWorld(targetGridPosition);
 
@@ -97,5 +102,11 @@ public class PlayerController : MonoBehaviour
         }
 
         isMoving = false;
+    }
+
+    bool CanMoveToTile(Vector3Int gridPosition)
+    {
+        TileBase tile =tilemap.GetTile(gridPosition);
+        return tile == pass_tile;
     }
 }

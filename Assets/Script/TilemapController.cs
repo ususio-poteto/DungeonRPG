@@ -79,35 +79,7 @@ public class TilemapController : MonoBehaviour
         //ñ¿òHÇÃçƒê∂ê¨
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Destroy(GameObject.Find("Player(Clone)"));
-            pathPosition.Clear();
-
-            //ñ_ì|Çµñ@
-            if (isMazeBarMethod)
-            {
-                maze = mazeBarMethod.GenarateMaze(30, 30);
-            }
-
-            //åäå@ÇËñ@
-            if (isMazeDigMethod)
-            {
-                mazeDigMethod.Initialize(30, 30);
-                maze = mazeDigMethod.CreateMaze();
-            }
-
-            //ï«êLÇŒÇµñ@
-            if (isMazeWallMethod)
-            {
-                mazeWallMethod.Initialize(30, 30);
-                maze = mazeWallMethod.CreateMaze();
-            }
-
-            pathPosition = GetPathPosition(maze);
-            Debug.Log(pathPosition.Count);
-            //ñ¿òHÇÃï`âÊ
-            SetTile(maze);
-            //ÉvÉåÉCÉÑÅ[ÇÃê∂ê¨
-            CreatePlayer();
+            RecreateMaze();
         }
 
         //ñ_ì|Çµñ@ÇóLå¯Ç…
@@ -181,6 +153,39 @@ public class TilemapController : MonoBehaviour
     public int[,] Getmaze()
     {
         return maze;
+    }
+
+    public void RecreateMaze()
+    {
+        Destroy(GameObject.Find("Player(Clone)"));
+        pathPosition.Clear();
+
+        //ñ_ì|Çµñ@
+        if (isMazeBarMethod)
+        {
+            maze = mazeBarMethod.GenarateMaze(30, 30);
+        }
+
+        //åäå@ÇËñ@
+        if (isMazeDigMethod)
+        {
+            mazeDigMethod.Initialize(30, 30);
+            maze = mazeDigMethod.CreateMaze();
+        }
+
+        //ï«êLÇŒÇµñ@
+        if (isMazeWallMethod)
+        {
+            mazeWallMethod.Initialize(30, 30);
+            maze = mazeWallMethod.CreateMaze();
+        }
+
+        pathPosition = GetPathPosition(maze);
+        Debug.Log(pathPosition.Count);
+        //ñ¿òHÇÃï`âÊ
+        SetTile(maze);
+        //ÉvÉåÉCÉÑÅ[ÇÃê∂ê¨
+        CreatePlayer();
     }
 }
 

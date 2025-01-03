@@ -27,7 +27,10 @@ public class PlayerController : MonoBehaviour
     Vector3Int currentGridPosition;
 
     [SerializeField]
-    TileBase pass_tile;
+    TileBase path_tile;
+
+    [SerializeField]
+    TileBase goal_tile;
     
     //迷路の壁の位置を入れておく。座標系はワールド座標
     List<Vector3> worldWallPosition = new List<Vector3>();
@@ -36,7 +39,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-
+        tilemapController = GameObject.Find("TilemapController").GetComponent<TilemapController>();
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
         transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
@@ -76,8 +79,6 @@ public class PlayerController : MonoBehaviour
     {
         isMoving = true;
 
-        Vector3Int targetGridPositioin = currentGridPosition + direction;
-
         // 移動先のグリッド座標を計算
         Vector3Int targetGridPosition = currentGridPosition + direction;
 
@@ -99,14 +100,25 @@ public class PlayerController : MonoBehaviour
 
             transform.position = targetPosition;
             currentGridPosition = targetGridPosition; // 現在のグリッド位置を更新
-        }
 
+            if (IsGoalTile(targetGridPosition))
+            {
+                Debug.Log("ゴール!!");
+                tilemapController.RecreateMaze();
+            }
+        }   
         isMoving = false;
     }
 
     bool CanMoveToTile(Vector3Int gridPosition)
     {
-        TileBase tile =tilemap.GetTile(gridPosition);
-        return tile == pass_tile;
+        TileBase tile = tilemap.GetTile(gridPosition);
+        return tile == path_tile || tile == goal_tile;
+    }
+
+    bool IsGoalTile(Vector3Int gridPosition)
+    {
+        TileBase tile = tilemap.GetTile(gridPosition);
+        return tile == goal_tile;
     }
 }

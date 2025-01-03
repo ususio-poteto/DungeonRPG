@@ -151,4 +151,5 @@ MonoBehaviour:
   playerAnim: {fileID: 5199112583488409262}
   rb: {fileID: 7230276305310273468}
   moveTime: 0.2
-  pass_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
+  path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
+  goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}

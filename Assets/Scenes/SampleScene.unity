@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &143708448
+--- !u!1 &2197611
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,8 +131,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 143708450}
-  - component: {fileID: 143708449}
+  - component: {fileID: 2197612}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -140,29 +139,16 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &143708449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 143708448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e67b47365e39d5c48bad9833e361ad0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemapController: {fileID: 0}
---- !u!4 &143708450
+--- !u!4 &2197612
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 143708448}
+  m_GameObject: {fileID: 2197611}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.2634, y: 15.129712, z: -0.108360514}
+  m_LocalPosition: {x: 14.4964, y: 14.731892, z: -0.09898436}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -314,7 +300,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 581389540}
-  - component: {fileID: 581389539}
   m_Layer: 0
   m_Name: TilemapController
   m_TagString: Untagged
@@ -322,29 +307,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &581389539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 581389538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89f17089f5d686641bb5420bf3bacf13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemap: {fileID: 749682082}
-  wall_tile: {fileID: 11400000, guid: b93c0d50962ebac4a953de3b35e40844, type: 2}
-  path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
-  goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
-  mazeBarMethod: {fileID: 1588255322}
-  mazeDigMethod: {fileID: 1852894159}
-  mazeWallMethod: {fileID: 1984477660}
-  isMazeBarMethod: 1
-  isMazeDigMethod: 0
-  isMazeWallMethod: 0
-  player: {fileID: 9086444364635527581, guid: a5b788d6cc777e14eb11dc15464064cd, type: 3}
 --- !u!4 &581389540
 Transform:
   m_ObjectHideFlags: 0
@@ -691,4 +653,4 @@ SceneRoots:
   - {fileID: 1852894158}
   - {fileID: 1984477659}
   - {fileID: 1005305770}
-  - {fileID: 143708450}
+  - {fileID: 2197612}

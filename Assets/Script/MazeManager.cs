@@ -13,7 +13,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 
-public class TilemapController : MonoBehaviour
+public class MazeManager : MonoBehaviour
 {
     [Header("ñ¿òHÇÃëfçﬁ")]
     [SerializeField] Tilemap tilemap;
@@ -26,14 +26,11 @@ public class TilemapController : MonoBehaviour
     [SerializeField] MazeDigMethod mazeDigMethod;
     [SerializeField] MazeWallMethod mazeWallMethod;
 
-    [Header("égópÇ∑ÇÈñ¿òHê∂ê¨ÉAÉãÉSÉäÉYÉÄ")]
-    [SerializeField] bool isMazeBarMethod = false;
-    [SerializeField] bool isMazeDigMethod = false;
-    [SerializeField] bool isMazeWallMethod = false;
-
     [SerializeField] GameObject player;
 
-    [SerializeField] StageManager stageManager;
+    [SerializeField] GameObject enemy;
+
+    [SerializeField] GameManager gameManager;
 
     //í òHÇÃç¿ïWÇì¸ÇÍÇÈÉäÉXÉg
     List<Vector2Int> pathPosition;
@@ -43,30 +40,11 @@ public class TilemapController : MonoBehaviour
 
     int[,] maze;
 
+    int stageLevel;//äKëwÇï\ÇµÇ‹Ç∑
+
     void Start()
     {
-        /*
-        //ñ_ì|Çµñ@
-        if (isMazeBarMethod)
-        {
-            MazeBarMethod(30, 30);
-        }
-
-        //åäå@ÇËñ@
-        if (isMazeDigMethod)
-        {
-            MazeDigMethod(30, 30);
-        }
-
-        //ï«êLÇŒÇµñ@
-        if (isMazeWallMethod)
-        {
-            mazeWallMethod.Initialize(30, 30);
-            maze = mazeWallMethod.CreateMaze();
-        }
-        */
-        stageManager.CreateStage();
-
+        CreateStage();
     }
 
 //ÉGÉfÉBÉ^Ç≈ÇÃÇ›É}ÉbÉvÇÃçƒê∂ê¨Ç≈Ç´ÇÈÇÊÇ§Ç…Ç∑ÇÈÅB
@@ -77,30 +55,6 @@ public class TilemapController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             RecreateMaze();
-        }
-
-        //ñ_ì|Çµñ@ÇóLå¯Ç…
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            isMazeBarMethod = true;
-            isMazeDigMethod = false;
-            isMazeDigMethod = false;
-        }
-
-        //ñ_ì|Çµñ@ÇóLå¯Ç…
-        if (Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            isMazeBarMethod = false;
-            isMazeDigMethod = true;
-            isMazeDigMethod = false;
-        }
-
-        //ñ_ì|Çµñ@ÇóLå¯Ç…
-        if (Input.GetKeyDown(KeyCode.Keypad3))
-        {
-            isMazeBarMethod = false;
-            isMazeDigMethod = false;
-            isMazeDigMethod = true;
         }
     }
 #endif
@@ -145,6 +99,23 @@ public class TilemapController : MonoBehaviour
         Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(randomPosition.x, randomPosition.y, 0));
         Debug.Log(worldPosition);
         Instantiate(player, worldPosition, Quaternion.identity);
+        pathPosition.RemoveAt(rnd);
+    }
+
+    void CreateEnemy(int enemyNum)
+    {
+        for(int i = 0; i < enemyNum; i++)
+        {
+            var rnd = Random.Range(0, pathPosition.Count);
+
+            Vector2Int randomPosition = pathPosition[rnd];
+
+            Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(randomPosition.x, randomPosition.y, 0));
+            Debug.Log(worldPosition);
+            Instantiate(enemy, worldPosition, Quaternion.identity);
+            pathPosition.RemoveAt(rnd);
+        }
+
     }
 
     /// <summary>
@@ -160,7 +131,33 @@ public class TilemapController : MonoBehaviour
         Destroy(GameObject.Find("Player(Clone)"));
         pathPosition.Clear();
 
-        stageManager.CreateStage();
+        CreateStage();
+    }
+
+    void CreateStage()
+    {
+        stageLevel = gameManager.GetStageLevel();
+        Debug.Log(stageLevel);
+        if (stageLevel <= 10)
+        {
+            Debug.Log("StageManager:MazeBarMethod");
+            MazeBarMethod(30, 30);
+            CreateEnemy(stageLevel+5);
+        }
+
+        else if (stageLevel >= 11 && stageLevel < 20)
+        {
+            Debug.Log("StageManager:MazeDigMethod");
+            MazeDigMethod(30, 30);
+            CreateEnemy(stageLevel + 5);
+        }
+
+        else if (stageLevel >= 21 && stageLevel <= 30)
+        {
+            Debug.Log("StageManager:MazeWallMethod");
+            MazeWallMethod(30,30);
+            CreateEnemy(stageLevel + 5);
+        }
     }
 
     ///<summary>
@@ -168,7 +165,7 @@ public class TilemapController : MonoBehaviour
     ///</summary>
     public void MazeBarMethod(int x,int y)
     {
-        maze = mazeBarMethod.GenarateMaze(30, 30);
+        maze = mazeBarMethod.GenarateMaze(x, y);
         //ñ¿òHÇÃï`âÊ
         SetTile(maze);
 
@@ -183,7 +180,7 @@ public class TilemapController : MonoBehaviour
     /// </summary>
     public void MazeDigMethod(int x,int y)
     {
-        mazeDigMethod.Initialize(30, 30);
+        mazeDigMethod.Initialize(x, y);
         maze = mazeDigMethod.CreateMaze();
         //ñ¿òHÇÃï`âÊ
         SetTile(maze);
@@ -199,7 +196,7 @@ public class TilemapController : MonoBehaviour
     /// </summary>
     public void MazeWallMethod(int x,int y)
     {
-        mazeWallMethod.Initialize(30, 30);
+        mazeWallMethod.Initialize(x, y);
         maze = mazeWallMethod.CreateMaze();
         //ñ¿òHÇÃï`âÊ
         SetTile(maze);

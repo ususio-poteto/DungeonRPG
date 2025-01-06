@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
     Tilemap tilemap;
 
-    TilemapController tilemapController;
+    MazeManager tilemapController;
 
     bool isMoving = false;
 
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        tilemapController = GameObject.Find("TilemapController").GetComponent<TilemapController>();
+        tilemapController = GameObject.Find("MazeManager").GetComponent<MazeManager>();
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
         transform.position = tilemap.GetCellCenterWorld(currentGridPosition);

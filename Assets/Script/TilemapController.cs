@@ -33,6 +33,8 @@ public class TilemapController : MonoBehaviour
 
     [SerializeField] GameObject player;
 
+    [SerializeField] StageManager stageManager;
+
     //通路の座標を入れるリスト
     List<Vector2Int> pathPosition;
 
@@ -43,17 +45,17 @@ public class TilemapController : MonoBehaviour
 
     void Start()
     {
+        /*
         //棒倒し法
         if (isMazeBarMethod)
         {
-            maze = mazeBarMethod.GenarateMaze(30, 30);
+            MazeBarMethod(30, 30);
         }
 
         //穴掘り法
         if (isMazeDigMethod)
         {
-            mazeDigMethod.Initialize(30, 30);
-            maze = mazeDigMethod.CreateMaze();
+            MazeDigMethod(30, 30);
         }
 
         //壁伸ばし法
@@ -62,14 +64,9 @@ public class TilemapController : MonoBehaviour
             mazeWallMethod.Initialize(30, 30);
             maze = mazeWallMethod.CreateMaze();
         }
-        
-        //迷路の描画
-        SetTile(maze);
+        */
+        stageManager.CreateStage();
 
-        pathPosition=GetPathPosition(maze);
-        
-        //プレイヤーの生成
-        CreatePlayer();
     }
 
 //エディタでのみマップの再生成できるようにする。
@@ -150,6 +147,9 @@ public class TilemapController : MonoBehaviour
         Instantiate(player, worldPosition, Quaternion.identity);
     }
 
+    /// <summary>
+    /// 迷路情報が入った配列の取得
+    /// </summary>
     public int[,] Getmaze()
     {
         return maze;
@@ -160,30 +160,52 @@ public class TilemapController : MonoBehaviour
         Destroy(GameObject.Find("Player(Clone)"));
         pathPosition.Clear();
 
-        //棒倒し法
-        if (isMazeBarMethod)
-        {
-            maze = mazeBarMethod.GenarateMaze(30, 30);
-        }
+        stageManager.CreateStage();
+    }
 
-        //穴掘り法
-        if (isMazeDigMethod)
-        {
-            mazeDigMethod.Initialize(30, 30);
-            maze = mazeDigMethod.CreateMaze();
-        }
-
-        //壁伸ばし法
-        if (isMazeWallMethod)
-        {
-            mazeWallMethod.Initialize(30, 30);
-            maze = mazeWallMethod.CreateMaze();
-        }
-
-        pathPosition = GetPathPosition(maze);
-        Debug.Log(pathPosition.Count);
+    ///<summary>
+    ///棒倒し法を実行するための関数
+    ///</summary>
+    public void MazeBarMethod(int x,int y)
+    {
+        maze = mazeBarMethod.GenarateMaze(30, 30);
         //迷路の描画
         SetTile(maze);
+
+        pathPosition = GetPathPosition(maze);
+
+        //プレイヤーの生成
+        CreatePlayer();
+    }
+
+    ///<summary>
+    ///穴掘り法を実行するための関数
+    /// </summary>
+    public void MazeDigMethod(int x,int y)
+    {
+        mazeDigMethod.Initialize(30, 30);
+        maze = mazeDigMethod.CreateMaze();
+        //迷路の描画
+        SetTile(maze);
+
+        pathPosition = GetPathPosition(maze);
+
+        //プレイヤーの生成
+        CreatePlayer();
+    }
+    
+    ///<summary>
+    ///壁伸ばし法を実行するための関数
+    /// </summary>
+    public void MazeWallMethod(int x,int y)
+    {
+        mazeWallMethod.Initialize(30, 30);
+        maze = mazeWallMethod.CreateMaze();
+        //迷路の描画
+        SetTile(maze);
+
+        pathPosition = GetPathPosition(maze);
+
         //プレイヤーの生成
         CreatePlayer();
     }

@@ -1,28 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.Tilemaps;
-using Unity.VisualScripting;
 
-public class PlayerController : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
-    [SerializeField]
-    private int moveSpeed;
-
-    [SerializeField]
-    private Animator playerAnim;
-
-    public Rigidbody2D rb;
-
-    Tilemap tilemap;
+    bool isMoving = false;
 
     MazeManager mazeManager;
 
-    bool isMoving = false;
-
-    public float moveTime = 0.2f;
+    Tilemap tilemap;
 
     Vector3Int currentGridPosition;
 
@@ -31,61 +18,42 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     TileBase goal_tile;
-    
-    //迷路の壁の位置を入れておく。座標系はワールド座標
-    List<Vector3> worldWallPosition = new List<Vector3>();
 
-
-    void Start()
+    void EnemyTurn()
     {
-        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
-        Vector3 worldPosition = transform.position;
-        currentGridPosition = tilemap.WorldToCell(worldPosition);
-        transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
+
     }
 
-    // Update is called once per frame
-    void Update()
+    void MoveEnemy()
     {
         if (isMoving) return;
-        
+
         Vector3Int direction = Vector3Int.zero;
 
-        playerAnim.SetFloat("X", 0);
-        playerAnim.SetFloat("Y", 0);
 
-        if (Input.GetKeyDown(KeyCode.W)||Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             direction = Vector3Int.up;
-            playerAnim.SetFloat("X", 0);
-            playerAnim.SetFloat("Y", 1);
         }
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             direction = Vector3Int.down;
-            playerAnim.SetFloat("X", 0);
-            playerAnim.SetFloat("Y", -1);
         }
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             direction = Vector3Int.left;
-            playerAnim.SetFloat("X", -1);
-            playerAnim.SetFloat("Y", 0);
         }
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             direction = Vector3Int.right;
-            playerAnim.SetFloat("X", 1);
-            playerAnim.SetFloat("Y", 0);
         }
 
-        if(direction!=Vector3Int.zero)
+        if (direction != Vector3Int.zero)
         {
             StartCoroutine(MoveToCell(direction));
         }
     }
-    
+
     System.Collections.IEnumerator MoveToCell(Vector3Int direction)
     {
         isMoving = true;
@@ -117,19 +85,12 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("ゴール!!");
                 mazeManager.RecreateMaze();
             }
-        }   
+        }
         isMoving = false;
     }
 
-    bool CanMoveToTile(Vector3Int gridPosition)
+    void AttackEnemy()
     {
-        TileBase tile = tilemap.GetTile(gridPosition);
-        return tile == path_tile || tile == goal_tile;
-    }
 
-    bool IsGoalTile(Vector3Int gridPosition)
-    {
-        TileBase tile = tilemap.GetTile(gridPosition);
-        return tile == goal_tile;
     }
 }

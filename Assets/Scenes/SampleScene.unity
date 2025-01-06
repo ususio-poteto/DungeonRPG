@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2197612}
+  - component: {fileID: 2197613}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -154,6 +155,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2197613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2197611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67b47365e39d5c48bad9833e361ad0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageLevel: 1
 --- !u!1 &307219759
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,8 +314,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 581389540}
+  - component: {fileID: 581389541}
   m_Layer: 0
-  m_Name: TilemapController
+  m_Name: MazeManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -322,6 +337,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &581389541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581389538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f17089f5d686641bb5420bf3bacf13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 749682082}
+  wall_tile: {fileID: 11400000, guid: b93c0d50962ebac4a953de3b35e40844, type: 2}
+  path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
+  goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
+  mazeBarMethod: {fileID: 1588255322}
+  mazeDigMethod: {fileID: 1852894159}
+  mazeWallMethod: {fileID: 1984477660}
+  player: {fileID: 9086444364635527581, guid: a5b788d6cc777e14eb11dc15464064cd, type: 3}
+  enemy: {fileID: 5954483517375672540, guid: 098f27aafb62f424db5dfdb26cef5089, type: 3}
+  gameManager: {fileID: 2197613}
 --- !u!1 &749682079
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,7 +558,7 @@ GameObject:
   - component: {fileID: 1588255323}
   - component: {fileID: 1588255322}
   m_Layer: 0
-  m_Name: MazeBer
+  m_Name: MazeBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

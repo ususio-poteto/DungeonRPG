@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Tilemaps;
 using Unity.VisualScripting;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class PlayerController : MonoBehaviour
 {
@@ -31,10 +32,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     TileBase goal_tile;
-    
-    //迷路の壁の位置を入れておく。座標系はワールド座標
-    List<Vector3> worldWallPosition = new List<Vector3>();
 
+    Vector2Int goalPos;
 
     void Start()
     {
@@ -73,6 +72,14 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(MoveToCell(direction));
         }
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            int[,] maze = tilemapController.GetMaze();
+            FindGoalPos(maze);
+            warpGoal();
+        }
+#endif
     }
     
     System.Collections.IEnumerator MoveToCell(Vector3Int direction)
@@ -120,5 +127,20 @@ public class PlayerController : MonoBehaviour
     {
         TileBase tile = tilemap.GetTile(gridPosition);
         return tile == goal_tile;
+    }
+
+    void FindGoalPos(int[,] maze)
+    {
+        int goal = 3;
+        for (int y = 0; y < maze.GetLength(1); y++)
+        {
+            for (int x = 0; x < maze.GetLength(0); x++)
+            {
+                if (maze[y, x] == goal)
+                {
+                    goalPos = new Vector2Int(x, y);
+                }
+            }
+        }
     }
 }

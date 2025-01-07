@@ -77,7 +77,7 @@ public class TilemapController : MonoBehaviour
     void Update()
     {
         //ñ¿òHÇÃçƒê∂ê¨
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.F1))
         {
             RecreateMaze();
         }
@@ -150,7 +150,7 @@ public class TilemapController : MonoBehaviour
         Instantiate(player, worldPosition, Quaternion.identity);
     }
 
-    public int[,] Getmaze()
+    public int[,] GetMaze()
     {
         return maze;
     }

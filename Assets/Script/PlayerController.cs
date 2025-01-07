@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
     Tilemap tilemap;
 
-    TilemapController tilemapController;
+    MazeManager mazeManager;
 
     bool isMoving = false;
 
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        tilemapController = GameObject.Find("TilemapController").GetComponent<TilemapController>();
+        mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
         transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
@@ -51,21 +51,32 @@ public class PlayerController : MonoBehaviour
         
         Vector3Int direction = Vector3Int.zero;
 
+        playerAnim.SetFloat("X", 0);
+        playerAnim.SetFloat("Y", 0);
+
         if (Input.GetKeyDown(KeyCode.W)||Input.GetKeyDown(KeyCode.UpArrow))
         {
             direction = Vector3Int.up;
+            playerAnim.SetFloat("X", 0);
+            playerAnim.SetFloat("Y", 1);
         }
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             direction = Vector3Int.down;
+            playerAnim.SetFloat("X", 0);
+            playerAnim.SetFloat("Y", -1);
         }
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             direction = Vector3Int.left;
+            playerAnim.SetFloat("X", -1);
+            playerAnim.SetFloat("Y", 0);
         }
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             direction = Vector3Int.right;
+            playerAnim.SetFloat("X", 1);
+            playerAnim.SetFloat("Y", 0);
         }
 
         if(direction!=Vector3Int.zero)
@@ -111,7 +122,7 @@ public class PlayerController : MonoBehaviour
             if (IsGoalTile(targetGridPosition))
             {
                 Debug.Log("ÉSÅ[Éã!!");
-                tilemapController.RecreateMaze();
+                mazeManager.RecreateMaze();
             }
         }   
         isMoving = false;

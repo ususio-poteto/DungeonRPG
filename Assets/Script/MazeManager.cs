@@ -102,9 +102,12 @@ public class MazeManager : MonoBehaviour
         pathPosition.RemoveAt(rnd);
     }
 
-<<<<<<< HEAD:Assets/Script/TilemapController.cs
+
     public int[,] GetMaze()
-=======
+    {
+        return maze;
+    }
+
     void CreateEnemy(int enemyNum)
     {
         for(int i = 0; i < enemyNum; i++)
@@ -125,7 +128,6 @@ public class MazeManager : MonoBehaviour
     /// –À˜Hî•ñ‚ª“ü‚Á‚½”z—ñ‚ÌŽæ“¾
     /// </summary>
     public int[,] Getmaze()
->>>>>>> 5c6626db95bca2e1ec623e1fd4ac53e04e089669:Assets/Script/MazeManager.cs
     {
         return maze;
     }

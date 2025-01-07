@@ -19,6 +19,13 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     TileBase goal_tile;
 
+    float moveTime = 0.2f;
+
+    enum Direction
+    {
+        up,down,left,right
+    }
+
     void EnemyTurn()
     {
 
@@ -79,14 +86,14 @@ public class EnemyController : MonoBehaviour
 
             transform.position = targetPosition;
             currentGridPosition = targetGridPosition; // 現在のグリッド位置を更新
-
-            if (IsGoalTile(targetGridPosition))
-            {
-                Debug.Log("ゴール!!");
-                mazeManager.RecreateMaze();
-            }
         }
         isMoving = false;
+    }
+
+    bool CanMoveToTile(Vector3Int gridPosition)
+    {
+        TileBase tile = tilemap.GetTile(gridPosition);
+        return tile == path_tile || tile == goal_tile;
     }
 
     void AttackEnemy()

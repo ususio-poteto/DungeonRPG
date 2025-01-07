@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 using UnityEngine.Tilemaps;
 using Unity.VisualScripting;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor;
 
 public class PlayerController : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     bool isMoving = false;
 
-    public float moveTime = 0.2f;
+    float moveTime = 0.2f;
 
     Vector3Int currentGridPosition;
 
@@ -33,7 +34,29 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     TileBase goal_tile;
 
-    Vector2Int goalPos;
+    SpriteRenderer spriteRenderer;
+
+    [SerializeField]
+    Sprite upSprite;
+
+    [SerializeField]
+    Sprite downSprite;
+
+    [SerializeField]
+    Sprite rightSprite;
+
+    [SerializeField]
+    Sprite leftSprite;
+
+    enum eDirection
+    {
+        up,
+        down,
+        left,
+        right
+    }
+
+    eDirection direction;
 
     void Start()
     {
@@ -42,6 +65,7 @@ public class PlayerController : MonoBehaviour
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
         transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
+        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -49,46 +73,54 @@ public class PlayerController : MonoBehaviour
     {
         if (isMoving) return;
         
-        Vector3Int direction = Vector3Int.zero;
+        Vector3Int moveDirection = Vector3Int.zero;
 
         playerAnim.SetFloat("X", 0);
         playerAnim.SetFloat("Y", 0);
 
         if (Input.GetKeyDown(KeyCode.W)||Input.GetKeyDown(KeyCode.UpArrow))
         {
-            direction = Vector3Int.up;
+            moveDirection = Vector3Int.up;
+            direction = eDirection.up;
             playerAnim.SetFloat("X", 0);
             playerAnim.SetFloat("Y", 1);
         }
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            direction = Vector3Int.down;
+            moveDirection = Vector3Int.down;
+            direction = eDirection.down;
             playerAnim.SetFloat("X", 0);
             playerAnim.SetFloat("Y", -1);
         }
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            direction = Vector3Int.left;
+            moveDirection = Vector3Int.left;
+            direction = eDirection.left;
             playerAnim.SetFloat("X", -1);
             playerAnim.SetFloat("Y", 0);
         }
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
-            direction = Vector3Int.right;
+            moveDirection = Vector3Int.right;
+            direction = eDirection.right;
             playerAnim.SetFloat("X", 1);
             playerAnim.SetFloat("Y", 0);
         }
 
-        if(direction!=Vector3Int.zero)
+        if(moveDirection!=Vector3Int.zero)
         {
-            StartCoroutine(MoveToCell(direction));
+            StartCoroutine(MoveToCell(moveDirection));
         }
+
+        //デバッグ用
+        //クリックした場所までワープする
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.F2))
+        if (Input.GetMouseButton(0))
         {
-            int[,] maze = tilemapController.GetMaze();
-            FindGoalPos(maze);
-            warpGoal();
+            var onClickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var tilemapPosition = tilemap.WorldToCell(onClickPosition);
+            var cellPosition = tilemap.GetCellCenterWorld(tilemapPosition);
+            transform.position = new Vector3(cellPosition.x, cellPosition.y, 0);
         }
 #endif
     }
@@ -138,20 +170,5 @@ public class PlayerController : MonoBehaviour
     {
         TileBase tile = tilemap.GetTile(gridPosition);
         return tile == goal_tile;
-    }
-
-    void FindGoalPos(int[,] maze)
-    {
-        int goal = 3;
-        for (int y = 0; y < maze.GetLength(1); y++)
-        {
-            for (int x = 0; x < maze.GetLength(0); x++)
-            {
-                if (maze[y, x] == goal)
-                {
-                    goalPos = new Vector2Int(x, y);
-                }
-            }
-        }
     }
 }

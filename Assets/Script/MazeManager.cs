@@ -35,6 +35,8 @@ public class MazeManager : MonoBehaviour
     //í òHÇÃç¿ïWÇì¸ÇÍÇÈÉäÉXÉg
     List<Vector2Int> pathPosition;
 
+    List<GameObject> enemies = new List<GameObject>();
+
     const int wall = 1;    
     const int path = 0;
 
@@ -117,8 +119,8 @@ public class MazeManager : MonoBehaviour
             Vector2Int randomPosition = pathPosition[rnd];
 
             Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(randomPosition.x, randomPosition.y, 0));
-            Debug.Log(worldPosition);
-            Instantiate(enemy, worldPosition, Quaternion.identity);
+            var createEnemy = Instantiate(enemy, worldPosition, Quaternion.identity);
+            enemies.Add(createEnemy);
             pathPosition.RemoveAt(rnd);
         }
 
@@ -134,7 +136,12 @@ public class MazeManager : MonoBehaviour
 
     public void RecreateMaze()
     {
-        Destroy(GameObject.Find("Player(Clone)"));
+        Destroy(GameObject.FindWithTag("Player"));
+        foreach(var element in enemies)
+        {
+            Destroy(element.gameObject);
+        }
+        enemies.Clear();
         pathPosition.Clear();
 
         CreateStage();

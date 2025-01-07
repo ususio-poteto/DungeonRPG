@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     Sprite leftSprite;
 
+    Rigidbody2D rb2d;
+
     enum eDirection
     {
         up,
@@ -66,11 +68,13 @@ public class PlayerController : MonoBehaviour
         currentGridPosition = tilemap.WorldToCell(worldPosition);
         transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+        rb2d = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (isMoving) return;
         
         Vector3Int moveDirection = Vector3Int.zero;
@@ -111,18 +115,6 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(MoveToCell(moveDirection));
         }
-
-        //デバッグ用
-        //クリックした場所までワープする
-#if UNITY_EDITOR
-        if (Input.GetMouseButton(0))
-        {
-            var onClickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var tilemapPosition = tilemap.WorldToCell(onClickPosition);
-            var cellPosition = tilemap.GetCellCenterWorld(tilemapPosition);
-            transform.position = new Vector3(cellPosition.x, cellPosition.y, 0);
-        }
-#endif
     }
     
     System.Collections.IEnumerator MoveToCell(Vector3Int direction)

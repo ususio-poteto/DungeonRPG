@@ -126,6 +126,11 @@ public class MazeManager : MonoBehaviour
 
     }
 
+    public List<GameObject> GetEnemies()
+    {
+        return enemies;
+    }
+
     /// <summary>
     /// –À˜Hî•ñ‚ª“ü‚Á‚½”z—ñ‚Ìæ“¾
     /// </summary>

@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 using Unity.VisualScripting;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor;
+using System.Security.Cryptography;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,6 +22,10 @@ public class PlayerController : MonoBehaviour
     Tilemap tilemap;
 
     MazeManager mazeManager;
+
+    TurnManager turnManager;
+
+    GameManager gameManager;
 
     bool isMoving = false;
 
@@ -64,56 +69,63 @@ public class PlayerController : MonoBehaviour
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
+        turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        rb2d = GetComponent<Rigidbody2D>();
+        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
         transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
-        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
-        rb2d = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(turnManager.GetPlayerTurn());
+
+        if (turnManager.GetPlayerTurn()) 
+        {
+            if (isMoving) return;
         
-        if (isMoving) return;
-        
-        Vector3Int moveDirection = Vector3Int.zero;
+            Vector3Int moveDirection = Vector3Int.zero;
 
-        playerAnim.SetFloat("X", 0);
-        playerAnim.SetFloat("Y", 0);
-
-        if (Input.GetKeyDown(KeyCode.W)||Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            moveDirection = Vector3Int.up;
-            direction = eDirection.up;
             playerAnim.SetFloat("X", 0);
-            playerAnim.SetFloat("Y", 1);
-        }
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            moveDirection = Vector3Int.down;
-            direction = eDirection.down;
-            playerAnim.SetFloat("X", 0);
-            playerAnim.SetFloat("Y", -1);
-        }
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            moveDirection = Vector3Int.left;
-            direction = eDirection.left;
-            playerAnim.SetFloat("X", -1);
             playerAnim.SetFloat("Y", 0);
-        }
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            moveDirection = Vector3Int.right;
-            direction = eDirection.right;
-            playerAnim.SetFloat("X", 1);
-            playerAnim.SetFloat("Y", 0);
-        }
 
-        if(moveDirection!=Vector3Int.zero)
-        {
-            StartCoroutine(MoveToCell(moveDirection));
+            if (Input.GetKeyDown(KeyCode.W)||Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                moveDirection = Vector3Int.up;
+                direction = eDirection.up;
+                playerAnim.SetFloat("X", 0);
+                playerAnim.SetFloat("Y", 1);
+            }
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                moveDirection = Vector3Int.down;
+                direction = eDirection.down;
+                playerAnim.SetFloat("X", 0);
+                playerAnim.SetFloat("Y", -1);
+            }
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                moveDirection = Vector3Int.left;
+                direction = eDirection.left;
+                playerAnim.SetFloat("X", -1);
+                playerAnim.SetFloat("Y", 0);
+            }
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                moveDirection = Vector3Int.right;
+                direction = eDirection.right;
+                playerAnim.SetFloat("X", 1);
+                playerAnim.SetFloat("Y", 0);
+            }
+
+            if (moveDirection != Vector3Int.zero)
+            {
+                turnManager.SwitchTurn();
+                StartCoroutine(MoveToCell(moveDirection));
+            }
         }
     }
     

@@ -26,6 +26,10 @@ public class MazeManager : MonoBehaviour
     [SerializeField] MazeDigMethod mazeDigMethod;
     [SerializeField] MazeWallMethod mazeWallMethod;
 
+    DepthFirstSearch depthFirstSearch;//ê[Ç≥óDêÊíTçı
+
+    AStarAlgorithm aStarAlgorithm;
+
     [SerializeField] GameObject player;
 
     [SerializeField] GameObject enemy;
@@ -46,6 +50,8 @@ public class MazeManager : MonoBehaviour
 
     void Start()
     {
+        depthFirstSearch=GetComponent<DepthFirstSearch>();
+        
         CreateStage();
     }
 
@@ -57,6 +63,11 @@ public class MazeManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F1))
         {
             RecreateMaze();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            DestroyEnemy();
         }
     }
 #endif
@@ -126,6 +137,15 @@ public class MazeManager : MonoBehaviour
 
     }
 
+    void DestroyEnemy()
+    {
+        foreach (var element in enemies)
+        {
+            Destroy(element.gameObject);
+        }
+        enemies.Clear();
+    }
+
     /// <summary>
     /// ñ¿òHèÓïÒÇ™ì¸Ç¡ÇΩîzóÒÇÃéÊìæ
     /// </summary>
@@ -137,11 +157,7 @@ public class MazeManager : MonoBehaviour
     public void RecreateMaze()
     {
         Destroy(GameObject.FindWithTag("Player"));
-        foreach(var element in enemies)
-        {
-            Destroy(element.gameObject);
-        }
-        enemies.Clear();
+        DestroyEnemy();
         pathPosition.Clear();
 
         CreateStage();
@@ -150,6 +166,7 @@ public class MazeManager : MonoBehaviour
     void CreateStage()
     {
         stageLevel = gameManager.GetStageLevel();
+        Debug.Log(gameManager.GetStageLevel());
         Debug.Log(stageLevel);
         if (stageLevel <= 10)
         {
@@ -161,14 +178,14 @@ public class MazeManager : MonoBehaviour
         else if (stageLevel >= 11 && stageLevel < 20)
         {
             Debug.Log("StageManager:MazeDigMethod");
-            MazeDigMethod(30, 30);
+            MazeWallMethod(30, 30);
             CreateEnemy(stageLevel + 5);
         }
 
         else if (stageLevel >= 21 && stageLevel <= 30)
         {
             Debug.Log("StageManager:MazeWallMethod");
-            MazeWallMethod(30,30);
+            MazeDigMethod(30,30);
             CreateEnemy(stageLevel + 5);
         }
     }
@@ -219,5 +236,14 @@ public class MazeManager : MonoBehaviour
         //ÉvÉåÉCÉÑÅ[ÇÃê∂ê¨
         CreatePlayer();
     }
+
+    public void SearchShortestPath()
+    {
+        stageLevel = gameManager.GetStageLevel();
+        if (stageLevel <= 20)
+        {
+
+        }
+    }   
 }
 

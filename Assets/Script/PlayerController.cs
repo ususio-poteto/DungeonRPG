@@ -81,8 +81,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(turnManager.GetPlayerTurn());
-
         if (turnManager.GetPlayerTurn()) 
         {
             if (isMoving) return;
@@ -123,10 +121,17 @@ public class PlayerController : MonoBehaviour
 
             if (moveDirection != Vector3Int.zero)
             {
-                turnManager.SwitchTurn();
+                //turnManager.SwitchTurn();
                 StartCoroutine(MoveToCell(moveDirection));
             }
         }
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            mazeManager.SearchShortestPath();
+        }
+#endif
     }
     
     System.Collections.IEnumerator MoveToCell(Vector3Int direction)
@@ -158,6 +163,7 @@ public class PlayerController : MonoBehaviour
             if (IsGoalTile(targetGridPosition))
             {
                 Debug.Log("ÉSÅ[Éã!!");
+                gameManager.isGoal();
                 mazeManager.RecreateMaze();
             }
         }   

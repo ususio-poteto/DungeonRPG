@@ -83,11 +83,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-<<<<<<< HEAD
-=======
-        //Debug.Log(turnManager.GetPlayerTurn());
-
->>>>>>> 7fdff83cb20e3ba6c23648971e04d60a4a305229
         if (turnManager.GetPlayerTurn()) 
         {
             if (isMoving) return;

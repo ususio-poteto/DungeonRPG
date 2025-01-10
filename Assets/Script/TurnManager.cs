@@ -19,4 +19,8 @@ public class TurnManager : MonoBehaviour
         return isPlayerTurn;
     }
     
+    public bool GetEnemyTurn()
+    {
+        return isEnemyTurn;
+    }
 }

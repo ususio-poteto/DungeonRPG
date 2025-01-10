@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
 
     Vector3Int currentGridPosition;
 
+    Vector3Int beforeGridPosition;
+
     [SerializeField]
     TileBase path_tile;
 
@@ -81,6 +83,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+<<<<<<< HEAD
+=======
+        //Debug.Log(turnManager.GetPlayerTurn());
+
+>>>>>>> 7fdff83cb20e3ba6c23648971e04d60a4a305229
         if (turnManager.GetPlayerTurn()) 
         {
             if (isMoving) return;
@@ -146,6 +153,8 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 targetPosition = tilemap.GetCellCenterWorld(targetGridPosition);
 
+            beforeGridPosition = currentGridPosition;
+
             // 移動アニメーション
             float elapsedTime = 0f;
             Vector3 startPosition = transform.position;
@@ -168,6 +177,9 @@ public class PlayerController : MonoBehaviour
             }
         }   
         isMoving = false;
+        //実際には移動していないがターンが変わるので要修正
+        turnManager.SwitchTurn();
+        
     }
 
     bool CanMoveToTile(Vector3Int gridPosition)

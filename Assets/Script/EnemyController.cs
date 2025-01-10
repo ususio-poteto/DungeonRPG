@@ -18,21 +18,39 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField]
     TileBase goal_tile;
-
-    Vector3Int currentGridPosition;
-
+    
     float moveTime = 0.2f;
+    
+    Vector3Int currentGridPosition;
+    
+    TurnManager turnManager;
 
     Vector3Int[] directions = new Vector3Int[] { Vector3Int.up, Vector3Int.down, Vector3Int.right, Vector3Int.left };
+
+    enum state
+    {
+        patrol,
+        tracking
+    }
+
+    state eState = state.patrol;
+
+    Rigidbody2D rb2d;
 
     void Start()
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+        turnManager=GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        rb2d = GetComponent<Rigidbody2D>();
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
     }
     void Update()
     {
+        if (turnManager.GetEnemyTurn())
+        {
+            MoveEnemy();
+        }
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F2))
         {
@@ -43,8 +61,20 @@ public class EnemyController : MonoBehaviour
 
     void MoveEnemy()
     {
-        var rnd = Random.Range(0, directions.Length);
-        StartCoroutine(MoveToCell(directions[rnd]));
+        if (eState == state.patrol)
+        {   //なぜかすべての敵が反応しない要修正
+            var rnd = Random.Range(0, directions.Length);
+            StartCoroutine(MoveToCell(directions[rnd]));
+        }
+
+        /*
+        else if (eState == state.tracking)
+        {
+            A*アルゴリズムで最短経路探索を行う
+            もしくはplayerのあとを追いかけるようにするか
+            tilemapにフラグを立てていくかんじ。
+        }
+        */
     }
 
     System.Collections.IEnumerator MoveToCell(Vector3Int direction)
@@ -74,6 +104,7 @@ public class EnemyController : MonoBehaviour
             currentGridPosition = targetGridPosition; // 現在のグリッド位置を更新
         }
         isMoving = false;
+        turnManager.SwitchTurn();
     }
 
     bool CanMoveToTile(Vector3Int gridPosition)

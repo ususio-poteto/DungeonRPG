@@ -468,7 +468,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!50 &467166066
 Rigidbody2D:
   serializedVersion: 4
@@ -837,7 +837,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1079255875}
   - component: {fileID: 1079255874}
-  - component: {fileID: 1079255873}
   m_Layer: 0
   m_Name: UICamera
   m_TagString: Untagged
@@ -845,14 +844,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1079255873
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1079255872}
-  m_Enabled: 1
 --- !u!20 &1079255874
 Camera:
   m_ObjectHideFlags: 0

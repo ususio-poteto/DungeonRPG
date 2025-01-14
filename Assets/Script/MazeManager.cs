@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -12,29 +13,44 @@ using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
+using static UnityEngine.ParticleSystem;
 
 public class MazeManager : MonoBehaviour
 {
     [Header("ñ¿òHÇÃëfçﬁ")]
-    [SerializeField] Tilemap tilemap;
-    [SerializeField] Tile wall_tile;
-    [SerializeField] Tile path_tile;
-    [SerializeField] Tile goal_tile;
+    [SerializeField] 
+    Tilemap tilemap;
+    [SerializeField] 
+    Tile wall_tile;
+    [SerializeField] 
+    Tile path_tile;
+    [SerializeField] 
+    Tile goal_tile;
+    [SerializeField] 
+    Tile shotesetTile;
 
     [Header("ñ¿òHê∂ê¨ÉAÉãÉSÉäÉYÉÄ")]
-    [SerializeField] MazeBarMethod mazeBarMethod;
-    [SerializeField] MazeDigMethod mazeDigMethod;
-    [SerializeField] MazeWallMethod mazeWallMethod;
+    [SerializeField] 
+    MazeBarMethod mazeBarMethod;
+    [SerializeField] 
+    MazeDigMethod mazeDigMethod;
+    [SerializeField] 
+    MazeWallMethod mazeWallMethod;
 
-    DepthFirstSearch depthFirstSearch;//ê[Ç≥óDêÊíTçı
-
+    [Header("ñ¿òHíTçıÉAÉãÉSÉäÉYÉÄ")]
+    [SerializeField]
+    BreadthFirstSearch breadthFirstSearch;
+    [SerializeField]
     AStarAlgorithm aStarAlgorithm;
 
-    [SerializeField] GameObject player;
+    [SerializeField] 
+    GameObject player;
 
-    [SerializeField] GameObject enemy;
+    [SerializeField] 
+    GameObject enemy;
 
-    [SerializeField] GameManager gameManager;
+    [SerializeField] 
+    GameManager gameManager;
 
     //í òHÇÃç¿ïWÇì¸ÇÍÇÈÉäÉXÉg
     List<Vector2Int> pathPosition;
@@ -46,12 +62,12 @@ public class MazeManager : MonoBehaviour
 
     int[,] maze;
 
+    Vector2Int goalPosition;
+
     int stageLevel;//äKëwÇï\ÇµÇ‹Ç∑
 
     void Start()
-    {
-        depthFirstSearch=GetComponent<DepthFirstSearch>();
-        
+    { 
         CreateStage();
     }
 
@@ -69,16 +85,26 @@ public class MazeManager : MonoBehaviour
         {
             DestroyEnemy();
         }
+
     }
 #endif
+
+    public void SearchShortestPath(Vector3 playerPosition)
+    {
+        var path = breadthFirstSearch.Search(playerPosition, goalPosition);
+        foreach(var pos in path)
+        {
+            tilemap.SetTile(new Vector3Int(pos.x, pos.y, 0), shotesetTile);
+        }
+    }
 
     void SetTile(int[,] setmaze)
     {
         var maze = setmaze;
-        for (int y = 0; y < maze.GetLength(0); y++)
+        for (int y = 0; y < maze.GetLength(0); y++) 
         {
             for (int x = 0; x < maze.GetLength(1); x++)
-            {
+            {   
                 if (maze[y, x] == wall) tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1) / 2), y - (maze.GetLength(0) / 2), 0), wall_tile);
                 else if(maze[y, x] == path) tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1)/2), y - (maze.GetLength(0)/2), 0), path_tile);
                 else tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1) / 2), y - (maze.GetLength(0) / 2), 0), goal_tile);
@@ -110,7 +136,6 @@ public class MazeManager : MonoBehaviour
         Vector2Int randomPosition = pathPosition[rnd];
 
         Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(randomPosition.x, randomPosition.y, 0));
-        Debug.Log(worldPosition);
         Instantiate(player, worldPosition, Quaternion.identity);
         pathPosition.RemoveAt(rnd);
     }
@@ -178,14 +203,14 @@ public class MazeManager : MonoBehaviour
         else if (stageLevel >= 11 && stageLevel < 20)
         {
             Debug.Log("StageManager:MazeDigMethod");
-            MazeWallMethod(30, 30);
+            MazeDigMethod(30, 30);
             CreateEnemy(stageLevel + 5);
         }
 
         else if (stageLevel >= 21 && stageLevel <= 30)
         {
             Debug.Log("StageManager:MazeWallMethod");
-            MazeDigMethod(30,30);
+            MazeWallMethod(30,30);
             CreateEnemy(stageLevel + 5);
         }
     }
@@ -203,6 +228,9 @@ public class MazeManager : MonoBehaviour
 
         //ÉvÉåÉCÉÑÅ[ÇÃê∂ê¨
         CreatePlayer();
+
+        goalPosition = mazeBarMethod.GetGoalPosition();
+
     }
 
     ///<summary>
@@ -219,6 +247,8 @@ public class MazeManager : MonoBehaviour
 
         //ÉvÉåÉCÉÑÅ[ÇÃê∂ê¨
         CreatePlayer();
+
+        goalPosition = mazeDigMethod.GetGoalPosition();
     }
     
     ///<summary>
@@ -235,15 +265,30 @@ public class MazeManager : MonoBehaviour
 
         //ÉvÉåÉCÉÑÅ[ÇÃê∂ê¨
         CreatePlayer();
+
+        goalPosition = mazeWallMethod.GetGoalPosition();
+
     }
 
-    public void SearchShortestPath()
+    /*
+    public void SearchShortestPath(Vector3Int playerCurrentGridPosition)
     {
         stageLevel = gameManager.GetStageLevel();
-        if (stageLevel <= 20)
+        if (stageLevel <= 10)
         {
+            
+        }
 
+        else if (stageLevel >= 11 && stageLevel < 20)
+        {
+            
+        }
+
+        else if (stageLevel >= 21 && stageLevel <= 30)
+        {
+            
         }
     }   
+    */
 }
 

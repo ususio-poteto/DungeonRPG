@@ -11,6 +11,8 @@ public class MazeBarMethod : MonoBehaviour
 
     int[,] maze;
 
+    Vector2Int goalPosition;
+
     public int[,] GenarateMaze(int width, int height)
     {
         if (width % 2 == 0) width++;
@@ -84,10 +86,16 @@ public class MazeBarMethod : MonoBehaviour
         if (maze[x, y] == path)
         {
             maze[x, y] = goal;
+            goalPosition = new Vector2Int(x, y);
         }
         else
         {
             CreateGoal();
         }
+    }
+
+    public Vector2Int GetGoalPosition()
+    {
+        return goalPosition;
     }
 }

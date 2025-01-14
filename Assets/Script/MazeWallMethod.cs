@@ -14,6 +14,8 @@ public class MazeWallMethod : MonoBehaviour
 
     int[,] maze;
 
+    Vector2Int goalPosition;
+
     enum direction
     {
         up,
@@ -162,10 +164,16 @@ public class MazeWallMethod : MonoBehaviour
         if (maze[x, y] == path)
         {
             maze[x, y] = goal;
+            goalPosition= new Vector2Int(x, y);
         }
         else
         {
             CreateGoal();
         }
+    }
+
+    public Vector2Int GetGoalPosition()
+    {
+        return goalPosition;
     }
 }

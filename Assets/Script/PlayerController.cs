@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            mazeManager.SearchShortestPath();
+            mazeManager.SearchShortestPath(transform.position);
         }
 #endif
     }

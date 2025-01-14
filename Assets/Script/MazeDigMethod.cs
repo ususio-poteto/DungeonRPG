@@ -11,6 +11,8 @@ public class MazeDigMethod : MonoBehaviour
 
     int[,] maze;
 
+    Vector2Int goalPosition;
+
     int width;
     int height;
 
@@ -136,10 +138,16 @@ public class MazeDigMethod : MonoBehaviour
         if (maze[x, y] == path)
         {
             maze[x, y] = goal;
+            goalPosition = new Vector2Int(x, y);
         }
         else
         {
             CreateGoal();
         }
+    }
+
+    public Vector2Int GetGoalPosition()
+    {
+        return goalPosition;
     }
 }

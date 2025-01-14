@@ -55,6 +55,8 @@ public class MazeManager : MonoBehaviour
     //通路の座標を入れるリスト
     List<Vector2Int> pathPosition;
 
+    //プレイヤーのスタート
+
     List<GameObject> enemies = new List<GameObject>();
 
     const int wall = 1;    
@@ -131,6 +133,21 @@ public class MazeManager : MonoBehaviour
 
     void CreatePlayer()
     {
+        int x = Random.Range(1, maze.GetLength(1));
+        int y = Random.Range(1, maze.GetLength(0));
+        if (maze[x, y] == path)
+        {
+            Instantiate(player, new Vector3Int(x, y, 0), Quaternion.identity);
+        }
+        else
+        {
+            CreatePlayer();
+        }
+    }
+
+    /*
+    void CreatePlayer()
+    {
         var rnd = Random.Range(0, pathPosition.Count);
         
         Vector2Int randomPosition = pathPosition[rnd];
@@ -139,7 +156,7 @@ public class MazeManager : MonoBehaviour
         Instantiate(player, worldPosition, Quaternion.identity);
         pathPosition.RemoveAt(rnd);
     }
-
+    */
 
     public int[,] GetMaze()
     {

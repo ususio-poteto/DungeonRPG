@@ -55,7 +55,8 @@ public class MazeManager : MonoBehaviour
     //通路の座標を入れるリスト
     List<Vector2Int> pathPosition;
 
-    //プレイヤーのスタート
+    //プレイヤーのスタート座標(2次元配列の要素数)
+    Vector2Int startPosition;
 
     List<GameObject> enemies = new List<GameObject>();
 
@@ -131,6 +132,7 @@ public class MazeManager : MonoBehaviour
         return position;
     }
 
+    /*
     void CreatePlayer()
     {
         int x = Random.Range(1, maze.GetLength(1));
@@ -144,19 +146,21 @@ public class MazeManager : MonoBehaviour
             CreatePlayer();
         }
     }
+    */
 
-    /*
+    
     void CreatePlayer()
     {
         var rnd = Random.Range(0, pathPosition.Count);
         
         Vector2Int randomPosition = pathPosition[rnd];
+        startPosition = pathPosition[rnd];
 
         Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(randomPosition.x, randomPosition.y, 0));
         Instantiate(player, worldPosition, Quaternion.identity);
         pathPosition.RemoveAt(rnd);
     }
-    */
+    
 
     public int[,] GetMaze()
     {
@@ -207,9 +211,6 @@ public class MazeManager : MonoBehaviour
 
     void CreateStage()
     {
-        stageLevel = gameManager.GetStageLevel();
-        Debug.Log(gameManager.GetStageLevel());
-        Debug.Log(stageLevel);
         if (stageLevel <= 10)
         {
             Debug.Log("StageManager:MazeBarMethod");
@@ -287,25 +288,10 @@ public class MazeManager : MonoBehaviour
 
     }
 
-    /*
-    public void SearchShortestPath(Vector3Int playerCurrentGridPosition)
+
+    public Vector2Int GetPlayerStartPosition()
     {
-        stageLevel = gameManager.GetStageLevel();
-        if (stageLevel <= 10)
-        {
-            
-        }
-
-        else if (stageLevel >= 11 && stageLevel < 20)
-        {
-            
-        }
-
-        else if (stageLevel >= 21 && stageLevel <= 30)
-        {
-            
-        }
-    }   
-    */
+        return startPosition;
+    }
 }
 

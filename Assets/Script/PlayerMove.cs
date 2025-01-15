@@ -1,23 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.Tilemaps;
-using Unity.VisualScripting;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEditor;
-using System.Security.Cryptography;
 
-public class PlayerController : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     [SerializeField]
-    private int moveSpeed;
+    int moveSpeed;
 
     [SerializeField]
-    private Animator playerAnim;
+    Animator playerAnim;
 
-    public Rigidbody2D rb;
+    [SerializeField]
+    Rigidbody2D rb2d;
 
     Tilemap tilemap;
 
@@ -43,19 +39,17 @@ public class PlayerController : MonoBehaviour
 
     SpriteRenderer spriteRenderer;
 
-    [SerializeField]
-    Sprite upSprite;
+    //[SerializeField]
+    //Sprite upSprite;
 
-    [SerializeField]
-    Sprite downSprite;
+    //[SerializeField]
+    //Sprite downSprite;
 
-    [SerializeField]
-    Sprite rightSprite;
+    //[SerializeField]
+    //Sprite rightSprite;
 
-    [SerializeField]
-    Sprite leftSprite;
-
-    Rigidbody2D rb2d;
+    //[SerializeField]
+    //Sprite leftSprite;
 
     enum eDirection
     {
@@ -73,7 +67,6 @@ public class PlayerController : MonoBehaviour
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        rb2d = GetComponent<Rigidbody2D>();
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         //Vector3 worldPosition = transform.position;
         //currentGridPosition = tilemap.WorldToCell(worldPosition);
@@ -85,16 +78,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (turnManager.GetPlayerTurn()) 
+        if (turnManager.GetPlayerTurn())
         {
             if (isMoving) return;
-        
+
             Vector3Int moveDirection = Vector3Int.zero;
 
             playerAnim.SetFloat("X", 0);
             playerAnim.SetFloat("Y", 0);
 
-            if (Input.GetKeyDown(KeyCode.W)||Input.GetKeyDown(KeyCode.UpArrow))
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 moveDirection = Vector3Int.up;
                 direction = eDirection.up;
@@ -137,7 +130,8 @@ public class PlayerController : MonoBehaviour
         }
 #endif
     }
-    
+
+    /*
     System.Collections.IEnumerator MoveToCell(Vector3Int direction)
     {
         isMoving = true;
@@ -172,12 +166,26 @@ public class PlayerController : MonoBehaviour
                 gameManager.isGoal();
                 mazeManager.RecreateMaze();
             }
-        }   
+        }
         isMoving = false;
         //é¿ç€Ç…ÇÕà⁄ìÆÇµÇƒÇ¢Ç»Ç¢Ç™É^Å[ÉìÇ™ïœÇÌÇÈÇÃÇ≈óvèCê≥
         turnManager.SwitchTurn();
-        
+
     }
+    */
+    System.Collections.IEnumerator MoveToCell(Vector3Int direction)
+    {
+        isMoving = true;
+        Vector3Int targetPosition = currentGridPosition + direction;
+
+        float elapsedTime = 0f;
+        if (CanMoveToTile(targetPosition))
+        {
+
+        }
+        isMoving = false;
+    }
+
 
     bool CanMoveToTile(Vector3Int gridPosition)
     {

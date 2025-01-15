@@ -216,15 +216,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d5d894c3003874b9ffa70596e264ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
+  moveSpeed: 1
   playerAnim: {fileID: 5497147908363590937}
   rb2d: {fileID: 3399242956345913655}
   path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
   goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
-  upSprite: {fileID: 0}
-  downSprite: {fileID: 0}
-  rightSprite: {fileID: 0}
-  leftSprite: {fileID: 0}
 --- !u!1 &2645688963029682992
 GameObject:
   m_ObjectHideFlags: 0

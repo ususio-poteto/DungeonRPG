@@ -157,6 +157,7 @@ public class MazeManager : MonoBehaviour
         startPosition = pathPosition[rnd];
 
         Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(randomPosition.x, randomPosition.y, 0));
+        Debug.Log("position" + randomPosition.x + "," + randomPosition.y);
         Instantiate(player, worldPosition, Quaternion.identity);
         pathPosition.RemoveAt(rnd);
     }

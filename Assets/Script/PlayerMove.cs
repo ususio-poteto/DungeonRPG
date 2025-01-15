@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -17,6 +19,8 @@ public class PlayerMove : MonoBehaviour
 
     Tilemap tilemap;
 
+    Grid grid;
+
     MazeManager mazeManager;
 
     TurnManager turnManager;
@@ -27,7 +31,8 @@ public class PlayerMove : MonoBehaviour
 
     float moveTime = 0.2f;
 
-    Vector3Int currentGridPosition;
+    //現在地が入る
+    Vector2Int currentGridPosition;
 
     Vector3Int beforeGridPosition;
 
@@ -39,40 +44,20 @@ public class PlayerMove : MonoBehaviour
 
     SpriteRenderer spriteRenderer;
 
-    //[SerializeField]
-    //Sprite upSprite;
+    int[,] maze;
 
-    //[SerializeField]
-    //Sprite downSprite;
-
-    //[SerializeField]
-    //Sprite rightSprite;
-
-    //[SerializeField]
-    //Sprite leftSprite;
-
-    enum eDirection
-    {
-        up,
-        down,
-        left,
-        right
-    }
-
-    eDirection direction;
+    const int path = 0;
 
     void Start()
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+        grid = GameObject.Find("Grid").GetComponent<Grid>();
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
-        //Vector3 worldPosition = transform.position;
-        //currentGridPosition = tilemap.WorldToCell(worldPosition);
-        //transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
-        var startPosition = mazeManager.GetPlayerStartPosition();
-        currentGridPosition = new Vector3Int(startPosition.x, startPosition.y, 0);
+        maze = mazeManager.GetMaze();
+        currentGridPosition = mazeManager.GetPlayerStartPosition();
     }
 
     // Update is called once per frame
@@ -82,44 +67,30 @@ public class PlayerMove : MonoBehaviour
         {
             if (isMoving) return;
 
-            Vector3Int moveDirection = Vector3Int.zero;
-
-            playerAnim.SetFloat("X", 0);
-            playerAnim.SetFloat("Y", 0);
+            Vector2Int moveDirection = Vector2Int.zero;
 
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                moveDirection = Vector3Int.up;
-                direction = eDirection.up;
-                playerAnim.SetFloat("X", 0);
-                playerAnim.SetFloat("Y", 1);
+                moveDirection = Vector2Int.up;
             }
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                moveDirection = Vector3Int.down;
-                direction = eDirection.down;
-                playerAnim.SetFloat("X", 0);
-                playerAnim.SetFloat("Y", -1);
+                moveDirection = Vector2Int.down;
             }
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                moveDirection = Vector3Int.left;
-                direction = eDirection.left;
-                playerAnim.SetFloat("X", -1);
-                playerAnim.SetFloat("Y", 0);
+                moveDirection = Vector2Int.left;
             }
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
-                moveDirection = Vector3Int.right;
-                direction = eDirection.right;
-                playerAnim.SetFloat("X", 1);
-                playerAnim.SetFloat("Y", 0);
+                moveDirection = Vector2Int.right;
             }
 
-            if (moveDirection != Vector3Int.zero)
+            if (moveDirection != Vector2Int.zero)
             {
                 //turnManager.SwitchTurn();
-                StartCoroutine(MoveToCell(moveDirection));
+                //StartCoroutine(MoveToCell(moveDirection));
+                TryMove(moveDirection);
             }
         }
 
@@ -131,71 +102,27 @@ public class PlayerMove : MonoBehaviour
 #endif
     }
 
-    /*
-    System.Collections.IEnumerator MoveToCell(Vector3Int direction)
+    void TryMove(Vector2Int direction)
     {
-        isMoving = true;
+        Vector2Int targetPosition = currentGridPosition + direction;
 
-        // 移動先のグリッド座標を計算
-        Vector3Int targetGridPosition = currentGridPosition + direction;
-
-        // 移動可能なタイルであるかを確認（必要に応じて条件を変更）
-        if (CanMoveToTile(targetGridPosition))
+        if (IsInBounds(targetPosition) && maze[targetPosition.x,targetPosition.y]==path)
         {
-            Vector3 targetPosition = tilemap.GetCellCenterWorld(targetGridPosition);
-
-            beforeGridPosition = currentGridPosition;
-
-            // 移動アニメーション
-            float elapsedTime = 0f;
-            Vector3 startPosition = transform.position;
-
-            while (elapsedTime < moveTime)
-            {
-                transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / moveTime);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
-            transform.position = targetPosition;
-            currentGridPosition = targetGridPosition; // 現在のグリッド位置を更新
-
-            if (IsGoalTile(targetGridPosition))
-            {
-                Debug.Log("ゴール!!");
-                gameManager.isGoal();
-                mazeManager.RecreateMaze();
-            }
+            Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(targetPosition.x, targetPosition.y, 0));
+            transform.position = worldPosition;
+            currentGridPosition = targetPosition;
         }
-        isMoving = false;
-        //実際には移動していないがターンが変わるので要修正
-        turnManager.SwitchTurn();
-
-    }
-    */
-    System.Collections.IEnumerator MoveToCell(Vector3Int direction)
-    {
-        isMoving = true;
-        Vector3Int targetPosition = currentGridPosition + direction;
-
-        float elapsedTime = 0f;
-        if (CanMoveToTile(targetPosition))
-        {
-
-        }
-        isMoving = false;
     }
 
-
-    bool CanMoveToTile(Vector3Int gridPosition)
+    bool IsInBounds(Vector2Int targetPosition)
     {
-        TileBase tile = tilemap.GetTile(gridPosition);
+        return targetPosition.x >= 0 && targetPosition.x <= maze.GetLength(1) &&
+            targetPosition.y > 0 && targetPosition.y <= maze.GetLength(0);
+    }
+
+    bool CanMoveToCell(Vector2Int targetPosition)
+    {
+        TileBase tile = tilemap.GetTile(new Vector3Int(targetPosition.x, targetPosition.y, 0));
         return tile == path_tile || tile == goal_tile;
-    }
-
-    bool IsGoalTile(Vector3Int gridPosition)
-    {
-        TileBase tile = tilemap.GetTile(gridPosition);
-        return tile == goal_tile;
     }
 }

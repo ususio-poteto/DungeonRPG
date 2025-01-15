@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
 
     Tilemap tilemap;
 
+    Grid grid;
+
     MazeManager mazeManager;
 
     TurnManager turnManager;
@@ -70,16 +72,15 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+        grid = GameObject.Find("Grid").GetComponent<Grid>();
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         rb2d = GetComponent<Rigidbody2D>();
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
-        //Vector3 worldPosition = transform.position;
-        //currentGridPosition = tilemap.WorldToCell(worldPosition);
-        //transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
-        var startPosition = mazeManager.GetPlayerStartPosition();
-        currentGridPosition = new Vector3Int(startPosition.x, startPosition.y, 0);
+        Vector3 worldPosition = transform.position;
+        currentGridPosition = tilemap.WorldToCell(worldPosition);
+        transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
     }
 
     // Update is called once per frame

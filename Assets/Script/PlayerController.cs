@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
         transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
+        //Debug.Log("transform.position" + transform.position);
     }
 
     // Update is called once per frame

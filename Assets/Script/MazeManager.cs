@@ -60,8 +60,10 @@ public class MazeManager : MonoBehaviour
 
     List<GameObject> enemies = new List<GameObject>();
 
-    const int wall = 1;    
     const int path = 0;
+    const int wall = 1;   
+    const int goal = 2;
+    const int route = 4;
 
     int[,] maze;
 
@@ -92,13 +94,13 @@ public class MazeManager : MonoBehaviour
     }
 #endif
 
+    /// <summary>
+    /// ç≈íZåoòHíTçı
+    /// </summary>
+    /// <param name="playerPosition">"playerÇÃåªç›ÇÃà íu(transform.position)"</param>
     public void SearchShortestPath(Vector3 playerPosition)
     {
-        var path = breadthFirstSearch.Search(playerPosition, goalPosition);
-        foreach(var pos in path)
-        {
-            tilemap.SetTile(new Vector3Int(pos.x, pos.y, 0), shotesetTile);
-        }
+        SetTile(maze);
     }
 
     void SetTile(int[,] setmaze)
@@ -107,9 +109,10 @@ public class MazeManager : MonoBehaviour
         for (int y = 0; y < maze.GetLength(0); y++) 
         {
             for (int x = 0; x < maze.GetLength(1); x++)
-            {   
+            {
                 if (maze[y, x] == wall) tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1) / 2), y - (maze.GetLength(0) / 2), 0), wall_tile);
-                else if(maze[y, x] == path) tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1)/2), y - (maze.GetLength(0)/2), 0), path_tile);
+                else if (maze[y, x] == path) tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1) / 2), y - (maze.GetLength(0) / 2), 0), path_tile);
+                else if (maze[y, x] == route) tilemap.SetTile(new Vector3Int(y - (maze.GetLength(1) / 2), x - (maze.GetLength(0) / 2), 0), shotesetTile);
                 else tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1) / 2), y - (maze.GetLength(0) / 2), 0), goal_tile);
             }
         }
@@ -158,6 +161,7 @@ public class MazeManager : MonoBehaviour
 
         Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(randomPosition.x, randomPosition.y, 0));
         Debug.Log("position" + randomPosition.x + "," + randomPosition.y);
+        //Debug.Log(maze[randomPosition.x, randomPosition.y]);
         Instantiate(player, worldPosition, Quaternion.identity);
         pathPosition.RemoveAt(rnd);
     }
@@ -214,21 +218,21 @@ public class MazeManager : MonoBehaviour
     {
         if (stageLevel <= 10)
         {
-            Debug.Log("StageManager:MazeBarMethod");
+            //Debug.Log("StageManager:MazeBarMethod");
             MazeBarMethod(30, 30);
             CreateEnemy(stageLevel+5);
         }
 
         else if (stageLevel >= 11 && stageLevel < 20)
         {
-            Debug.Log("StageManager:MazeDigMethod");
+            //Debug.Log("StageManager:MazeDigMethod");
             MazeDigMethod(30, 30);
             CreateEnemy(stageLevel + 5);
         }
 
         else if (stageLevel >= 21 && stageLevel <= 30)
         {
-            Debug.Log("StageManager:MazeWallMethod");
+            //Debug.Log("StageManager:MazeWallMethod");
             MazeWallMethod(30,30);
             CreateEnemy(stageLevel + 5);
         }

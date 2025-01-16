@@ -8,9 +8,13 @@ public class BreadthFirstSearch : MonoBehaviour
     [SerializeField]
     Tilemap tilemap;
 
+    [SerializeField]
+    Tile shotesetTile;
+
     const int path_num = 0;
     const int wall_num = 1;
     const int goal_num = 2;
+    const int route = 4;
 
     Vector2Int[] directions =
     {
@@ -22,20 +26,17 @@ public class BreadthFirstSearch : MonoBehaviour
 
     int[,] maze;
 
-    Vector2Int start;
-
-    Vector2Int goal;
-
     [SerializeField]
     MazeManager mazeManager;
 
     public List<Vector2Int> Search(Vector3 playerPosition, Vector2Int goalPosition)
     {
+        Debug.Log("BFS" + playerPosition);
         maze = mazeManager.GetMaze();
-        var playerCellPosition = tilemap.WorldToCell(playerPosition);
-        Debug.Log(playerCellPosition);
-        start=new Vector2Int(playerCellPosition.x,playerCellPosition.y);
-        goal = goalPosition;
+        Vector2Int start = new Vector2Int(Mathf.FloorToInt(playerPosition.x), Mathf.FloorToInt(playerPosition.y));
+        //maze[start.x, start.y] = route;
+        //Debug.Log("startPosition" + start.x + "," + start.y);
+        Vector2Int goal = goalPosition;
         List<Vector2Int> path = BFS(start,goal);
         return path;
     }

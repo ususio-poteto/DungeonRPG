@@ -1,50 +1,52 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class MazeBarMethod : MonoBehaviour
-{ 
+{
     const int path = 0;
     const int wall = 1;
-    const int goal = 2;
 
     int[,] maze;
 
-    Vector2Int goalPosition;
+    int width;
+    int height;
 
-    public int[,] GenarateMaze(int width, int height)
+    public int[,] GenarateMaze(int setWidth,int setHeight)
     {
-        if (width % 2 == 0) width++;
-        if (height % 2 == 0) height++;
+        if (setWidth % 2 == 0) setWidth++;
+        if (setHeight % 2 == 0) setHeight++;
+
+        width = setWidth;
+        height = setHeight;
 
         maze = new int[width, height];
 
-        for (int y = 0; y < height; y++)
+        for(int row = 0; row < width; row++)
         {
-            for (int x = 0; x < width; x++)
+            for(int col = 0; col < height; col++)
             {
-                //外周を壁にする
-                if (x == 0 || y == 0 || x == width - 1 || y == height - 1) maze[y, x] = wall;
-                //内側はすべて通れるようにする
-                else maze[y, x] = path;
+                //外周すべてを壁にする
+                if (row == 0 || col == 0 || row == width - 1 || col == height - 1) maze[row, col] = wall;
+                else maze[row, col] = path;
             }
         }
-        
-        for (int y = 2; y < height - 1; y += 2)
-        {
-            for (int x = 2; x < width - 1; x += 2)
-            {
-                maze[y, x] = wall;//1マスおきに壁を立てる
 
+        for(int row = 2; row < width - 1; row += 2)
+        {
+            for(int col = 2; col < height - 1; col += 2)
+            {
+                maze[row, col] = wall;//1マスおきに壁を立てる
                 while (true)
                 {
                     int direction;
-                    if (y == 2) direction = Random.Range(0, 4);
-                    else direction = Random.Range(0, 3);
+                    if (col == 2) direction = Random.Range(0, 4);
+                    else direction = Random.Range(0,3);
 
-                    int wallX = x;
-                    int wallY = y;
+                    int wallX = row;
+                    int wallY = col;
 
                     switch (direction)
                     {
@@ -60,42 +62,19 @@ public class MazeBarMethod : MonoBehaviour
                         case 2:
                             wallX--;
                             break;
-                        //上
                         case 3:
                             wallY--;
                             break;
                     }
 
                     //壁じゃない場合のみ倒して終了
-                    if (maze[wallY, wallX] != wall)
+                    if (maze[wallX, wallY] != wall)
                     {
-                        maze[wallY, wallX] = wall;
+                        maze[wallX, wallY] = wall;
                         break;
                     }
                 }
             }
         }
-        CreateGoal();
-        return maze;
-    }
-
-    void CreateGoal()
-    {
-        int x = Random.Range(1, maze.GetLength(1));
-        int y = Random.Range(1, maze.GetLength(0));
-        if (maze[x, y] == path)
-        {
-            maze[x, y] = goal;
-            goalPosition = new Vector2Int(x, y);
-        }
-        else
-        {
-            CreateGoal();
-        }
-    }
-
-    public Vector2Int GetGoalPosition()
-    {
-        return goalPosition;
     }
 }

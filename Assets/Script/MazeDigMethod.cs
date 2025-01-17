@@ -7,11 +7,8 @@ public class MazeDigMethod : MonoBehaviour
 {
     const int path = 0;
     const int wall = 1;
-    const int goal = 2;
 
     int[,] maze;
-
-    Vector2Int goalPosition;
 
     int width;
     int height;

@@ -632,6 +632,8 @@ GameObject:
   m_Component:
   - component: {fileID: 581389540}
   - component: {fileID: 581389541}
+  - component: {fileID: 581389543}
+  - component: {fileID: 581389542}
   m_Layer: 0
   m_Name: MazeManager
   m_TagString: Untagged
@@ -670,12 +672,42 @@ MonoBehaviour:
   wall_tile: {fileID: 11400000, guid: b93c0d50962ebac4a953de3b35e40844, type: 2}
   path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
   goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
+  shotesetTile: {fileID: 11400000, guid: 60244e4b34a850f40b16682f2383f167, type: 2}
   mazeBarMethod: {fileID: 1588255322}
   mazeDigMethod: {fileID: 1852894159}
   mazeWallMethod: {fileID: 1984477660}
+  breadthFirstSearch: {fileID: 581389543}
+  aStarAlgorithm: {fileID: 581389542}
   player: {fileID: 1198973090556277434, guid: d6bb1582aa099a0418ad5936be2efce3, type: 3}
   enemy: {fileID: 5954483517375672540, guid: 098f27aafb62f424db5dfdb26cef5089, type: 3}
   gameManager: {fileID: 2197613}
+--- !u!114 &581389542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581389538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33edd1b799bf80546b3834c285901774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &581389543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581389538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54d264ff06848f342a1cd8dc28eaf83d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 749682082}
+  shotesetTile: {fileID: 11400000, guid: 60244e4b34a850f40b16682f2383f167, type: 2}
+  mazeManager: {fileID: 581389541}
 --- !u!1 &749682079
 GameObject:
   m_ObjectHideFlags: 0

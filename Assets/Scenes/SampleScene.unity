@@ -404,6 +404,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 58429025}
   m_CullTransparentMesh: 1
+--- !u!1 &301253041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 301253043}
+  - component: {fileID: 301253042}
+  m_Layer: 0
+  m_Name: BFS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &301253042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301253041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54d264ff06848f342a1cd8dc28eaf83d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 0}
+  shotesetTile: {fileID: 0}
+  mazeManager: {fileID: 0}
+--- !u!4 &301253043
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301253041}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 14.569063, y: 13.669625, z: -0.11176939}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &307219759
 GameObject:
   m_ObjectHideFlags: 0
@@ -632,8 +679,6 @@ GameObject:
   m_Component:
   - component: {fileID: 581389540}
   - component: {fileID: 581389541}
-  - component: {fileID: 581389543}
-  - component: {fileID: 581389542}
   m_Layer: 0
   m_Name: MazeManager
   m_TagString: Untagged
@@ -672,42 +717,15 @@ MonoBehaviour:
   wall_tile: {fileID: 11400000, guid: b93c0d50962ebac4a953de3b35e40844, type: 2}
   path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
   goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
-  shotesetTile: {fileID: 11400000, guid: 60244e4b34a850f40b16682f2383f167, type: 2}
+  route_tile: {fileID: 11400000, guid: 60244e4b34a850f40b16682f2383f167, type: 2}
   mazeBarMethod: {fileID: 1588255322}
   mazeDigMethod: {fileID: 1852894159}
   mazeWallMethod: {fileID: 1984477660}
-  breadthFirstSearch: {fileID: 581389543}
-  aStarAlgorithm: {fileID: 581389542}
+  breadthFirstSearch: {fileID: 301253042}
+  aStarAlgorithm: {fileID: 2047069647}
   player: {fileID: 1198973090556277434, guid: d6bb1582aa099a0418ad5936be2efce3, type: 3}
   enemy: {fileID: 5954483517375672540, guid: 098f27aafb62f424db5dfdb26cef5089, type: 3}
   gameManager: {fileID: 2197613}
---- !u!114 &581389542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 581389538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33edd1b799bf80546b3834c285901774, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &581389543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 581389538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54d264ff06848f342a1cd8dc28eaf83d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemap: {fileID: 749682082}
-  shotesetTile: {fileID: 11400000, guid: 60244e4b34a850f40b16682f2383f167, type: 2}
-  mazeManager: {fileID: 581389541}
 --- !u!1 &749682079
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,6 +1204,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e1311a5314976540adbc00d2d39de4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2047069646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2047069648}
+  - component: {fileID: 2047069647}
+  m_Layer: 0
+  m_Name: A*Algorithm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2047069647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047069646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33edd1b799bf80546b3834c285901774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2047069648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047069646}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 14.569063, y: 13.669625, z: -0.11176939}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1202,3 +1264,5 @@ SceneRoots:
   - {fileID: 52149117}
   - {fileID: 1546623258}
   - {fileID: 1079255875}
+  - {fileID: 2047069648}
+  - {fileID: 301253043}

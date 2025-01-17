@@ -18,23 +18,23 @@ public class MazeDigMethod : MonoBehaviour
 
     List<Vector2Int> StartCells;
 
-    enum direction
+    enum directions
     {
-        up = 0,
-        right = 1,
-        down = 2,
-        left = 3
+        up=0,
+        right=1,
+        down=2,
+        left=3,
     }
 
-    public void Initialize(int setwidth, int setheight)
+    public void Initialize(int setWidth,int setHeight)
     {
-        if (setwidth % 2 == 0) setwidth++;
-        if (setheight % 2 == 0) setheight++;
+        if(setHeight%2==0) setHeight++;
+        if(setWidth%2==0) setWidth++;
 
-        width = setwidth;
-        height = setheight;
+        width = setWidth;
+        height = setHeight;
 
-        maze = new int[width, height];
+        maze=new int[width,height];
 
         StartCells = new List<Vector2Int>();
     }
@@ -42,86 +42,85 @@ public class MazeDigMethod : MonoBehaviour
     public int[,] CreateMaze()
     {
         //すべて壁にする
-        for (int y = 0; y < height; y++)
+        for(int row = 0; row < width; row++)
         {
-            for (int x = 0; x < width; x++)
+            for (int col = 0; col < height; col++)
             {
-                //外周は判定のために通路にしておく
-                if (x == 0 || y == 0 || x == width - 1 || y == height - 1) maze[x, y] = path;
-                else maze[x, y] = wall;
+                if (row == 0 || col == 0 || row == width - 1 || col == height - 1) maze[row, col] = path;//外周は判定のために通路にする
+                else maze[row, col] = wall;
             }
         }
         Dig(1, 1);
 
         //外周を壁に戻す
-        for (int y = 0; y < height; y++)
+        for(int row = 0; row < width; row++)
         {
-            for (int x = 0; x < width; x++)
+            for(int col = 0; col < height; col++)
             {
-                if (x == 0 || y == 0 || x == width - 1 || y == height - 1) maze[x, y] = wall;
+                if (row == 0 || col == 0 || row == width - 1 || col == height - 1) maze[row, col] = wall;
             }
         }
-        CreateGoal();
         return maze;
     }
 
-    void Dig(int x, int y)
+    void Dig(int row,int col)
     {
         System.Random rnd = new System.Random();
 
-        while (true)
+        while(true)
         {
-            var directions = new List<direction>();
-            if (maze[x, y - 1] == wall && maze[x, y - 2] == wall) directions.Add(direction.up);
-            if (maze[x + 1, y] == wall && maze[x + 2, y] == wall) directions.Add(direction.right);
-            if (maze[x, y + 1] == wall && maze[x, y + 2] == wall) directions.Add(direction.down);
-            if (maze[x - 1, y] == wall && maze[x - 2, y] == wall) directions.Add(direction.left);
+            var direction = new List<directions>();
+            if (maze[row, col - 1] == wall && maze[row, col - 2] == wall) direction.Add(directions.up);
+            if (maze[row + 1, col] == wall && maze[row + 1, col] == wall) direction.Add(directions.right);
+            if (maze[row, col + 1] == wall && maze[row, col + 2] == wall) direction.Add(directions.down);
+            if (maze[row - 1, col] == wall && maze[row - 2, col] == wall) direction.Add(directions.left);
 
-            //掘り進められない場合、ループを抜ける
-            if (directions.Count == 0) break;
+            //掘り進められない場合はループから抜ける
+            if (direction.Count == 0) break;
 
-            //指定座標を通路とし穴掘り候補から削除する
-            SetPath(x, y);
+            //指定座標を通路として穴掘り候補から削除する
+            SetPath(row, col);
 
-            var dirIndex = directions[rnd.Next(directions.Count)];
+            var dirIndex = direction[rnd.Next(direction.Count)];
 
             switch (dirIndex)
             {
-                case direction.up:
-                    SetPath(x, --y);
-                    SetPath(x, --y);
+                case directions.up:
+                    SetPath(row, --col);
+                    SetPath(row, --col);
                     break;
-                case direction.right:
-                    SetPath(++x, y);
-                    SetPath(++x, y);
+                case directions.right:
+                    SetPath(++row, col);
+                    SetPath(++row, col);
                     break;
-                case direction.down:
-                    SetPath(x, ++y);
-                    SetPath(x, ++y);
+                case directions.down:
+                    SetPath(row, ++col);
+                    SetPath(row, ++col);
                     break;
-                case direction.left:
-                    SetPath(--x, y);
-                    SetPath(--x, y);
+                case directions.left:
+                    SetPath(--row, col);
+                    SetPath(--row, col);
                     break;
             }
         }
 
-        //どこにも歩進められない場合、穴掘り開始候補から掘り直し
+        //どこにも進められない場合、穴掘り候補からやり直し
         //候補座標が存在しないとき、穴掘り完了
         Vector2Int? cell = GetStartCell();
-        //多分ここで再帰
-        if (cell.HasValue) Dig(cell.Value.x, cell.Value.y);
+
+        //ここで再帰
+        if (cell.HasValue)Dig(cell.Value.x, cell.Value.y);
     }
 
-    void SetPath(int x, int y)
+    void SetPath(int row,int col)
     {
-        maze[x, y] = path;
-        if (x % 2 == 1 && y % 2 == 1) StartCells.Add(new Vector2Int(x, y));
+        maze[row, col] = path;
+        if (row % 2 == 1 && col % 2 == 1) StartCells.Add(new Vector2Int(row, col));
     }
 
     Vector2Int? GetStartCell()
     {
-        if (StartCells.Count == 0) return null;
+        if(StartCells.Count == 0) return null;
 
         System.Random rnd = new System.Random();
         var index = rnd.Next(StartCells.Count);
@@ -129,25 +128,5 @@ public class MazeDigMethod : MonoBehaviour
         StartCells.RemoveAt(index);
 
         return cell;
-    }
-
-    void CreateGoal()
-    {
-        int x = Random.Range(1, maze.GetLength(1));
-        int y = Random.Range(1, maze.GetLength(0));
-        if (maze[x, y] == path)
-        {
-            maze[x, y] = goal;
-            goalPosition = new Vector2Int(x, y);
-        }
-        else
-        {
-            CreateGoal();
-        }
-    }
-
-    public Vector2Int GetGoalPosition()
-    {
-        return goalPosition;
     }
 }

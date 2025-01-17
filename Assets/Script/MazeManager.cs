@@ -27,7 +27,7 @@ public class MazeManager : MonoBehaviour
     [SerializeField] 
     Tile goal_tile;
     [SerializeField] 
-    Tile shotesetTile;
+    Tile route_tile;
 
     [Header("ñ¿òHê∂ê¨ÉAÉãÉSÉäÉYÉÄ")]
     [SerializeField] 
@@ -100,6 +100,12 @@ public class MazeManager : MonoBehaviour
     /// <param name="playerPosition">"playerÇÃåªç›ÇÃà íu(transform.position)"</param>
     public void SearchShortestPath(Vector3 playerPosition)
     {
+        Vector2Int start = new Vector2Int(Mathf.FloorToInt(playerPosition.x), Mathf.FloorToInt(playerPosition.y));
+        List<Vector2Int> path = aStarAlgorithm.FindPath(maze, start, goalPosition);
+        foreach(var pathItem in path)
+        {
+            maze[pathItem.x, pathItem.y] = route;
+        }
         SetTile(maze);
     }
 
@@ -112,7 +118,7 @@ public class MazeManager : MonoBehaviour
             {
                 if (maze[y, x] == wall) tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1) / 2), y - (maze.GetLength(0) / 2), 0), wall_tile);
                 else if (maze[y, x] == path) tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1) / 2), y - (maze.GetLength(0) / 2), 0), path_tile);
-                else if (maze[y, x] == route) tilemap.SetTile(new Vector3Int(y - (maze.GetLength(1) / 2), x - (maze.GetLength(0) / 2), 0), shotesetTile);
+                else if (maze[y, x] == route) tilemap.SetTile(new Vector3Int(y - (maze.GetLength(1) / 2), x - (maze.GetLength(0) / 2), 0), route_tile);
                 else tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1) / 2), y - (maze.GetLength(0) / 2), 0), goal_tile);
             }
         }

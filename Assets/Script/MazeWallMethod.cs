@@ -7,16 +7,13 @@ public class MazeWallMethod : MonoBehaviour
 {
     const int path = 0;
     const int wall = 1;
-    const int goal = 2;
 
     int width;
     int height;
 
     int[,] maze;
 
-    Vector2Int goalPosition;
-
-    enum direction
+    enum directions
     {
         up,
         right,
@@ -30,13 +27,13 @@ public class MazeWallMethod : MonoBehaviour
 
     List<Vector2Int> startCells;
 
-    public void Initialize(int setwidth, int setheight)
+    public void Initialize(int setWidth,int setHeight)
     {
-        if (setwidth % 2 == 0) setwidth++;
-        if (setheight % 2 == 0) setheight++;
+        if (setWidth % 2 == 0) setWidth++;
+        if (setHeight % 2 == 0) setHeight++;
 
-        width = setwidth;
-        height = setheight;
+        width = setWidth;
+        height = setHeight;
 
         maze = new int[width, height];
 
@@ -48,19 +45,18 @@ public class MazeWallMethod : MonoBehaviour
     //ñ¿òHÇê∂ê¨Ç∑ÇÈ
     public int[,] CreateMaze()
     {
-        for (int y = 0; y < height; y++)
+        for(int row = 0; row < width; row++)
         {
-            for (int x = 0; x < width; x++)
+            for(int col=0; col < height; col++)
             {
-                //äOé¸Çï«Ç…ÇµÇƒÇ®Ç´ÅAäJénåÛï‚Ç∆ÇµÇƒï€éù
-                if (x == 0 || y == 0 || x == width - 1 || y == height - 1) maze[x, y] = wall;
+                //äOé¸Çï«Ç…Ç∑ÇÈ
+                if (row == 0 || col == 0 || row == width - 1 || col == height - 1) maze[row, col] = wall;
+                //ì‡ë§ÇÇ∑Ç◊Çƒí òHÇ…Ç∑ÇÈ
                 else
                 {
-                    maze[x, y] = path;
-                    if (x % 2 == 0 && y % 2 == 0)
-                    {
-                        startCells.Add(new Vector2Int(x, y));
-                    }
+                    maze[row, col] = path;
+                    //äJénåÛï‚Ç∆ÇµÇƒï€éù
+                    if (row % 2 == 0 && col % 2 == 0) startCells.Add(new Vector2Int(row, col));
                 }
             }
         }
@@ -72,108 +68,87 @@ public class MazeWallMethod : MonoBehaviour
             var index = random.Next(startCells.Count);
             var cell = startCells[index];
             startCells.RemoveAt(index);
-            var x = cell.x;
-            var y = cell.y;
+            var row = cell.x;
+            var col = cell.y;
 
             //Ç∑Ç≈Ç…ï«ÇÃèÍçáÇÕâΩÇ‡ÇµÇ»Ç¢
-            if (maze[x, y] == path)
+            if (maze[row, col] == path)
             {
-                //ägí£íÜÇÃï«èÓïÒÇèâä˙âª
+                //ägí£íÜÇÃï«ÇÃèÓïÒÇèâä˙âª
                 currentWallCells.Clear();
-                ExtendWall(x, y);
+                ExtendWall(row, col);
             }
         }
-        CreateGoal();
         return maze;
     }
 
-    //ï«Çägí£Ç∑ÇÈ
-    void ExtendWall(int x, int y)
+    //ï«Çägí£
+    void ExtendWall(int row,int col)
     {
-        //êLÇŒÇ∑Ç±Ç∆ÇæÇ≈Ç´ÇÈï˚å¸(1É}ÉXêÊÇ™í òHÇ≈2É}ÉXêÊÇ‹Ç≈îÕàÕì‡)
-        //2É}ÉXêÊÇ™ï«Ç≈é©ï™é©êgÇÃèÍçáÅAêLÇŒÇ∑
-        var directions = new List<direction>();
-        if (maze[x, y - 1] == path && !IsCurrentWall(x, y - 2)) directions.Add(direction.up);
-        if (maze[x + 1, y] == path && !IsCurrentWall(x + 2, y)) directions.Add(direction.right);
-        if (maze[x, y + 1] == path && !IsCurrentWall(x, y + 2)) directions.Add(direction.down);
-        if (maze[x - 1, y] == path && !IsCurrentWall(x + 2, y)) directions.Add(direction.left);
+        //êLÇŒÇ∑éñÇ™Ç≈Ç´ÇÈï˚å¸(1É}ÉXêÊÇ™í òHÇ≈2É}ÉXêÊÇ‹Ç≈îÕàÕì‡)
+        var direction = new List<directions>();
+        if (maze[row, col - 1] == path && !IsCurrentWall(row, col - 2)) direction.Add(directions.up);
+        if (maze[row + 1, col] == path && !IsCurrentWall(row + 2, col)) direction.Add(directions.right);
+        if (maze[row, col + 1] == path && !IsCurrentWall(row, col + 2)) direction.Add(directions.down);
+        if (maze[row - 1, col] == path && !IsCurrentWall(row - 2, col)) direction.Add(directions.left);
 
         //ÉâÉìÉ_ÉÄÇ…êLÇŒÇ∑
-        if (directions.Count > 0)
+        if (direction.Count > 0)
         {
-            //ï«ÇçÏê¨(Ç±ÇÃínì_Ç©ÇÁêLÇŒÇ∑)
-            SetWall(x, y);
+            //ï«ÇçÏê¨
+            SetWall(row, col);
 
-            //êLÇŒÇ∑êÊÇ™í òHÇÃèÍçáÇÕÅAägí£Çë±ÇØÇÈ
+            //êLÇŒÇ∑êÊÇ™í òHÇ»ÇÁägí£Çë±ÇØÇÈ
             var isPath = false;
-            var dirIndex = random.Next(directions.Count);
-            switch (directions[dirIndex])
+            var dirIndex = random.Next(direction.Count);
+            switch (direction[dirIndex])
             {
-                case direction.up:
-                    isPath = (maze[x, y - 2] == path);
-                    SetWall(x, --y);
-                    SetWall(x, --y);
+                case directions.up:
+                    isPath = (maze[row, col - 2] == path);
+                    SetWall(row, --col);
+                    SetWall(row, --col);
                     break;
-                case direction.right:
-                    isPath = (maze[x + 2, y] == path);
-                    SetWall(++x, y);
-                    SetWall(++x, y);
+                case directions.right:
+                    isPath = (maze[row + 2, col] == path);
+                    SetWall(++row, col);
+                    SetWall(++row, col);
                     break;
-                case direction.down:
-                    isPath = (maze[x, y + 2] == path);
-                    SetWall(x, ++y);
-                    SetWall(x, ++y);
+                case directions.down:
+                    isPath = (maze[row, col + 2] == path);
+                    SetWall(row, ++col);
+                    SetWall(row, ++col);
                     break;
-                case direction.left:
-                    isPath = (maze[x - 2, y] == path);
-                    SetWall(--x, y);
-                    SetWall(--x, y);
+                case directions.left:
+                    isPath = (maze[row - 2, col] == path);
+                    SetWall(++row, col);
+                    SetWall(++row, col);
                     break;
             }
+
             //ä˘ë∂ÇÃï«Ç…ê⁄ë±Ç≈Ç´ÇƒÇ¢Ç»Ç¢èÍçáÇÕägí£ë±çs
             if (isPath)
             {
-                ExtendWall(x, y);
+                ExtendWall(row, col);
             }
         }
         else
         {
-            if (currentWallCells.Count > 0)
+            if(currentWallCells.Count > 0)
             {
-                var beforeCell = currentWallCells.Pop();
-                ExtendWall(beforeCell.x, beforeCell.y);
+                var beforecell=currentWallCells.Pop();
+                ExtendWall(beforecell.x,beforecell.y);
             }
         }
     }
 
-    void SetWall(int x, int y)
+    void SetWall(int row, int col)
     {
-        maze[x, y] = wall;
-        if (x % 2 == 0 && y % 2 == 0) currentWallCells.Push(new Vector2Int(x, y));
+        maze[row, col] = wall;
+        if (row % 2 == 0 && col % 2 == 0) currentWallCells.Push(new Vector2Int(row, col));
     }
 
-    bool IsCurrentWall(int x, int y)
+    bool IsCurrentWall(int row,int col)
     {
-        return currentWallCells.Contains(new Vector2Int(x, y));
-    }
-
-    void CreateGoal()
-    {
-        int x = Random.Range(1, maze.GetLength(1));
-        int y = Random.Range(1, maze.GetLength(0));
-        if (maze[x, y] == path)
-        {
-            maze[x, y] = goal;
-            goalPosition= new Vector2Int(x, y);
-        }
-        else
-        {
-            CreateGoal();
-        }
-    }
-
-    public Vector2Int GetGoalPosition()
-    {
-        return goalPosition;
+        return currentWallCells.Contains(new Vector2Int(row, col));
     }
 }

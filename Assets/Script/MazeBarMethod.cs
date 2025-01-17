@@ -76,5 +76,6 @@ public class MazeBarMethod : MonoBehaviour
                 }
             }
         }
+        return maze;
     }
 }

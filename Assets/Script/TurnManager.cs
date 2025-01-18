@@ -4,9 +4,34 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
+    [SerializeField]
+    MazeManager mazeManager;
+
+    List<GameObject> enemies = new List<GameObject>();
+
     bool isPlayerTurn = true;
 
     bool isEnemyTurn = false;
+
+    void Start()
+    {
+        enemies = mazeManager.GetEnemiesList();
+        Debug.Log(enemies.Count);
+    }
+    void Update()
+    {
+        if (isEnemyTurn)
+        {
+            MoveEnemy();
+        }
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            MoveEnemy();
+        }
+#endif
+    }
 
     public void SwitchTurn()
     {
@@ -18,9 +43,13 @@ public class TurnManager : MonoBehaviour
     {
         return isPlayerTurn;
     }
-    
-    public bool GetEnemyTurn()
+
+    void MoveEnemy()
     {
-        return isEnemyTurn;
+        foreach (var enemy in enemies)
+        {
+            var enemyController = enemy.GetComponent<EnemyController>();
+            enemyController.MyTurn();
+        }
     }
 }

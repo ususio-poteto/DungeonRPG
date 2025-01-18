@@ -297,6 +297,9 @@ public class MazeManager : MonoBehaviour
         return startPosition;
     }
     
-
+    public List<GameObject> GetEnemiesList()
+    {
+        return enemies;
+    }
 }
 

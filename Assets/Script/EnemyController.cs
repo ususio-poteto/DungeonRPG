@@ -45,18 +45,20 @@ public class EnemyController : MonoBehaviour
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
     }
-    void Update()
+
+//    void Update()
+//    {
+//#if UNITY_EDITOR
+//        if (Input.GetKeyDown(KeyCode.F2))
+//        {
+//            MoveEnemy();
+//        }
+//#endif
+//    }
+
+    public void MyTurn()
     {
-        if (turnManager.GetEnemyTurn())
-        {
-            MoveEnemy();
-        }
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            MoveEnemy();
-        }
-#endif
+        MoveEnemy();
     }
 
     void MoveEnemy()
@@ -67,14 +69,14 @@ public class EnemyController : MonoBehaviour
             StartCoroutine(MoveToCell(directions[rnd]));
         }
 
-        /*
+        
         else if (eState == state.tracking)
         {
-            A*アルゴリズムで最短経路探索を行う
-            もしくはplayerのあとを追いかけるようにするか
-            tilemapにフラグを立てていくかんじ。
+            //A*アルゴリズムで最短経路探索を行う
+            //もしくはplayerのあとを追いかけるようにするか
+            //tilemapにフラグを立てていくかんじ。
         }
-        */
+       
     }
 
     System.Collections.IEnumerator MoveToCell(Vector3Int direction)

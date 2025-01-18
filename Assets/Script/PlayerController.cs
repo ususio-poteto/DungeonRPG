@@ -90,6 +90,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(direction);
         if (turnManager.GetPlayerTurn()) 
         {
             if (isMoving) return;
@@ -132,6 +133,26 @@ public class PlayerController : MonoBehaviour
             {
                 //turnManager.SwitchTurn();
                 StartCoroutine(MoveToCell(moveDirection));
+            }
+
+            if (direction == eDirection.up)
+            {
+                spriteRenderer.sprite = upSprite;
+            }
+
+            if (direction == eDirection.down)
+            {
+                spriteRenderer.sprite = downSprite;
+            }
+
+            if(direction == eDirection.left)
+            {
+                spriteRenderer.sprite = leftSprite;
+            }
+
+            if(direction==eDirection.right)
+            {
+                spriteRenderer.sprite = rightSprite;
             }
         }
 
@@ -180,7 +201,7 @@ public class PlayerController : MonoBehaviour
         }   
         isMoving = false;
         //é¿ç€Ç…ÇÕà⁄ìÆÇµÇƒÇ¢Ç»Ç¢Ç™É^Å[ÉìÇ™ïœÇÌÇÈÇÃÇ≈óvèCê≥
-        turnManager.SwitchTurn();
+        //turnManager.SwitchTurn();
         
     }
 

@@ -43,6 +43,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     TileBase goal_tile;
 
+    [SerializeField]
+    TileBase route_tile;
+
     SpriteRenderer spriteRenderer;
 
     [SerializeField]
@@ -184,7 +187,7 @@ public class PlayerController : MonoBehaviour
     bool CanMoveToTile(Vector3Int gridPosition)
     {
         TileBase tile = tilemap.GetTile(gridPosition);
-        return tile == path_tile || tile == goal_tile;
+        return tile == path_tile || tile == goal_tile || tile == route_tile;
     }
 
     bool IsGoalTile(Vector3Int gridPosition)

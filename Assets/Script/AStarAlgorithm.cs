@@ -19,8 +19,9 @@ public class AStarAlgorithm : MonoBehaviour
     public List<Vector2Int> FindPath(int[,] maze,Vector2Int start,Vector2Int goal)
     {
         //通路と壁の設定
-        const int path = 0;
-        const int wall = 1;
+        const int path_num = 0;
+        const int wall_num = 1;
+        const int goal_num = 2;
 
         int width = maze.GetLength(0);
         int height = maze.GetLength(1);
@@ -60,7 +61,7 @@ public class AStarAlgorithm : MonoBehaviour
 
                 //範囲外または壁の場合スキップ
                 if(neighborPos.x<0||neighborPos.x>=width||neighborPos.y<0||neighborPos.y>=height||
-                    maze[neighborPos.x, neighborPos.y] == wall || closeList.Contains(neighborPos))
+                    maze[neighborPos.x, neighborPos.y] == wall_num || closeList.Contains(neighborPos))
                 {
                     continue;
                 }

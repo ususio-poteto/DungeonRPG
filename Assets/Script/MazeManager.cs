@@ -73,7 +73,7 @@ public class MazeManager : MonoBehaviour
 
     void Start()
     { 
-        CreateStage();
+        CreateMaze();
     }
 
 //エディタでのみマップの再生成できるようにする。
@@ -90,7 +90,6 @@ public class MazeManager : MonoBehaviour
         {
             DestroyEnemy();
         }
-
     }
 #endif
 
@@ -106,20 +105,21 @@ public class MazeManager : MonoBehaviour
         {
             maze[pathItem.x, pathItem.y] = route;
         }
+        maze[goalPosition.x, goalPosition.y] = goal;
         SetTile(maze);
     }
 
     void SetTile(int[,] setmaze)
     {
         var maze = setmaze;
-        for (int y = 0; y < maze.GetLength(0); y++) 
+        for(int row = 0; row < maze.GetLength(1); row++)
         {
-            for (int x = 0; x < maze.GetLength(1); x++)
+            for(int col = 0; col < maze.GetLength(0); col++)
             {
-                if (maze[y, x] == wall) tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1) / 2), y - (maze.GetLength(0) / 2), 0), wall_tile);
-                else if (maze[y, x] == path) tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1) / 2), y - (maze.GetLength(0) / 2), 0), path_tile);
-                else if (maze[y, x] == route) tilemap.SetTile(new Vector3Int(y - (maze.GetLength(1) / 2), x - (maze.GetLength(0) / 2), 0), route_tile);
-                else tilemap.SetTile(new Vector3Int(x - (maze.GetLength(1) / 2), y - (maze.GetLength(0) / 2), 0), goal_tile);
+                if (maze[row, col] == path) tilemap.SetTile(new Vector3Int(row - (maze.GetLength(1) / 2), col - (maze.GetLength(0) / 2), 0), path_tile);
+                if (maze[row, col] == wall) tilemap.SetTile(new Vector3Int(row - (maze.GetLength(1) / 2), col - (maze.GetLength(0) / 2), 0), wall_tile);
+                if (maze[row, col] == route) tilemap.SetTile(new Vector3Int(row - (maze.GetLength(1) / 2), col - (maze.GetLength(0) / 2), 0), route_tile);
+                if (maze[row, col] == goal) tilemap.SetTile(new Vector3Int(row - (maze.GetLength(1) / 2), col - (maze.GetLength(0) / 2), 0), goal_tile);
             }
         }
     }
@@ -128,35 +128,18 @@ public class MazeManager : MonoBehaviour
     {
         List<Vector2Int> position=new List<Vector2Int>(); ;
         
-        for (int y = 0; y < setmaze.GetLength(1); y++)
+        for (int row = 0; row < setmaze.GetLength(1); row++)
         {
-            for(int x = 0;x < setmaze.GetLength(0); x++)
+            for(int col = 0; col < setmaze.GetLength(0); col++)
             {
-                if (setmaze[y, x] == path)
+                if (setmaze[col, row] == path)
                 {
-                    position.Add(new Vector2Int(x, y));
+                    position.Add(new Vector2Int(col, row));
                 }
             }
         }
         return position;
     }
-
-    /*
-    void CreatePlayer()
-    {
-        int x = Random.Range(1, maze.GetLength(1));
-        int y = Random.Range(1, maze.GetLength(0));
-        if (maze[x, y] == path)
-        {
-            Instantiate(player, new Vector3Int(x, y, 0), Quaternion.identity);
-        }
-        else
-        {
-            CreatePlayer();
-        }
-    }
-    */
-
     
     void CreatePlayer()
     {
@@ -170,12 +153,6 @@ public class MazeManager : MonoBehaviour
         //Debug.Log(maze[randomPosition.x, randomPosition.y]);
         Instantiate(player, worldPosition, Quaternion.identity);
         pathPosition.RemoveAt(rnd);
-    }
-    
-
-    public int[,] GetMaze()
-    {
-        return maze;
     }
 
     void CreateEnemy(int enemyNum)
@@ -203,10 +180,24 @@ public class MazeManager : MonoBehaviour
         enemies.Clear();
     }
 
+    void CreateGoal()
+    {
+        var row = Random.Range(0, maze.GetLength(1));
+        var col = Random.Range(0, maze.GetLength(0));
+
+        if (maze[row, col] == path)
+        {
+            maze[row, col] = goal;
+            goalPosition = new Vector2Int(row, col);
+        }
+
+        else CreateGoal();
+    }
+
     /// <summary>
     /// 迷路情報が入った配列の取得
     /// </summary>
-    public int[,] Getmaze()
+    public int[,] GetMaze()
     {
         return maze;
     }
@@ -217,10 +208,10 @@ public class MazeManager : MonoBehaviour
         DestroyEnemy();
         pathPosition.Clear();
 
-        CreateStage();
+        CreateMaze();
     }
 
-    void CreateStage()
+    void CreateMaze()
     {
         if (stageLevel <= 10)
         {
@@ -250,6 +241,9 @@ public class MazeManager : MonoBehaviour
     public void MazeBarMethod(int x,int y)
     {
         maze = mazeBarMethod.GenarateMaze(x, y);
+
+        CreateGoal();
+
         //迷路の描画
         SetTile(maze);
 
@@ -257,9 +251,6 @@ public class MazeManager : MonoBehaviour
 
         //プレイヤーの生成
         CreatePlayer();
-
-        goalPosition = mazeBarMethod.GetGoalPosition();
-
     }
 
     ///<summary>
@@ -269,6 +260,9 @@ public class MazeManager : MonoBehaviour
     {
         mazeDigMethod.Initialize(x, y);
         maze = mazeDigMethod.CreateMaze();
+
+        CreateGoal();
+
         //迷路の描画
         SetTile(maze);
 
@@ -276,8 +270,6 @@ public class MazeManager : MonoBehaviour
 
         //プレイヤーの生成
         CreatePlayer();
-
-        goalPosition = mazeDigMethod.GetGoalPosition();
     }
     
     ///<summary>
@@ -287,6 +279,9 @@ public class MazeManager : MonoBehaviour
     {
         mazeWallMethod.Initialize(x, y);
         maze = mazeWallMethod.CreateMaze();
+
+        CreateGoal();
+
         //迷路の描画
         SetTile(maze);
 
@@ -294,9 +289,6 @@ public class MazeManager : MonoBehaviour
 
         //プレイヤーの生成
         CreatePlayer();
-
-        goalPosition = mazeWallMethod.GetGoalPosition();
-
     }
 
 
@@ -304,5 +296,7 @@ public class MazeManager : MonoBehaviour
     {
         return startPosition;
     }
+    
+
 }
 

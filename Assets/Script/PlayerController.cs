@@ -46,20 +46,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     TileBase route_tile;
 
-    SpriteRenderer spriteRenderer;
-
-    [SerializeField]
-    Sprite upSprite;
-
-    [SerializeField]
-    Sprite downSprite;
-
-    [SerializeField]
-    Sprite rightSprite;
-
-    [SerializeField]
-    Sprite leftSprite;
-
     Rigidbody2D rb2d;
 
     enum eDirection
@@ -80,7 +66,6 @@ public class PlayerController : MonoBehaviour
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         rb2d = GetComponent<Rigidbody2D>();
-        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
         transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
@@ -90,15 +75,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(direction);
+        Debug.Log(direction);
         if (turnManager.GetPlayerTurn()) 
         {
             if (isMoving) return;
         
             Vector3Int moveDirection = Vector3Int.zero;
-
-            playerAnim.SetFloat("X", 0);
-            playerAnim.SetFloat("Y", 0);
 
             if (Input.GetKeyDown(KeyCode.W)||Input.GetKeyDown(KeyCode.UpArrow))
             {
@@ -135,27 +117,12 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(MoveToCell(moveDirection));
             }
 
-            if (direction == eDirection.up)
+            if (Input.GetKeyDown(KeyCode.K))
             {
-                spriteRenderer.sprite = upSprite;
-            }
-
-            if (direction == eDirection.down)
-            {
-                spriteRenderer.sprite = downSprite;
-            }
-
-            if(direction == eDirection.left)
-            {
-                spriteRenderer.sprite = leftSprite;
-            }
-
-            if(direction==eDirection.right)
-            {
-                spriteRenderer.sprite = rightSprite;
+                Debug.Log("çUåÇ");
             }
         }
-
+        
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F4))
         {

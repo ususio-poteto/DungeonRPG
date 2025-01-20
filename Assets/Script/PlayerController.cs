@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor;
 using System.Security.Cryptography;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class PlayerController : MonoBehaviour
 
     bool isMoving = false;
 
+    bool isAttack = false;
+
     float moveTime = 0.2f;
 
     Vector3Int currentGridPosition;
@@ -48,6 +51,8 @@ public class PlayerController : MonoBehaviour
     TileBase route_tile;
 
     Rigidbody2D rb2d;
+
+    Vector3 createPosition;
 
     enum eDirection
     {
@@ -75,6 +80,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Debug.Log(direction);
+        Debug.Log(isAttack);
         if (turnManager.GetPlayerTurn()) 
         {
             if (isMoving) return;
@@ -115,12 +121,26 @@ public class PlayerController : MonoBehaviour
                 //turnManager.SwitchTurn();
                 StartCoroutine(MoveToCell(moveDirection));
             }
-
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                Debug.Log("çUåÇ");
-                var createObject = Instantiate(attackEffect, transform.position, Quaternion.identity);
-              }
+                if(Input.GetKeyDown(KeyCode.K))
+                {
+                    switch (direction)
+                    {
+                        case eDirection.up:
+                            createPosition = transform.position + new Vector3Int(0, 1, 0);
+                            break;
+                        case eDirection.down:
+                            createPosition = transform.position + new Vector3Int(0, -1, 0);
+                            break;
+                        case eDirection.left:
+                            createPosition = transform.position + new Vector3Int(-1, 0, 0);
+                            break;
+                        case eDirection.right:
+                            createPosition = transform.position + new Vector3Int(1, 0, 0);
+                            break;
+                    }
+                    isAttack = true;
+                    var cteateObject = Instantiate(attackEffect, createPosition, Quaternion.identity);
+                }               
         }
         
 #if UNITY_EDITOR

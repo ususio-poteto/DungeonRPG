@@ -12,16 +12,17 @@ using System.Security.Cryptography;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    private int moveSpeed;
+    int moveSpeed;
 
     [SerializeField]
-    private Animator playerAnim;
+    Animator playerAnim;
 
-    public Rigidbody2D rb;
+    [SerializeField]
+    GameObject attackEffect;
+
+    Rigidbody2D rb;
 
     Tilemap tilemap;
-
-    Grid grid;
 
     MazeManager mazeManager;
 
@@ -61,7 +62,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        grid = GameObject.Find("Grid").GetComponent<Grid>();
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -69,7 +69,6 @@ public class PlayerController : MonoBehaviour
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
         transform.position = tilemap.GetCellCenterWorld(currentGridPosition);
-        //Debug.Log("transform.position" + transform.position);
     }
 
     // Update is called once per frame
@@ -120,7 +119,8 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.K))
             {
                 Debug.Log("çUåÇ");
-            }
+                var createObject = Instantiate(attackEffect, transform.position, Quaternion.identity);
+              }
         }
         
 #if UNITY_EDITOR

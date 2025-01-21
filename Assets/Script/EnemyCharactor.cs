@@ -27,12 +27,12 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
 
     public void TakeDamage(int damage)
     {
-
+        hitPoint -= damage;
     }
 
     public void Death()
     {
-        var player=GameObject.Find("Player").GetComponent<PlayerCharacter>();
+        var player=GameObject.Find("Player(Clone)").GetComponent<PlayerCharacter>();
         player.GetEXP(EXP);
         Destroy(this.gameObject);
     }

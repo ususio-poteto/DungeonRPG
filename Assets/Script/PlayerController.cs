@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     TileBase route_tile;
 
+    [SerializeField]
+    TileBase wall_path;
+
     Rigidbody2D rb2d;
 
     RaycastHit2D hit;
@@ -69,6 +72,14 @@ public class PlayerController : MonoBehaviour
         left,
         right
     }
+
+    enum eMode
+    {
+        debug,
+        play
+    }
+
+    eMode mode = eMode.play;
 
     eDirection direction;
 
@@ -134,24 +145,28 @@ public class PlayerController : MonoBehaviour
                 {
                     case eDirection.up:
                         createPosition = transform.position + new Vector3(0, 1, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(0, 0.6f, 0), Vector2.up, distance);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(0, 1f, 0), Vector2.up, distance);
+                        Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), Vector2.up * distance, Color.red, 1f);
                         break;
                     case eDirection.down:
                         createPosition = transform.position + new Vector3(0, -1, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(0, -0.6f, 0), Vector2.down, distance);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(0, -1f, 0), Vector2.down, distance);
+                        Debug.DrawRay(transform.position + new Vector3(0, -0.5f, 0), Vector2.down * distance, Color.red, 1f);
                         break;
                     case eDirection.left:
                         createPosition = transform.position + new Vector3(-1, 0, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(0.6f, 0, 0), Vector2.left, distance);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(-1f, 0, 0), Vector2.left, distance);
+                        Debug.DrawRay(transform.position + new Vector3(-0.5f, 0, 0), Vector2.left * distance, Color.red, 1f);
                         break;
                     case eDirection.right:
                         createPosition = transform.position + new Vector3(1, 0, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(-0.6f, 0, 0), Vector2.right, distance); 
+                        hit = Physics2D.Raycast(transform.position + new Vector3(1f, 0, 0), Vector2.right, distance);
+                        Debug.DrawRay(transform.position + new Vector3(0.5f, 0, 0), Vector2.right * distance, Color.red, 1f);
                         break;
                 }
                 isAttack = true;
                 var cteateObject = Instantiate(attackEffect, createPosition, Quaternion.identity);
-                Attack(hit);
+                if (hit.collider != null) Attack(hit);
             }               
         }
         
@@ -166,22 +181,11 @@ public class PlayerController : MonoBehaviour
             attackValue = 99999; 
         }
 
-
-        switch (direction)
+        if (Input.GetKeyDown(KeyCode.F7))
         {
-            case eDirection.up:
-                Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), Vector2.up * distance, Color.red);
-                break;
-            case eDirection.down:
-                Debug.DrawRay(transform.position + new Vector3(0, -0.5f, 0), Vector2.down * distance, Color.red);
-                break;
-            case eDirection.left:
-                Debug.DrawRay(transform.position + new Vector3(-0.5f, 0, 0), Vector2.left * distance, Color.red);
-                break;
-            case eDirection.right:
-                Debug.DrawRay(transform.position + new Vector3(0.5f, 0, 0), Vector2.right * distance, Color.red);
-                break;
+            mode = eMode.debug;
         }
+
 #endif
     }
     
@@ -228,8 +232,17 @@ public class PlayerController : MonoBehaviour
 
     bool CanMoveToTile(Vector3Int gridPosition)
     {
-        TileBase tile = tilemap.GetTile(gridPosition);
-        return tile == path_tile || tile == goal_tile || tile == route_tile;
+        if(mode==eMode.play)
+        {
+            TileBase tile = tilemap.GetTile(gridPosition);
+            return tile == path_tile || tile == goal_tile || tile == route_tile;
+        }
+
+        else
+        {
+            TileBase tile = tilemap.GetTile(gridPosition);
+            return tile == path_tile || tile == goal_tile || tile == route_tile || tile == wall_path;
+        }
     }
 
     bool IsGoalTile(Vector3Int gridPosition)

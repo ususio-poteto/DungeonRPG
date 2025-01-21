@@ -73,6 +73,8 @@ public class PlayerController : MonoBehaviour
         right
     }
 
+     eDirection direction = eDirection.down;
+
     enum eMode
     {
         debug,
@@ -81,7 +83,13 @@ public class PlayerController : MonoBehaviour
 
     eMode mode = eMode.play;
 
-    eDirection direction;
+    enum eAction
+    {
+        rotate,
+        move
+    }
+
+    eAction action = eAction.move;
 
     void Start()
     {
@@ -101,44 +109,92 @@ public class PlayerController : MonoBehaviour
         Debug.Log(direction);
         if (turnManager.GetPlayerTurn()) 
         {
-            if (isMoving) return;
+            if(action==eAction.move)
+            {
+                if (isMoving) return;
         
-            Vector3Int moveDirection = Vector3Int.zero;
+                Vector3Int moveDirection = Vector3Int.zero;
 
-            if (Input.GetKeyDown(KeyCode.W)||Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                moveDirection = Vector3Int.up;
-                direction = eDirection.up;
-                playerAnim.SetFloat("X", 0);
-                playerAnim.SetFloat("Y", 1);
-            }
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                moveDirection = Vector3Int.down;
-                direction = eDirection.down;
-                playerAnim.SetFloat("X", 0);
-                playerAnim.SetFloat("Y", -1);
-            }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                moveDirection = Vector3Int.left;
-                direction = eDirection.left;
-                playerAnim.SetFloat("X", -1);
-                playerAnim.SetFloat("Y", 0);
-            }
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                moveDirection = Vector3Int.right;
-                direction = eDirection.right;
-                playerAnim.SetFloat("X", 1);
-                playerAnim.SetFloat("Y", 0);
+                //à⁄ìÆ
+                if (Input.GetKeyDown(KeyCode.W)||Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    moveDirection = Vector3Int.up;
+                    direction = eDirection.up;
+                    playerAnim.SetFloat("X", 0);
+                    playerAnim.SetFloat("Y", 1);
+                }
+                if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    moveDirection = Vector3Int.down;
+                    direction = eDirection.down;
+                    playerAnim.SetFloat("X", 0);
+                    playerAnim.SetFloat("Y", -1);
+                }
+                if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    moveDirection = Vector3Int.left;
+                    direction = eDirection.left;
+                    playerAnim.SetFloat("X", -1);
+                    playerAnim.SetFloat("Y", 0);
+                }
+                if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    moveDirection = Vector3Int.right;
+                    direction = eDirection.right;
+                    playerAnim.SetFloat("X", 1);
+                    playerAnim.SetFloat("Y", 0);
+                }
+
+                if (moveDirection != Vector3Int.zero)
+                {
+                    //turnManager.SwitchTurn();
+                    StartCoroutine(MoveToCell(moveDirection));
+                }
             }
 
-            if (moveDirection != Vector3Int.zero)
+            if (Input.GetKey(KeyCode.T))
             {
-                //turnManager.SwitchTurn();
-                StartCoroutine(MoveToCell(moveDirection));
+                action = eAction.rotate;
             }
+
+            if(Input.GetKeyUp(KeyCode.T))
+            {
+                action = eAction.move;
+            }
+
+            //âÒì]
+            if (action == eAction.rotate)
+            {
+                if (Input.GetKeyDown(KeyCode.W))
+                {
+                    direction = eDirection.up;
+                    playerAnim.SetFloat("X", 0);
+                    playerAnim.SetFloat("Y", 1);
+                }
+
+                if (Input.GetKeyDown(KeyCode.S))
+                {
+                    direction = eDirection.down;
+                    playerAnim.SetFloat("X", 0);
+                    playerAnim.SetFloat("Y", -1);
+                }
+
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    direction = eDirection.left;
+                    playerAnim.SetFloat("X", -1);
+                    playerAnim.SetFloat("Y", 0);
+                }
+
+                if(Input.GetKeyDown(KeyCode.D))
+                {
+                    direction = eDirection.right;
+                    playerAnim.SetFloat("X", 1);
+                    playerAnim.SetFloat("Y", 0);
+                }
+            }
+
+            //çUåÇ
             if (Input.GetKeyDown(KeyCode.K))
             {
                 switch (direction)

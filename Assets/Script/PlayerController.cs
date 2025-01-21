@@ -88,7 +88,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Debug.Log(direction);
-        Debug.Log(isAttack);
         if (turnManager.GetPlayerTurn()) 
         {
             if (isMoving) return;
@@ -153,7 +152,6 @@ public class PlayerController : MonoBehaviour
                 isAttack = true;
                 var cteateObject = Instantiate(attackEffect, createPosition, Quaternion.identity);
                 Attack(hit);
-                Debug.Log(hit.collider.name);
             }               
         }
         
@@ -242,7 +240,11 @@ public class PlayerController : MonoBehaviour
 
     void Attack(RaycastHit2D target)
     {
-        var damageble = target.collider.GetComponent<IDamagable>();
-        damageble.TakeDamage(attackValue);
+        if (target.collider.tag == "Enemy")
+        {
+            Debug.Log(target.collider.name);
+            var damageble = target.collider.GetComponent<IDamagable>();
+            damageble.TakeDamage(attackValue);
+        }
     }
 }

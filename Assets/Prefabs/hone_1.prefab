@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2526375777799732915}
   - component: {fileID: 5922834391868126839}
   - component: {fileID: -2546393786683867910}
+  - component: {fileID: 1912332777729214027}
   m_Layer: 0
   m_Name: hone_1
   m_TagString: Enemy
@@ -173,3 +174,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1912332777729214027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5954483517375672540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d36afc6a4a21c9641bc489fd404f4755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHitPoint: 10
+  EXP: 100

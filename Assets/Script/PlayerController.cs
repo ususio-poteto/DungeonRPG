@@ -9,6 +9,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor;
 using System.Security.Cryptography;
 using UnityEngine.EventSystems;
+using UnityEngine.Jobs;
 
 public class PlayerController : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class PlayerController : MonoBehaviour
 
     float moveTime = 0.2f;
 
+    float distance = 1.5f;
+
     Vector3Int currentGridPosition;
 
     Vector3Int beforeGridPosition;
@@ -52,7 +55,12 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody2D rb2d;
 
+    RaycastHit2D hit;
+
     Vector3 createPosition;
+
+    [SerializeField]
+    int attackValue;
 
     enum eDirection
     {
@@ -121,32 +129,60 @@ public class PlayerController : MonoBehaviour
                 //turnManager.SwitchTurn();
                 StartCoroutine(MoveToCell(moveDirection));
             }
-                if(Input.GetKeyDown(KeyCode.K))
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                switch (direction)
                 {
-                    switch (direction)
-                    {
-                        case eDirection.up:
-                            createPosition = transform.position + new Vector3Int(0, 1, 0);
-                            break;
-                        case eDirection.down:
-                            createPosition = transform.position + new Vector3Int(0, -1, 0);
-                            break;
-                        case eDirection.left:
-                            createPosition = transform.position + new Vector3Int(-1, 0, 0);
-                            break;
-                        case eDirection.right:
-                            createPosition = transform.position + new Vector3Int(1, 0, 0);
-                            break;
-                    }
-                    isAttack = true;
-                    var cteateObject = Instantiate(attackEffect, createPosition, Quaternion.identity);
-                }               
+                    case eDirection.up:
+                        createPosition = transform.position + new Vector3(0, 1, 0.5f);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(0, 0.6f, 0), Vector2.up, distance);
+                        break;
+                    case eDirection.down:
+                        createPosition = transform.position + new Vector3(0, -1, 0.5f);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(0, -0.6f, 0), Vector2.down, distance);
+                        break;
+                    case eDirection.left:
+                        createPosition = transform.position + new Vector3(-1, 0, 0.5f);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(0.6f, 0, 0), Vector2.left, distance);
+                        break;
+                    case eDirection.right:
+                        createPosition = transform.position + new Vector3(1, 0, 0.5f);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(-0.6f, 0, 0), Vector2.right, distance); 
+                        break;
+                }
+                isAttack = true;
+                var cteateObject = Instantiate(attackEffect, createPosition, Quaternion.identity);
+                Attack(hit);
+                Debug.Log(hit.collider.name);
+            }               
         }
         
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F4))
         {
             mazeManager.SearchShortestPath(transform.position);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F6))
+        {
+            attackValue = 99999; 
+        }
+
+
+        switch (direction)
+        {
+            case eDirection.up:
+                Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), Vector2.up * distance, Color.red);
+                break;
+            case eDirection.down:
+                Debug.DrawRay(transform.position + new Vector3(0, -0.5f, 0), Vector2.down * distance, Color.red);
+                break;
+            case eDirection.left:
+                Debug.DrawRay(transform.position + new Vector3(-0.5f, 0, 0), Vector2.left * distance, Color.red);
+                break;
+            case eDirection.right:
+                Debug.DrawRay(transform.position + new Vector3(0.5f, 0, 0), Vector2.right * distance, Color.red);
+                break;
         }
 #endif
     }
@@ -202,5 +238,11 @@ public class PlayerController : MonoBehaviour
     {
         TileBase tile = tilemap.GetTile(gridPosition);
         return tile == goal_tile;
+    }
+
+    void Attack(RaycastHit2D target)
+    {
+        var damageble = target.collider.GetComponent<IDamagable>();
+        damageble.TakeDamage(attackValue);
     }
 }

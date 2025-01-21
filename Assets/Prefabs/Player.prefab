@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 3399242956345913655}
   - component: {fileID: 8368748002228779967}
   - component: {fileID: 6104373739429853008}
+  - component: {fileID: 7129378279749116138}
   m_Layer: 0
-  m_Name: pipo-charachip023a_1
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,6 +201,19 @@ MonoBehaviour:
   path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
   goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
   route_tile: {fileID: 11400000, guid: 60244e4b34a850f40b16682f2383f167, type: 2}
+  attackValue: 2
+--- !u!114 &7129378279749116138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198973090556277434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe290ca16bfcdb94f9f2b2d4b92baab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2645688963029682992
 GameObject:
   m_ObjectHideFlags: 0

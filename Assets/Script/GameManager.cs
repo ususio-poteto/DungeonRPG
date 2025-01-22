@@ -11,9 +11,18 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI stageText;
 
+    GameObject player;
+
+    Vector3 playerPosition;
+    void Start()
+    {
+        player = GameObject.FindWithTag("Player");
+    }
+
     void Update()
     {
         stageText.text = "Stage" + stageLevel;
+        playerPosition = player.transform.position;
     }
     public int GetStageLevel()
     {
@@ -28,5 +37,10 @@ public class GameManager : MonoBehaviour
     public void isDead()
     {
         stageLevel = 1;
+    }
+
+    public Vector3 GetPlayerPosition()
+    {
+        return playerPosition;
     }
 }

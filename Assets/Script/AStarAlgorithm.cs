@@ -16,6 +16,13 @@ public class AStarAlgorithm : MonoBehaviour
         public int F => G + H;//総コスト
     }
 
+    /// <summary>
+    /// A*アルゴリズムを実行(最短経路を探索)
+    /// </summary>
+    /// <param name="maze">迷路情報</param>
+    /// <param name="start">始まりの位置(自身の座標)</param>
+    /// <param name="goal">目標地点(ゴール)</param>
+    /// <returns></returns>
     public List<Vector2Int> FindPath(int[,] maze,Vector2Int start,Vector2Int goal)
     {
         //通路と壁の設定

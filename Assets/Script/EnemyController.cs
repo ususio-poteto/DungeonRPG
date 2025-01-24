@@ -42,6 +42,7 @@ public class EnemyController : MonoBehaviour
         attack
     }
 
+    [SerializeField]
     state eState = state.patrol;
 
     Rigidbody2D rb2d;
@@ -53,6 +54,8 @@ public class EnemyController : MonoBehaviour
     RaycastHit2D attackHit;
 
     float attackDistance = 1;
+
+    Vector3 playerPos;
 
     void Start()
     {
@@ -85,7 +88,7 @@ public class EnemyController : MonoBehaviour
 
         else if (trackingHit.collider.tag == "Player")
         {
-            Debug.Log("hit");
+            playerPos=trackingHit.collider.transform.position;
             eState = state.tracking;
         }
         else
@@ -148,8 +151,7 @@ public class EnemyController : MonoBehaviour
     void TrackingMove()
     {
         var maze = mazeManager.GetMaze();
-        var playerPos = gameManager.GetPlayerPosition();
-        Debug.Log($"PlayerPos{ playerPos}");
+        //Debug.Log($"PlayerPos{ playerPos}");
         Vector2Int goalPos = new Vector2Int(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
         Vector2Int startPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
         var path = aStarAlgorithm.FindPath(maze, startPos, goalPos);

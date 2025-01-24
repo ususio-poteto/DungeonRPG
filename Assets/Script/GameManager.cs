@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     {
         stageText.text = "Stage" + stageLevel;
         playerPosition = player.transform.position;
+        //Debug.Log($"PlayerPos{playerPosition}");
     }
 
     public int GetStageLevel()

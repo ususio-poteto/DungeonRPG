@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject player;
 
+    int level;
+
+    int HP;
+
     Vector3 playerPosition;
     void Start()
     {
@@ -25,6 +29,7 @@ public class GameManager : MonoBehaviour
         stageText.text = "Stage" + stageLevel;
         playerPosition = player.transform.position;
     }
+
     public int GetStageLevel()
     {
         return stageLevel;
@@ -43,5 +48,25 @@ public class GameManager : MonoBehaviour
     public Vector3 GetPlayerPosition()
     {
         return playerPosition;
+    }
+
+    public int GetPlayerLevel()
+    {
+        return level;
+    }
+
+    public int GetPlayerHP() 
+    {
+        return HP; 
+    }
+
+    public void SetPlayerLevel(int setLevel)
+    {
+        level = setLevel;
+    }
+
+    public void SetPlayerHP(int setHP)
+    {
+        HP = setHP;
     }
 }

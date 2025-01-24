@@ -8,7 +8,8 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
 {
     int baseHitPoint = 30;
 
-    int hitPoint;
+    [SerializeField]
+    int HP;
 
     int maxHP;
 
@@ -20,7 +21,7 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
 
     int Exp;
 
-    int level = 1;
+    int level;
 
     GameManager gameManager;
 
@@ -36,18 +37,20 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
         slider = GameObject.Find("Slider").GetComponent<Slider>();
         levelText = GameObject.Find("LevelText").GetComponent<TextMeshProUGUI>();
         HPText = GameObject.Find("HPText").GetComponent<TextMeshProUGUI>();
+        HP = gameManager.GetPlayerHP();
+        level = gameManager.GetPlayerLevel();
         SetHP();
         SetExp();
-        slider.maxValue = hitPoint;
-        slider.value = hitPoint;
+        slider.maxValue = HP;
+        slider.value = HP;
     }
     
     void Update()
     {
-        slider.value = hitPoint;
+        slider.value = HP;
         levelText.text = "Lv." + level;
-        HPText.text = hitPoint + "/" + maxHP;
-        if (hitPoint <= 0)
+        HPText.text = HP + "/" + maxHP;
+        if (HP <= 0)
         {
             Death();
         }
@@ -57,8 +60,11 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
             LevelUp();
             SetExp();
             SetHP();
+            gameManager.SetPlayerLevel(level);
+            gameManager.SetPlayerHP(HP);
             Debug.Log(needExp);
         }
+
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F5))
         {
@@ -74,8 +80,8 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
 
     void SetHP()
     {
-        hitPoint = baseHitPoint + level * (level - 1);
-        maxHP = hitPoint;
+        HP = baseHitPoint + level * (level - 1);
+        maxHP = HP;
     }
 
     void SetExp()
@@ -91,7 +97,7 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
 
     public void TakeDamage(int value)
     {
-        hitPoint = hitPoint - value;
+        HP = HP - value;
     }
 
     public void Death()

@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67b47365e39d5c48bad9833e361ad0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageLevel: 11
+  stageLevel: 1
   stageText: {fileID: 58429027}
   player: {fileID: 1198973090556277434, guid: d6bb1582aa099a0418ad5936be2efce3, type: 3}
 --- !u!1 &52149113

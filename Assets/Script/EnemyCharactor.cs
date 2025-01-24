@@ -32,7 +32,7 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
 
     public void Death()
     {
-        var player=GameObject.Find("Player(Clone)").GetComponent<PlayerCharacter>();
+        var player=GameObject.FindWithTag("Player").GetComponent<PlayerCharacter>();
         player.GetEXP(EXP);
         Destroy(this.gameObject);
     }

@@ -20,11 +20,11 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField]
     TileBase goal_tile;
-    
+
     float moveTime = 0.2f;
-    
+
     Vector3Int currentGridPosition;
-    
+
     TurnManager turnManager;
 
     AStarAlgorithm aStarAlgorithm;
@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
 
     RaycastHit2D trackingHit;
 
-    float trackingDistance = 8;
+    float trackingDistance = 6;
 
     RaycastHit2D attackHit;
 
@@ -57,8 +57,8 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        turnManager=GameObject.Find("TurnManager").GetComponent<TurnManager>();
-        aStarAlgorithm=GameObject.Find("A*Algorithm").GetComponent<AStarAlgorithm>();
+        turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        aStarAlgorithm = GameObject.Find("A*Algorithm").GetComponent<AStarAlgorithm>();
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         rb2d = GetComponent<Rigidbody2D>();
@@ -66,14 +66,26 @@ public class EnemyController : MonoBehaviour
         currentGridPosition = tilemap.WorldToCell(worldPosition);
     }
 
+    void Update()
+    {
+        Debug.Log(eState);
+    }
+
     public void MyTurn()
-    {   
+    {
         trackingHit = Physics2D.Raycast(transform.position + Vector3Int.up, Vector3.up, trackingDistance);
+        Debug.DrawRay(transform.position + Vector3.up, Vector3.up * trackingDistance, Color.red, 1f);
         trackingHit = Physics2D.Raycast(transform.position + Vector3Int.down, Vector3.down, trackingDistance);
+        Debug.DrawRay(transform.position + Vector3.down, Vector3.down * trackingDistance, Color.red, 1f);
         trackingHit = Physics2D.Raycast(transform.position + Vector3Int.right, Vector3.right, trackingDistance);
+        Debug.DrawRay(transform.position + Vector3.right, Vector3.right * trackingDistance, Color.red, 1f);
         trackingHit = Physics2D.Raycast(transform.position + Vector3.left, Vector3.left, trackingDistance);
-        if (trackingHit.collider.tag == "Player")
+        Debug.DrawRay(transform.position + Vector3.left, Vector3.left * trackingDistance, Color.red, 1f);
+        if (trackingHit.collider == null) return;
+
+        else if (trackingHit.collider.tag == "Player")
         {
+            Debug.Log("hit");
             eState = state.tracking;
         }
         else
@@ -81,18 +93,18 @@ public class EnemyController : MonoBehaviour
             eState = state.patrol;
         }
         ActionEnemy();
-        Debug.Log("EnemyMove");
+        //Debug.Log("EnemyMove");
     }
 
     void ActionEnemy()
     {
         if (eState == state.patrol)
-        {  
+        {
             var rnd = Random.Range(0, directions.Length);
             StartCoroutine(MoveToCell(directions[rnd]));
         }
 
-        
+
         else if (eState == state.tracking)
         {
             //A*アルゴリズムで最短経路探索を行う
@@ -100,7 +112,7 @@ public class EnemyController : MonoBehaviour
             //tilemapにフラグを立てていくかんじ。
             TrackingMove();
         }
-       
+
     }
 
     System.Collections.IEnumerator MoveToCell(Vector3Int direction)
@@ -133,38 +145,40 @@ public class EnemyController : MonoBehaviour
         //turnManager.SwitchTurn();
     }
 
-    System.Collections.IEnumerator TrackingMove()
+    void TrackingMove()
     {
         var maze = mazeManager.GetMaze();
-        var playerPos=gameManager.GetPlayerPosition();
+        var playerPos = gameManager.GetPlayerPosition();
         Vector2Int goalPos = new Vector2Int(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
         Vector2Int startPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
         var path = aStarAlgorithm.FindPath(maze, startPos, goalPos);
-        Vector3Int targetGridPosition = new Vector3Int(path[0].x, path[0].y, 0);
-        // 移動可能なタイルであるかを確認（必要に応じて条件を変更）
-        if (CanMoveToTile(targetGridPosition))
-        {
-            Vector3 targetPosition = tilemap.GetCellCenterWorld(targetGridPosition);
+        //Vector3Int targetGridPosition = new Vector3Int(path[0].x, path[0].y, 0);
+        Debug.Log(path);
+        //    // 移動可能なタイルであるかを確認（必要に応じて条件を変更）
+        //    if (CanMoveToTile(targetGridPosition))
+        //    {
+        //        Vector3 targetPosition = tilemap.GetCellCenterWorld(targetGridPosition);
 
-            // 移動アニメーション
-            float elapsedTime = 0f;
-            Vector3 startPosition = transform.position;
+        //        // 移動アニメーション
+        //        float elapsedTime = 0f;
+        //        Vector3 startPosition = transform.position;
 
-            while (elapsedTime < moveTime)
-            {
-                transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / moveTime);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
+        //        while (elapsedTime < moveTime)
+        //        {
+        //            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / moveTime);
+        //            elapsedTime += Time.deltaTime;
+        //            yield return null;
+        //        }
 
-            transform.position = targetPosition;
-            currentGridPosition = targetGridPosition; // 現在のグリッド位置を更新
-        }
+        //        transform.position = targetPosition;
+        //        currentGridPosition = targetGridPosition; // 現在のグリッド位置を更新
+        //    }
+        //}
     }
-
+    
     bool CanMoveToTile(Vector3Int gridPosition)
     {
-        TileBase tile = tilemap.GetTile(gridPosition);
-        return tile == path_tile || tile == goal_tile;
+            TileBase tile = tilemap.GetTile(gridPosition);
+            return tile == path_tile || tile == goal_tile;
     }
 }

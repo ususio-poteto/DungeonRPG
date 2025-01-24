@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(direction);
+        //Debug.Log(direction);
         if (turnManager.GetPlayerTurn()) 
         {
             if(action==eAction.move)

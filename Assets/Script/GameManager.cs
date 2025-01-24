@@ -11,12 +11,13 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI stageText;
 
+    [SerializeField]
     GameObject player;
 
     Vector3 playerPosition;
     void Start()
     {
-        player = GameObject.FindWithTag("Player");
+        
     }
 
     void Update()

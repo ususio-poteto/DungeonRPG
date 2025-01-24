@@ -149,6 +149,7 @@ public class EnemyController : MonoBehaviour
     {
         var maze = mazeManager.GetMaze();
         var playerPos = gameManager.GetPlayerPosition();
+        Debug.Log($"PlayerPos{ playerPos}");
         Vector2Int goalPos = new Vector2Int(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
         Vector2Int startPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
         var path = aStarAlgorithm.FindPath(maze, startPos, goalPos);

@@ -76,27 +76,24 @@ public class EnemyController : MonoBehaviour
 
     public void MyTurn()
     {
-        trackingHit = Physics2D.Raycast(transform.position + Vector3Int.up, Vector3.up, trackingDistance);
-        Debug.DrawRay(transform.position + Vector3.up, Vector3.up * trackingDistance, Color.red, 1f);
-        trackingHit = Physics2D.Raycast(transform.position + Vector3Int.down, Vector3.down, trackingDistance);
-        Debug.DrawRay(transform.position + Vector3.down, Vector3.down * trackingDistance, Color.red, 1f);
-        trackingHit = Physics2D.Raycast(transform.position + Vector3Int.right, Vector3.right, trackingDistance);
-        Debug.DrawRay(transform.position + Vector3.right, Vector3.right * trackingDistance, Color.red, 1f);
-        trackingHit = Physics2D.Raycast(transform.position + Vector3.left, Vector3.left, trackingDistance);
-        Debug.DrawRay(transform.position + Vector3.left, Vector3.left * trackingDistance, Color.red, 1f);
+        foreach (Vector3 direction in directions)
+        {
+            trackingHit = Physics2D.Raycast(transform.position + direction, direction, trackingDistance);
+            Debug.DrawRay(transform.position + direction, direction * trackingDistance, Color.red, 1f);
+
+            if (trackingHit.collider != null) break;
+
+        }
+
         if (trackingHit.collider == null) return;
 
         else if (trackingHit.collider.tag == "Player")
         {
-            playerPos=trackingHit.collider.transform.position;
+            playerPos = trackingHit.collider.transform.position;
             eState = state.tracking;
         }
-        else
-        {
-            eState = state.patrol;
-        }
+
         ActionEnemy();
-        //Debug.Log("EnemyMove");
     }
 
     void ActionEnemy()
@@ -151,7 +148,7 @@ public class EnemyController : MonoBehaviour
     void TrackingMove()
     {
         var maze = mazeManager.GetMaze();
-        //Debug.Log($"PlayerPos{ playerPos}");
+        Debug.Log($"PlayerPos{ playerPos}");
         Vector2Int goalPos = new Vector2Int(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
         Vector2Int startPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
         var path = aStarAlgorithm.FindPath(maze, startPos, goalPos);

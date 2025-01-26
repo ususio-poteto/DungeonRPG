@@ -93,6 +93,8 @@ public class EnemyController : MonoBehaviour
             eState = state.tracking;
         }
 
+        else eState = state.patrol;
+
         ActionEnemy();
     }
 
@@ -152,28 +154,8 @@ public class EnemyController : MonoBehaviour
         Vector2Int goalPos = new Vector2Int(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
         Vector2Int startPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
         var path = aStarAlgorithm.FindPath(maze, startPos, goalPos);
-        //Vector3Int targetGridPosition = new Vector3Int(path[0].x, path[0].y, 0);
-        Debug.Log(path);
-        //    // 移動可能なタイルであるかを確認（必要に応じて条件を変更）
-        //    if (CanMoveToTile(targetGridPosition))
-        //    {
-        //        Vector3 targetPosition = tilemap.GetCellCenterWorld(targetGridPosition);
-
-        //        // 移動アニメーション
-        //        float elapsedTime = 0f;
-        //        Vector3 startPosition = transform.position;
-
-        //        while (elapsedTime < moveTime)
-        //        {
-        //            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / moveTime);
-        //            elapsedTime += Time.deltaTime;
-        //            yield return null;
-        //        }
-
-        //        transform.position = targetPosition;
-        //        currentGridPosition = targetGridPosition; // 現在のグリッド位置を更新
-        //    }
-        //}
+        //自分で移動するのを作らねばならぬ
+        //しんどい
     }
     
     bool CanMoveToTile(Vector3Int gridPosition)

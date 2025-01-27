@@ -90,7 +90,7 @@ public class EnemyController : MonoBehaviour
         {
             attackHit = Physics2D.Raycast(transform.position + direction, direction, attackDistance);
             Debug.DrawRay(transform.position + direction, direction * attackDistance, Color.blue, 0.5f);
-            if (attackHit != null) return;
+            if (attackHit.collider != null) return;
         }
 
     }

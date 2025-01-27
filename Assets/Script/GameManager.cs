@@ -11,9 +11,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI stageText;
 
-    [SerializeField]
-    GameObject player;
-
     int level;
 
     int HP;
@@ -26,9 +23,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        stageText.text = "Stage" + stageLevel;
-        playerPosition = player.transform.position;
-        //Debug.Log($"PlayerPos{playerPosition}");
+        stageText.text = "Stage" + stageLevel; 
     }
 
     public int GetStageLevel()

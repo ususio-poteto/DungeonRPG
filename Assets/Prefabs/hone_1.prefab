@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8601989451335333896}
   - component: {fileID: 7927158920653962885}
-  - component: {fileID: 2526375777799732915}
   - component: {fileID: 5922834391868126839}
   - component: {fileID: -2546393786683867910}
   - component: {fileID: 1912332777729214027}
+  - component: {fileID: 2526375777799732915}
   m_Layer: 0
   m_Name: hone_1
   m_TagString: Enemy
@@ -88,20 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2526375777799732915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5954483517375672540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57bd6bb54f4dd5e49b559a4be2798c34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
-  goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
 --- !u!61 &5922834391868126839
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -188,3 +174,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHitPoint: 1
   EXP: 100
+--- !u!114 &2526375777799732915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5954483517375672540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57bd6bb54f4dd5e49b559a4be2798c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
+  goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
+  eState: 0

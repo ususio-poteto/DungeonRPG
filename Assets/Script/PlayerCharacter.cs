@@ -62,7 +62,6 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
             SetHP();
             gameManager.SetPlayerLevel(level);
             gameManager.SetPlayerHP(HP);
-            Debug.Log(needExp);
         }
 
 #if UNITY_EDITOR

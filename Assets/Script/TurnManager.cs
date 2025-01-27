@@ -16,7 +16,6 @@ public class TurnManager : MonoBehaviour
     void Start()
     {
         enemies = mazeManager.GetEnemiesList();
-        Debug.Log(enemies.Count);
     }
     void Update()
     {

@@ -4,14 +4,26 @@ using System.Security.Cryptography;
 using TreeEditor;
 using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
+using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 
 public class EnemyController : MonoBehaviour
 {
+    TurnManager turnManager;
+
+    AStarAlgorithm aStarAlgorithm;
+
+    MazeManager mazeManager;
+
+    GameManager gameManager;
+
+    Vector3Int[] directions = new Vector3Int[] { Vector3Int.up, Vector3Int.down, Vector3Int.right, Vector3Int.left };
 
     bool isMoving = false;
+
+    Vector3Int currentGridPosition;
 
     Tilemap tilemap;
 
@@ -23,18 +35,6 @@ public class EnemyController : MonoBehaviour
 
     float moveTime = 0.2f;
 
-    Vector3Int currentGridPosition;
-
-    TurnManager turnManager;
-
-    AStarAlgorithm aStarAlgorithm;
-
-    MazeManager mazeManager;
-
-    GameManager gameManager;
-
-    Vector3Int[] directions = new Vector3Int[] { Vector3Int.up, Vector3Int.down, Vector3Int.right, Vector3Int.left };
-
     enum state
     {
         patrol,
@@ -45,76 +45,88 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     state eState = state.patrol;
 
-    Rigidbody2D rb2d;
-
-    RaycastHit2D trackingHit;
-
-    float trackingDistance = 6;
-
     RaycastHit2D attackHit;
 
     float attackDistance = 1;
+
+    GameObject player;
 
     Vector3 playerPos;
 
     void Start()
     {
-        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         aStarAlgorithm = GameObject.Find("A*Algorithm").GetComponent<AStarAlgorithm>();
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        rb2d = GetComponent<Rigidbody2D>();
+        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+        player = GameObject.FindWithTag("Player");
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
+        Debug.Log($"currentGridPosition{currentGridPosition}");
     }
 
-    void Update()
-    {
-        Debug.Log(eState);
-    }
-
+    /// <summary>
+    /// ターンが回ってきた時の処理
+    /// </summary>
     public void MyTurn()
     {
-        foreach (Vector3 direction in directions)
-        {
-            trackingHit = Physics2D.Raycast(transform.position + direction, direction, trackingDistance);
-            Debug.DrawRay(transform.position + direction, direction * trackingDistance, Color.red, 1f);
+        AttackCheckPlayer();
 
-            if (trackingHit.collider != null) break;
-
-        }
-
-        if (trackingHit.collider == null) return;
-
-        else if (trackingHit.collider.tag == "Player")
-        {
-            playerPos = trackingHit.collider.transform.position;
-            eState = state.tracking;
-        }
-
+        var playerRoute = SearchPlayer();
+        if (playerRoute.Count <= 300) eState = state.tracking;
         else eState = state.patrol;
 
-        ActionEnemy();
+        if (eState == state.patrol) RandomMove();
+        else if (eState == state.tracking) TrackingMove(playerRoute[1]);
     }
 
-    void ActionEnemy()
+    /// <summary>
+    /// 最初に攻撃できるかを確認
+    /// </summary>
+    void AttackCheckPlayer()
     {
-        if (eState == state.patrol)
+        foreach(Vector3 direction in directions)
         {
-            var rnd = Random.Range(0, directions.Length);
-            StartCoroutine(MoveToCell(directions[rnd]));
+            attackHit = Physics2D.Raycast(transform.position + direction, direction, attackDistance);
+            Debug.DrawRay(transform.position + direction, direction * attackDistance, Color.blue, 0.5f);
+            if (attackHit != null) return;
         }
 
+    }
 
-        else if (eState == state.tracking)
-        {
-            //A*アルゴリズムで最短経路探索を行う
-            //もしくはplayerのあとを追いかけるようにするか
-            //tilemapにフラグを立てていくかんじ。
-            TrackingMove();
-        }
+    /// <summary>
+    /// playerまでの最短経路を検索
+    /// </summary>
+    List<Vector2Int> SearchPlayer()
+    {
+        Vector2Int startPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
+        Vector3 playerPos = player.transform.position ;
+        Debug.Log($"playerPos{playerPos}");
+        Vector2Int goalPos = new Vector2Int(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
+        int[,] maze = mazeManager.GetMaze();
+        var playerRoute = aStarAlgorithm.FindPath(maze, startPos, goalPos);
+        Debug.Log($"最短経路の歩数{playerRoute.Count}");
+        return playerRoute;
+    }
 
+    /// <summary>
+    /// 追跡移動
+    /// </summary>
+    void TrackingMove(Vector2Int targetPosition)
+    {
+        Vector3 targetPos = tilemap.GetCellCenterLocal(new Vector3Int(targetPosition.x,targetPosition.y,0));
+        Debug.Log($"targetPos:{targetPos}");
+        transform.position = Vector3.Lerp(transform.position, targetPos, 1f);
+    }
+
+    /// <summary>
+    /// 敵のランダムウォーク
+    /// </summary>
+    void RandomMove()
+    {
+        var rnd = Random.Range(0, directions.Length);
+        StartCoroutine(MoveToCell(directions[rnd]));
     }
 
     System.Collections.IEnumerator MoveToCell(Vector3Int direction)
@@ -147,20 +159,9 @@ public class EnemyController : MonoBehaviour
         //turnManager.SwitchTurn();
     }
 
-    void TrackingMove()
-    {
-        var maze = mazeManager.GetMaze();
-        Debug.Log($"PlayerPos{ playerPos}");
-        Vector2Int goalPos = new Vector2Int(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
-        Vector2Int startPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
-        var path = aStarAlgorithm.FindPath(maze, startPos, goalPos);
-        //自分で移動するのを作らねばならぬ
-        //しんどい
-    }
-    
     bool CanMoveToTile(Vector3Int gridPosition)
     {
-            TileBase tile = tilemap.GetTile(gridPosition);
-            return tile == path_tile || tile == goal_tile;
+        TileBase tile = tilemap.GetTile(gridPosition);
+        return tile == path_tile || tile == goal_tile;
     }
 }

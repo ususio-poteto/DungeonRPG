@@ -124,15 +124,17 @@ public class MazeManager : MonoBehaviour
         }
     }
 
-    List<Vector2Int> GetPathPosition(int[,] setmaze)
+    List<Vector2Int> GetPathPosition(int[,] maze)
     {
-        List<Vector2Int> position=new List<Vector2Int>(); ;
-        
-        for (int row = 0; row < setmaze.GetLength(1); row++)
+        List<Vector2Int> position = new List<Vector2Int>();
+
+        Debug.Log($"MazeSize{maze.GetLength(0)}*{maze.GetLength(1)}");
+
+        for (int row = 0; row < maze.GetLength(1); row++)
         {
-            for(int col = 0; col < setmaze.GetLength(0); col++)
+            for(int col = 0; col < maze.GetLength(0); col++)
             {
-                if (setmaze[col, row] == path)
+                if (maze[col, row] == path)
                 {
                     position.Add(new Vector2Int(col, row));
                 }
@@ -147,7 +149,6 @@ public class MazeManager : MonoBehaviour
         
         Vector2Int randomPosition = pathPosition[rnd];
         startPosition = pathPosition[rnd];
-
         Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(randomPosition.x, randomPosition.y, 0));
         Instantiate(player, worldPosition, Quaternion.identity);
         pathPosition.RemoveAt(rnd);
@@ -215,21 +216,21 @@ public class MazeManager : MonoBehaviour
         if (stageLevel <= 10)
         {
             //Debug.Log("StageManager:MazeBarMethod");
-            MazeBarMethod(30, 30);
+            MazeBarMethod(20, 20);
             CreateEnemy(1);
         }
 
         else if (stageLevel >= 11 && stageLevel < 20)
         {
             //Debug.Log("StageManager:MazeDigMethod");
-            MazeDigMethod(30, 30);
+            MazeDigMethod(20, 20);
             CreateEnemy(1);
         }
 
         else if (stageLevel >= 21 && stageLevel <= 30)
         {
             //Debug.Log("StageManager:MazeWallMethod");
-            MazeWallMethod(30,30);
+            MazeWallMethod(20, 20);
             CreateEnemy(1);
         }
     }

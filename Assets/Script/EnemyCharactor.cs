@@ -27,7 +27,6 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
         hitPoint = maxHitPoint;
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
-        mazeManager.SearchShortestPath();
     }
 
     void Update()

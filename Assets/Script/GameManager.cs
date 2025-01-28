@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
 
     int HP;
 
+    [SerializeField]
+    MazeManager mazeManager;
+
     Vector3 playerPosition;
     void Start()
     {
@@ -38,6 +41,8 @@ public class GameManager : MonoBehaviour
 
     public void isDead()
     {
+        mazeManager.RecreateMaze();
+        level = 1;
         stageLevel = 1;
     }
 

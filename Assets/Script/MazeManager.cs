@@ -165,10 +165,11 @@ public class MazeManager : MonoBehaviour
 
             Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(randomPosition.x, randomPosition.y, 0));
             var createEnemy = Instantiate(enemy, worldPosition, Quaternion.identity);
+            var enemyCharactor = createEnemy.GetComponent<EnemyCharactor>();
             enemies.Add(createEnemy);
+            enemyCharactor.SetNum(i);
             pathPosition.RemoveAt(rnd);
         }
-
     }
 
     void DestroyEnemy()

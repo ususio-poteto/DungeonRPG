@@ -71,6 +71,10 @@ public class MazeManager : MonoBehaviour
 
     int stageLevel;//äKëwÇï\ÇµÇ‹Ç∑
 
+    string callClass;
+
+    public bool searchRoute = true;
+
     void Start()
     { 
         CreateMaze();
@@ -97,16 +101,27 @@ public class MazeManager : MonoBehaviour
     /// ç≈íZåoòHíTçı
     /// </summary>
     /// <param name="playerPosition">"playerÇÃåªç›ÇÃà íu(transform.position)"</param>
-    public void SearchShortestPath(Vector3 playerPosition)
+    public void SearchShortestPath()
     {
-        Vector2Int start = new Vector2Int(Mathf.FloorToInt(playerPosition.x), Mathf.FloorToInt(playerPosition.y));
-        List<Vector2Int> path = aStarAlgorithm.FindPath(maze, start, goalPosition);
-        foreach(var pathItem in path)
+        System.Diagnostics.StackFrame caller = new System.Diagnostics.StackFrame(1);
+        callClass = caller.GetMethod().ReflectedType.Name;
+        if (searchRoute)
         {
-            maze[pathItem.x, pathItem.y] = route;
+            var playerPosition = GameObject.FindWithTag("Player").transform.position;
+            Vector2Int start = new Vector2Int(Mathf.FloorToInt(playerPosition.x), Mathf.FloorToInt(playerPosition.y));
+            List<Vector2Int> path = aStarAlgorithm.FindPath(maze, start, goalPosition);
+            foreach(var pathItem in path)
+            {
+                maze[pathItem.x, pathItem.y] = route;
+            }
+            maze[goalPosition.x, goalPosition.y] = goal;
+            SetTile(maze);
         }
-        maze[goalPosition.x, goalPosition.y] = goal;
-        SetTile(maze);
+
+        if (callClass == "EnemyCharactor")
+        {
+            searchRoute = false;
+        }
     }
 
     void SetTile(int[,] setmaze)
@@ -213,11 +228,13 @@ public class MazeManager : MonoBehaviour
 
     void CreateMaze()
     {
+        searchRoute = true;
+
         if (stageLevel <= 10)
         {
             //Debug.Log("StageManager:MazeBarMethod");
             MazeBarMethod(20, 20);
-            CreateEnemy(1);
+            CreateEnemy(30);
         }
 
         else if (stageLevel >= 11 && stageLevel < 20)

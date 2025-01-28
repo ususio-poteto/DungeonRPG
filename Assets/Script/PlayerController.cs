@@ -230,7 +230,7 @@ public class PlayerController : MonoBehaviour
         //Å’ZŒo˜H’Tõ
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            mazeManager.SearchShortestPath(transform.position);
+            mazeManager.SearchShortestPath();
         }
 
         //UŒ‚—Í‚ğ‘‚â‚·
@@ -317,5 +317,10 @@ public class PlayerController : MonoBehaviour
             var damageble = target.collider.GetComponent<IDamagable>();
             damageble.TakeDamage(attackValue);
         }
+    }
+
+    public void AddAttackValue()
+    {
+        attackValue += 2;
     }
 }

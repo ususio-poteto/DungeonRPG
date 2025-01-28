@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -114,8 +115,9 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
             HP = HP - value;
         }
 
-        else
+        else if(eMode == mode.invincible)
         {
+            
             return;
         }
     }
@@ -124,6 +126,15 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
     {
         gameManager.isDead();
         Destroy(gameObject);
+    }
+
+    public void Healing()
+    {
+        HP += 20;
+        if (HP > maxHP)
+        {
+            HP = maxHP;
+        }
     }
 
     public void GetEXP(int getExp)

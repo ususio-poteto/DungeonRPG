@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyCharactor : MonoBehaviour, IDamagable
@@ -15,18 +16,27 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
 
     TurnManager turnManager;
 
+    MazeManager mazeManager;
+
     public int num;
+
+    GameObject player;
 
     void Start()
     {
         hitPoint = maxHitPoint;
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
+        mazeManager.SearchShortestPath();
     }
 
     void Update()
     {
         if (hitPoint <= 0)
         {
+            player = GameObject.FindWithTag("Player");
+            //‚±‚±‚ÅŠm—¦‚Åƒ‰ƒ“ƒ_ƒ€Œø‰Ê”­“®
+            GiveBuff();
             Death();
         }
     }
@@ -38,11 +48,37 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
 
     public void Death()
     {
-        var player=GameObject.FindWithTag("Player").GetComponent<PlayerCharacter>();
-        player.GetEXP(EXP);
+        var playerCharactor = player.GetComponent<PlayerCharacter>();
+        playerCharactor.GetEXP(EXP);
         Destroy(this.gameObject);
         turnManager.RemoveEnemies(num);
-        
+    }
+
+    void GiveBuff()
+    {
+        float probability = Random.Range(0f, 100f);
+        if( probability < 30f)
+        {
+            var randomBuff = Random.Range(1, 4);
+            switch (randomBuff)
+            {
+                case 1:
+                    //UŒ‚—ÍƒAƒbƒv
+                    var playerController = player.GetComponent<PlayerController>();
+                    playerController.AddAttackValue();
+                    break;
+                case 2:
+                    //HP‚ğˆê’è—Ê‘¦‰ñ•œ
+                    var playerCharactor = player.GetComponent<PlayerCharacter>();
+                    playerCharactor.Healing();
+                    break;
+                case 3:
+                    //Å’ZŒo˜H’Tõ
+                    mazeManager.SearchShortestPath();
+                    break;
+
+            }
+        }
     }
 
     public void SetNum(int setNum)

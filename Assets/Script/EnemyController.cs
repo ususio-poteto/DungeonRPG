@@ -103,8 +103,6 @@ public class EnemyController : MonoBehaviour
             var hit = Physics2D.Raycast(transform.position + direction, direction, attackDistance);
             Debug.DrawRay(transform.position + direction, direction * attackDistance, Color.blue, 0.5f);
 
-            //var hit = Physics2D.Raycast(transform.position, direction, attackDistance);
-            //Debug.DrawRay(transform.position, direction * attackDistance, Color.blue, 0.5f);
             if (hit.collider != null && hit.collider.tag == "Player")
             {
                 //Debug.Log("hit");

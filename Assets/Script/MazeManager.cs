@@ -165,7 +165,6 @@ public class MazeManager : MonoBehaviour
             var createEnemy = Instantiate(enemy, worldPosition, Quaternion.identity);
             var enemyCharactor = createEnemy.GetComponent<EnemyCharactor>();
             enemies.Add(createEnemy);
-            //enemies[i] = createEnemy;
             enemyCharactor.SetNum(i);
             pathPosition.RemoveAt(rnd);
         }
@@ -217,21 +216,21 @@ public class MazeManager : MonoBehaviour
         {
             //Debug.Log("StageManager:MazeBarMethod");
             MazeBarMethod(30, 30);
-            CreateEnemy(stageLevel+5);
+            CreateEnemy(1);
         }
 
         else if (stageLevel >= 11 && stageLevel < 20)
         {
             //Debug.Log("StageManager:MazeDigMethod");
             MazeDigMethod(30, 30);
-            CreateEnemy(stageLevel + 5);
+            CreateEnemy(1);
         }
 
         else if (stageLevel >= 21 && stageLevel <= 30)
         {
             //Debug.Log("StageManager:MazeWallMethod");
             MazeWallMethod(30,30);
-            CreateEnemy(stageLevel + 5);
+            CreateEnemy(1);
         }
     }
 

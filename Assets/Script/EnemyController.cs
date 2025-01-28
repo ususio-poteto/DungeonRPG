@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
 using TreeEditor;
 using Unity.VisualScripting;
@@ -33,6 +35,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     TileBase goal_tile;
 
+    [SerializeField]
+    GameObject AttackEffect;
+
     float moveTime = 0.2f;
 
     enum state
@@ -45,9 +50,14 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     state eState = state.patrol;
 
-    RaycastHit2D attackHit;
+    [SerializeField]
+    float attackDistance;
 
-    float attackDistance = 1;
+    [SerializeField]
+    float canMoveDistance;
+
+    [SerializeField]
+    int attackValue;
 
     Vector3 playerPos;
 
@@ -67,28 +77,43 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     public void MyTurn()
     {
-        var player = GameObject.FindWithTag("Player");
-        AttackCheckPlayer();
-        if (player == null) Debug.Log("null");
+        var player = GameObject.FindWithTag("Player");        
+        if (player == null) return;
+
         var playerRoute = SearchPlayer(player.transform.position);
-        if (playerRoute.Count <= 300) eState = state.tracking;
+        Debug.Log($"routeCount{playerRoute.Count}");
+        if (playerRoute.Count < 3) eState = state.attack;
+        else if (playerRoute.Count <= 300) eState = state.tracking;
         else eState = state.patrol;
+
         if (eState == state.patrol) RandomMove();
         else if (eState == state.tracking) TrackingMove(playerRoute[1]);
+        else if (eState == state.attack) AttackPlayer();
+
     }
 
     /// <summary>
     /// ç≈èâÇ…çUåÇÇ≈Ç´ÇÈÇ©ÇämîF
+    /// çUåÇÇ™Ç≈Ç´ÇÈÇ»ÇÁçUåÇÇÇ∑ÇÈ
     /// </summary>
-    void AttackCheckPlayer()
+    void AttackPlayer()
     {
         foreach(Vector3 direction in directions)
         {
-            attackHit = Physics2D.Raycast(transform.position + direction, direction, attackDistance);
+            var hit = Physics2D.Raycast(transform.position + direction, direction, attackDistance);
             Debug.DrawRay(transform.position + direction, direction * attackDistance, Color.blue, 0.5f);
-            if (attackHit.collider != null) return;
-        }
 
+            //var hit = Physics2D.Raycast(transform.position, direction, attackDistance);
+            //Debug.DrawRay(transform.position, direction * attackDistance, Color.blue, 0.5f);
+            if (hit.collider != null && hit.collider.tag == "Player")
+            {
+                //Debug.Log("hit");
+                var IDamagable=hit.collider.GetComponent<IDamagable>();
+                IDamagable.TakeDamage(attackValue);
+                Instantiate(AttackEffect, transform.position + direction, Quaternion.identity);
+                break;
+            }
+        }
     }
 
     /// <summary>
@@ -97,12 +122,10 @@ public class EnemyController : MonoBehaviour
     List<Vector2Int> SearchPlayer(Vector3 setPosition)
     {
         Vector2Int startPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
-        //Debug.Log($"playerPos{player.transform.position}");
         Vector3 playerPos = setPosition;
         Vector2Int goalPos = new Vector2Int(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
         int[,] maze = mazeManager.GetMaze();
         var playerRoute = aStarAlgorithm.FindPath(maze, startPos, goalPos);
-        //Debug.Log($"ç≈íZåoòHÇÃï‡êî{playerRoute.Count}");
         return playerRoute;
     }
 

@@ -31,6 +31,14 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
 
     TextMeshProUGUI HPText;
 
+    enum mode
+    {
+        play,
+        invincible
+    }
+
+    mode eMode = mode.play;
+
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -74,6 +82,11 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
         {
             GetEXP(99999);
         }
+
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            eMode = mode.invincible;
+        }
 #endif
     }
 
@@ -96,7 +109,15 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
 
     public void TakeDamage(int value)
     {
-        HP = HP - value;
+        if (eMode == mode.play)
+        {
+            HP = HP - value;
+        }
+
+        else
+        {
+            return;
+        }
     }
 
     public void Death()

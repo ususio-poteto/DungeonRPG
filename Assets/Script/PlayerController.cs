@@ -201,22 +201,22 @@ public class PlayerController : MonoBehaviour
                 {
                     case eDirection.up:
                         createPosition = transform.position + new Vector3(0, 1, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(0, 1f, 0), Vector2.up, distance);
+                        hit = Physics2D.Raycast(transform.position + Vector3.up, Vector2.up, distance);
                         Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), Vector2.up * distance, Color.red, 1f);
                         break;
                     case eDirection.down:
                         createPosition = transform.position + new Vector3(0, -1, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(0, -1f, 0), Vector2.down, distance);
+                        hit = Physics2D.Raycast(transform.position + Vector3.down, Vector2.down, distance);
                         Debug.DrawRay(transform.position + new Vector3(0, -0.5f, 0), Vector2.down * distance, Color.red, 1f);
                         break;
                     case eDirection.left:
                         createPosition = transform.position + new Vector3(-1, 0, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(-1f, 0, 0), Vector2.left, distance);
+                        hit = Physics2D.Raycast(transform.position + Vector3.left, Vector2.left, distance);
                         Debug.DrawRay(transform.position + new Vector3(-0.5f, 0, 0), Vector2.left * distance, Color.red, 1f);
                         break;
                     case eDirection.right:
                         createPosition = transform.position + new Vector3(1, 0, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(1f, 0, 0), Vector2.right, distance);
+                        hit = Physics2D.Raycast(transform.position + Vector3.right, Vector2.right, distance);
                         Debug.DrawRay(transform.position + new Vector3(0.5f, 0, 0), Vector2.right * distance, Color.red, 1f);
                         break;
                 }
@@ -227,11 +227,13 @@ public class PlayerController : MonoBehaviour
         }
         
 #if UNITY_EDITOR
+        //ç≈íZåoòHíTçı
         if (Input.GetKeyDown(KeyCode.F4))
         {
             mazeManager.SearchShortestPath(transform.position);
         }
 
+        //çUåÇóÕÇëùÇ‚Ç∑
         if (Input.GetKeyDown(KeyCode.F6))
         {
             attackValue = 99999; 

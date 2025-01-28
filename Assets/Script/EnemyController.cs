@@ -118,6 +118,7 @@ public class EnemyController : MonoBehaviour
         Vector3 targetPos = tilemap.GetCellCenterLocal(new Vector3Int(targetPosition.x,targetPosition.y,0));
         Debug.Log($"targetPos:{targetPos}");
         transform.position = Vector3.Lerp(transform.position, targetPos, 1f);
+        currentGridPosition=
     }
 
     /// <summary>

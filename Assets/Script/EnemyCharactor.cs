@@ -40,8 +40,9 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
     {
         var player=GameObject.FindWithTag("Player").GetComponent<PlayerCharacter>();
         player.GetEXP(EXP);
-        turnManager.RemoveEnemies(0);
         Destroy(this.gameObject);
+        turnManager.RemoveEnemies(num);
+        
     }
 
     public void SetNum(int setNum)
@@ -49,8 +50,8 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
         num = setNum;
     }
 
-    public int GetNum()
+    public void DecrementNum()
     {
-        return num;
+        if(num>0)num--; 
     }
 }

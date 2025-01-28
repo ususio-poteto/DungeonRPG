@@ -174,6 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHitPoint: 1
   EXP: 100
+  num: 0
 --- !u!114 &2526375777799732915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,3 +190,4 @@ MonoBehaviour:
   path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
   goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
   eState: 0
+  player: {fileID: 1198973090556277434, guid: d6bb1582aa099a0418ad5936be2efce3, type: 3}

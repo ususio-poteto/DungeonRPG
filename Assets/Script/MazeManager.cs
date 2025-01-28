@@ -149,8 +149,6 @@ public class MazeManager : MonoBehaviour
         startPosition = pathPosition[rnd];
 
         Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(randomPosition.x, randomPosition.y, 0));
-        Debug.Log("position" + randomPosition.x + "," + randomPosition.y);
-        //Debug.Log(maze[randomPosition.x, randomPosition.y]);
         Instantiate(player, worldPosition, Quaternion.identity);
         pathPosition.RemoveAt(rnd);
     }
@@ -167,6 +165,7 @@ public class MazeManager : MonoBehaviour
             var createEnemy = Instantiate(enemy, worldPosition, Quaternion.identity);
             var enemyCharactor = createEnemy.GetComponent<EnemyCharactor>();
             enemies.Add(createEnemy);
+            //enemies[i] = createEnemy;
             enemyCharactor.SetNum(i);
             pathPosition.RemoveAt(rnd);
         }

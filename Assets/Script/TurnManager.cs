@@ -24,8 +24,6 @@ public class TurnManager : MonoBehaviour
             MoveEnemy();
         }
 
-        Debug.Log($"EnemyCount{enemies.Count}");
-
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F2))
         {
@@ -47,21 +45,24 @@ public class TurnManager : MonoBehaviour
 
     void MoveEnemy()
     {
-        //foreach (var enemy in enemies)
-        //{
-        //    var enemyController = enemy.GetComponent<EnemyController>();
-        //    enemyController.MyTurn();
-        //}
-
-        for(int i = 0; i < enemies.Count; i++)
+        foreach (var enemy in enemies)
         {
-            var enemyController = enemies[i].GetComponent<EnemyController>();
-            enemyController.MyTurn();
+            if (enemies != null)
+            {
+                var enemyController = enemy.GetComponent<EnemyController>();
+                enemyController.MyTurn();
+            }
+            
         }
     }
 
     public void RemoveEnemies(int num)
     {
         enemies.RemoveAt(num);
+        foreach(var enemy in enemies)
+        {
+            var enemyCharactor = enemy.GetComponent<EnemyCharactor>();
+            enemyCharactor.DecrementNum();
+        }  
     }
 }

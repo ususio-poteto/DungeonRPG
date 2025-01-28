@@ -49,8 +49,6 @@ public class EnemyController : MonoBehaviour
 
     float attackDistance = 1;
 
-    GameObject player;
-
     Vector3 playerPos;
 
     void Start()
@@ -60,10 +58,8 @@ public class EnemyController : MonoBehaviour
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        player = GameObject.FindWithTag("Player");
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
-        Debug.Log($"currentGridPosition{currentGridPosition}");
     }
 
     /// <summary>
@@ -71,12 +67,12 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     public void MyTurn()
     {
+        var player = GameObject.FindWithTag("Player");
         AttackCheckPlayer();
-
-        var playerRoute = SearchPlayer();
+        if (player == null) Debug.Log("null");
+        var playerRoute = SearchPlayer(player.transform.position);
         if (playerRoute.Count <= 300) eState = state.tracking;
         else eState = state.patrol;
-
         if (eState == state.patrol) RandomMove();
         else if (eState == state.tracking) TrackingMove(playerRoute[1]);
     }
@@ -98,15 +94,15 @@ public class EnemyController : MonoBehaviour
     /// <summary>
     /// playerÇ‹Ç≈ÇÃç≈íZåoòHÇåüçı
     /// </summary>
-    List<Vector2Int> SearchPlayer()
+    List<Vector2Int> SearchPlayer(Vector3 setPosition)
     {
         Vector2Int startPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
-        Vector3 playerPos = player.transform.position ;
-        Debug.Log($"playerPos{playerPos}");
+        //Debug.Log($"playerPos{player.transform.position}");
+        Vector3 playerPos = setPosition;
         Vector2Int goalPos = new Vector2Int(Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
         int[,] maze = mazeManager.GetMaze();
         var playerRoute = aStarAlgorithm.FindPath(maze, startPos, goalPos);
-        Debug.Log($"ç≈íZåoòHÇÃï‡êî{playerRoute.Count}");
+        //Debug.Log($"ç≈íZåoòHÇÃï‡êî{playerRoute.Count}");
         return playerRoute;
     }
 
@@ -116,9 +112,9 @@ public class EnemyController : MonoBehaviour
     void TrackingMove(Vector2Int targetPosition)
     {
         Vector3 targetPos = tilemap.GetCellCenterLocal(new Vector3Int(targetPosition.x,targetPosition.y,0));
-        Debug.Log($"targetPos:{targetPos}");
+        //Debug.Log($"targetPos:{targetPos}");
         transform.position = Vector3.Lerp(transform.position, targetPos, 1f);
-        currentGridPosition=
+        currentGridPosition = tilemap.WorldToCell(targetPos);
     }
 
     /// <summary>

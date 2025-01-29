@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageLevel: 1
   stageText: {fileID: 58429027}
+  mazeManager: {fileID: 0}
 --- !u!1 &52149113
 GameObject:
   m_ObjectHideFlags: 0

@@ -972,6 +972,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   path_tile: {fileID: 0}
   goal_tile: {fileID: 0}
+  route_tile: {fileID: 0}
   AttackEffect: {fileID: 0}
   eState: 0
   attackDistance: 0.5

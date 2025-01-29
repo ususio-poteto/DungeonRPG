@@ -36,6 +36,9 @@ public class EnemyController : MonoBehaviour
     TileBase goal_tile;
 
     [SerializeField]
+    TileBase route_tile;
+
+    [SerializeField]
     GameObject AttackEffect;
 
     float moveTime = 0.2f;

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b938ca6f901482b4a979a6908d075a97
+guid: 9e20a045f44df3c4594bfd35155907dd
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: kabocha_0
+      name: pipo-btleffect122_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
-        width: 32
-        height: 32
+        y: 240
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5e8299c987a15ac4983eaeed979b50ff
-      internalID: -621603739
+      spriteID: 6bc0f9443e312e6458727fa375623cd8
+      internalID: 946867035
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: kabocha_1
+      name: pipo-btleffect122_1
       rect:
         serializedVersion: 2
-        x: 32
-        y: 96
-        width: 32
-        height: 32
+        x: 240
+        y: 240
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 88e66628a23f18b46b92d232d5c7f215
-      internalID: -2143249119
+      spriteID: 4399a9db631fd0a448f6ae4a3f93d813
+      internalID: -1929605147
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: kabocha_2
+      name: pipo-btleffect122_2
       rect:
         serializedVersion: 2
-        x: 64
-        y: 96
-        width: 32
-        height: 32
+        x: 480
+        y: 240
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0bfedc2544d991b42b1e01acbda4720d
-      internalID: -34058683
+      spriteID: 12ed0ce973ab84541845932b9f110d70
+      internalID: 1157625806
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: kabocha_3
+      name: pipo-btleffect122_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 64
-        width: 32
-        height: 32
+        x: 720
+        y: 240
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52d0b7e7d0679b3448c85d331d467631
-      internalID: -303653047
+      spriteID: 14215a40db9c4f944b0e25c21931dcfd
+      internalID: -1145709147
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: kabocha_4
+      name: pipo-btleffect122_4
       rect:
         serializedVersion: 2
-        x: 32
-        y: 64
-        width: 32
-        height: 32
+        x: 960
+        y: 240
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,104 +195,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dd8cfaf653e90f44d88f14a94661c827
-      internalID: 1544764345
+      spriteID: 8da14c6638828424b81a54013d533378
+      internalID: 1003167351
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: kabocha_5
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 64
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c3674a0461b761141a6b9985fd7e9193
-      internalID: -599639800
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: kabocha_6
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a06bfc0f9f34a45459a2707e52fb87fd
-      internalID: -442976249
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: kabocha_7
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b95b1f8ebc80b6b4e8f717e58e3c0fcf
-      internalID: -1667984534
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: kabocha_8
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4c939c10f70a1424693a106bad895f1f
-      internalID: 592807455
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: kabocha_9
+      name: pipo-btleffect122_5
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -300,20 +216,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0c25a87c385ba2a4990775eb43d68f51
-      internalID: 116853074
+      spriteID: 69890c2446f69064f9ce4434b00022bc
+      internalID: -1820481598
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: kabocha_10
+      name: pipo-btleffect122_6
       rect:
         serializedVersion: 2
-        x: 32
+        x: 240
         y: 0
-        width: 32
-        height: 32
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -321,20 +237,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2946e98596d53c4fb4845f9371762c3
-      internalID: 1599365146
+      spriteID: 065a65c8a1a1f924ab080b4a63fbda9d
+      internalID: -1940830882
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: kabocha_11
+      name: pipo-btleffect122_7
       rect:
         serializedVersion: 2
-        x: 64
+        x: 480
         y: 0
-        width: 32
-        height: 32
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -342,8 +258,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e64ae8e4177e3ec438f99bca551f5cfe
-      internalID: -234901491
+      spriteID: c7ef232ba4c321940aa8c17f2588c6a5
+      internalID: -1586264508
       vertices: []
       indices: 
       edges: []
@@ -359,18 +275,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      kabocha_0: -621603739
-      kabocha_1: -2143249119
-      kabocha_10: 1599365146
-      kabocha_11: -234901491
-      kabocha_2: -34058683
-      kabocha_3: -303653047
-      kabocha_4: 1544764345
-      kabocha_5: -599639800
-      kabocha_6: -442976249
-      kabocha_7: -1667984534
-      kabocha_8: 592807455
-      kabocha_9: 116853074
+      pipo-btleffect122_0: 946867035
+      pipo-btleffect122_1: -1929605147
+      pipo-btleffect122_2: 1157625806
+      pipo-btleffect122_3: -1145709147
+      pipo-btleffect122_4: 1003167351
+      pipo-btleffect122_5: -1820481598
+      pipo-btleffect122_6: -1940830882
+      pipo-btleffect122_7: -1586264508
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

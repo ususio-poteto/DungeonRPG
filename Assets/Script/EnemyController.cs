@@ -82,7 +82,14 @@ public class EnemyController : MonoBehaviour
     {
         var player = GameObject.FindWithTag("Player");        
         if (player == null) return;
-
+        //ここでrayを飛ばしてtagがenemyに当たればターンを終了させる。
+        foreach(Vector3 direction in directions)
+        {
+            var hit = Physics2D.Raycast(transform.position, direction, canMoveDistance);
+            Debug.Log(hit.collider.name);
+            Debug.DrawRay(transform.position, direction * canMoveDistance, Color.red, 0.5f);
+            if (hit.collider != null) return;
+        }
         var playerRoute = SearchPlayer(player.transform.position);
         Debug.Log($"routeCount{playerRoute.Count}");
         if (playerRoute.Count < 3) eState = state.attack;

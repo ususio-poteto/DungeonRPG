@@ -812,13 +812,15 @@ GameObject:
   - component: {fileID: 467166067}
   - component: {fileID: 467166066}
   - component: {fileID: 467166070}
+  - component: {fileID: 467166072}
+  - component: {fileID: 467166071}
   m_Layer: 0
   m_Name: koumori_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!50 &467166066
 Rigidbody2D:
   serializedVersion: 4
@@ -978,6 +980,42 @@ MonoBehaviour:
   attackDistance: 0.5
   canMoveDistance: 0.5
   attackValue: 0
+--- !u!95 &467166071
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467166065}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &467166072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467166065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d36afc6a4a21c9641bc489fd404f4755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHitPoint: 0
+  EXP: 0
+  num: 0
 --- !u!1 &533992683
 GameObject:
   m_ObjectHideFlags: 0
@@ -1809,16 +1847,16 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 581389540}
+  - {fileID: 2197612}
+  - {fileID: 1458282415}
   - {fileID: 307219761}
+  - {fileID: 52149117}
+  - {fileID: 1079255875}
   - {fileID: 1588255323}
   - {fileID: 1852894158}
   - {fileID: 1984477659}
   - {fileID: 1005305770}
-  - {fileID: 2197612}
   - {fileID: 467166069}
-  - {fileID: 1458282415}
-  - {fileID: 52149117}
-  - {fileID: 1079255875}
-  - {fileID: 1546623258}
   - {fileID: 2047069648}
   - {fileID: 301253043}
+  - {fileID: 1546623258}

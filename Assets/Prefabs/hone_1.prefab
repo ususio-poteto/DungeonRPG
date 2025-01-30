@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -2546393786683867910}
   - component: {fileID: 1912332777729214027}
   - component: {fileID: 2526375777799732915}
+  - component: {fileID: -4538482758526024827}
   m_Layer: 0
   m_Name: hone_1
   m_TagString: Enemy
@@ -190,8 +191,29 @@ MonoBehaviour:
   path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
   goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
   route_tile: {fileID: 11400000, guid: 60244e4b34a850f40b16682f2383f167, type: 2}
-  AttackEffect: {fileID: 6548927186152549506, guid: 10fbccf199faae4488086fa98e134708, type: 3}
+  AttackEffect: {fileID: 5553448985317938672, guid: fecfd33193055b54dab16864b995cf5a, type: 3}
   eState: 0
   attackDistance: 0.6
   canMoveDistance: 0.6
   attackValue: 10
+--- !u!95 &-4538482758526024827
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5954483517375672540}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 349f2a594452601409a05469920be099, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

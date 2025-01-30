@@ -8,9 +8,6 @@ public class AttackEffectController : MonoBehaviour
     float animationLength;
 
     float currentTime = 0f;
-
-    [SerializeField]
-    PlayerController playerController;
     // Start is called before the first frame update
     void Start()
     {

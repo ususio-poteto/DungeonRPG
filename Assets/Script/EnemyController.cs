@@ -53,6 +53,16 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     state eState = state.patrol;
 
+    enum nowDirection
+    {
+        up,
+        down,
+        left,
+        right
+    }
+
+    nowDirection eNowDirection;
+
     [SerializeField]
     float attackDistance;
 
@@ -64,6 +74,8 @@ public class EnemyController : MonoBehaviour
 
     Vector3 playerPos;
 
+    private Vector3 previousPosition;
+
     void Start()
     {
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
@@ -73,6 +85,7 @@ public class EnemyController : MonoBehaviour
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         Vector3 worldPosition = transform.position;
         currentGridPosition = tilemap.WorldToCell(worldPosition);
+        previousPosition = transform.position;
     }
 
     /// <summary>
@@ -83,15 +96,14 @@ public class EnemyController : MonoBehaviour
         var player = GameObject.FindWithTag("Player");        
         if (player == null) return;
         //ここでrayを飛ばしてtagがenemyに当たればターンを終了させる。
-        foreach(Vector3 direction in directions)
-        {
-            var hit = Physics2D.Raycast(transform.position, direction, canMoveDistance);
-            Debug.Log(hit.collider.name);
-            Debug.DrawRay(transform.position, direction * canMoveDistance, Color.red, 0.5f);
-            if (hit.collider != null) return;
-        }
+        //foreach (Vector3 direction in directions)
+        //{
+        //    var hit = Physics2D.Raycast(transform.position, direction, canMoveDistance);
+        //    Debug.Log(hit.collider.name);
+        //    Debug.DrawRay(transform.position, direction * canMoveDistance, Color.red, 0.5f);
+        //    if (hit.collider != null) return;
+        //}
         var playerRoute = SearchPlayer(player.transform.position);
-        Debug.Log($"routeCount{playerRoute.Count}");
         if (playerRoute.Count < 3) eState = state.attack;
         else if (playerRoute.Count <= 300) eState = state.tracking;
         else eState = state.patrol;
@@ -115,7 +127,6 @@ public class EnemyController : MonoBehaviour
 
             if (hit.collider != null && hit.collider.tag == "Player")
             {
-                //Debug.Log("hit");
                 var IDamagable=hit.collider.GetComponent<IDamagable>();
                 IDamagable.TakeDamage(attackValue);
                 Instantiate(AttackEffect, transform.position + direction, Quaternion.identity);
@@ -143,9 +154,20 @@ public class EnemyController : MonoBehaviour
     void TrackingMove(Vector2Int targetPosition)
     {
         Vector3 targetPos = tilemap.GetCellCenterLocal(new Vector3Int(targetPosition.x,targetPosition.y,0));
-        //Debug.Log($"targetPos:{targetPos}");
         transform.position = Vector3.Lerp(transform.position, targetPos, 1f);
         currentGridPosition = tilemap.WorldToCell(targetPos);
+        Vector3 direction = transform.position - previousPosition;
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            if (direction.x > 0) eNowDirection = nowDirection.right;
+            else eNowDirection = nowDirection.left;
+        }
+        else
+        {
+            if (direction.y > 0) eNowDirection = nowDirection.up;
+            else eNowDirection = nowDirection.down;
+        }
+        previousPosition = transform.position;
     }
 
     /// <summary>

@@ -234,7 +234,7 @@ public class MazeManager : MonoBehaviour
         {
             //Debug.Log("StageManager:MazeBarMethod");
             MazeBarMethod(20, 20);
-            CreateEnemy(30);
+            CreateEnemy(1);
         }
 
         else if (stageLevel >= 11 && stageLevel < 20)

@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
     float moveTime = 0.2f;
 
-    float distance = 1.5f;
+    float distance = 1.0f;
 
     Vector3Int currentGridPosition;
 
@@ -201,25 +201,26 @@ public class PlayerController : MonoBehaviour
                 {
                     case eDirection.up:
                         createPosition = transform.position + new Vector3(0, 1, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + Vector3.up, Vector2.up, distance);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector2.up, distance);
                         Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), Vector2.up * distance, Color.red, 1f);
                         break;
                     case eDirection.down:
                         createPosition = transform.position + new Vector3(0, -1, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + Vector3.down, Vector2.down, distance);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(0, -0.5f, 0), Vector2.down, distance);
                         Debug.DrawRay(transform.position + new Vector3(0, -0.5f, 0), Vector2.down * distance, Color.red, 1f);
                         break;
                     case eDirection.left:
                         createPosition = transform.position + new Vector3(-1, 0, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + Vector3.left, Vector2.left, distance);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(-0.5f, 0, 0), Vector2.left, distance);
                         Debug.DrawRay(transform.position + new Vector3(-0.5f, 0, 0), Vector2.left * distance, Color.red, 1f);
                         break;
                     case eDirection.right:
                         createPosition = transform.position + new Vector3(1, 0, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + Vector3.right, Vector2.right, distance);
-                        Debug.DrawRay(transform.position + new Vector3(0.5f, 0, 0), Vector2.right * distance, Color.red, 1f);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(0.5f, 0, 0), Vector2.right, distance);
+                        Debug.DrawRay(transform.position + new Vector3(0.5f , 0, 0), Vector2.right * distance, Color.red, 1f);
                         break;
                 }
+                Debug.Log($"hit{hit.collider.name}");
                 isAttack = true;
                 var cteateObject = Instantiate(attackEffect, createPosition, Quaternion.identity);
                 if (hit.collider != null) Attack(hit);

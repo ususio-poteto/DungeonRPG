@@ -60,13 +60,15 @@ public class TurnManager : MonoBehaviour
     {
         enemies.RemoveAt(num);
         Debug.Log($"num:{num}");
+        Debug.Log($"EnemiseCount:{enemies.Count}");
+
         //foreach(var enemy in enemies)
         //{
         //    var enemyCharactor = enemy.GetComponent<EnemyCharactor>();
         //    enemyCharactor.DecrementNum();
         //}  
 
-        for(int i = num; i < enemies.Count; i++)
+        for (int i = num; i < enemies.Count; i++)
         {
             var enemyCharactor = enemies[i].GetComponent<EnemyCharactor>();
             enemyCharactor.DecrementNum();

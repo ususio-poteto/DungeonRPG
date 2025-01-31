@@ -22,8 +22,11 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
 
     GameObject player;
 
+    bool isInitialized=true;
+
     void Start()
     {
+        isInitialized = false;
         hitPoint = maxHitPoint;
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
@@ -31,6 +34,8 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
 
     void Update()
     {
+        if (!isInitialized) return;
+        Debug.Log($"hitpoint:{hitPoint}");
         if (hitPoint <= 0)
         {
             player = GameObject.FindWithTag("Player");
@@ -45,8 +50,9 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
         hitPoint -= damage;
     }
 
-    public void Death()
+    void Death()
     {
+        Debug.Log("Ž€‚ñ‚¾!");
         var playerCharactor = player.GetComponent<PlayerCharacter>();
         playerCharactor.GetEXP(EXP);
         Destroy(this.gameObject);

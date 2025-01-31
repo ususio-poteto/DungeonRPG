@@ -94,7 +94,7 @@ public class EnemyController : MonoBehaviour
     public void MyTurn()
     {
         var player = GameObject.FindWithTag("Player");        
-        if (player == null) return;
+        if (player == null) Debug.Log("見つかりません。");
         //ここでrayを飛ばしてtagがenemyに当たればターンを終了させる。
         //foreach (Vector3 direction in directions)
         //{

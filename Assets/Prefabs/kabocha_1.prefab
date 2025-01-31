@@ -119,7 +119,7 @@ MonoBehaviour:
   path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
   goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
   route_tile: {fileID: 11400000, guid: 60244e4b34a850f40b16682f2383f167, type: 2}
-  AttackEffect: {fileID: 0}
+  AttackEffect: {fileID: 4575226819550314904, guid: 2ccc880dd5d8a7445a5880f014cd44a9, type: 3}
   eState: 0
   attackDistance: 0.6
   canMoveDistance: 0.6

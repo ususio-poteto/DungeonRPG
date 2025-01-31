@@ -50,8 +50,6 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
         level = gameManager.GetPlayerLevel();
         SetHP();
         SetExp();
-        slider.maxValue = HP;
-        slider.value = HP;
     }
     
     void Update()
@@ -95,6 +93,8 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
     {
         HP = baseHitPoint + level * (level - 1);
         maxHP = HP;
+        slider.maxValue = HP;
+        slider.value = HP;
     }
 
     void SetExp()
@@ -122,7 +122,7 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
         }
     }
 
-    public void Death()
+    void Death()
     {
         gameManager.isDead();
         Destroy(gameObject);

@@ -9,7 +9,7 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
     [SerializeField]
     int maxHitPoint;
 
-    int hitPoint;
+    public int hitPoint;
 
     [SerializeField]
     int EXP;
@@ -22,32 +22,34 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
 
     GameObject player;
 
-    bool isInitialized=true;
+    bool isDeath = false;//Ž€‚Ë‚é‚©‚Ç‚¤‚©
 
-    void Start()
+    void Awake()
     {
-        isInitialized = false;
         hitPoint = maxHitPoint;
+        Debug.Log($"hp:{hitPoint}");
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
     }
 
     void Update()
     {
-        if (!isInitialized) return;
-        Debug.Log($"hitpoint:{hitPoint}");
         if (hitPoint <= 0)
         {
             player = GameObject.FindWithTag("Player");
             //‚±‚±‚ÅŠm—¦‚Åƒ‰ƒ“ƒ_ƒ€Œø‰Ê”­“®
-            GiveBuff();
-            Death();
+            if(isDeath)
+            {
+                GiveBuff();
+                Death();
+            }
         }
     }
 
     public void TakeDamage(int damage)
     {
         hitPoint -= damage;
+        isDeath = true;
     }
 
     void Death()

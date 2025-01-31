@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67b47365e39d5c48bad9833e361ad0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageLevel: 11
+  stageLevel: 1
   stageText: {fileID: 58429027}
   mazeManager: {fileID: 581389541}
 --- !u!1 &52149113
@@ -929,9 +929,19 @@ MonoBehaviour:
   breadthFirstSearch: {fileID: 301253042}
   aStarAlgorithm: {fileID: 2047069647}
   player: {fileID: 1198973090556277434, guid: d6bb1582aa099a0418ad5936be2efce3, type: 3}
-  enemy: {fileID: 5954483517375672540, guid: 098f27aafb62f424db5dfdb26cef5089, type: 3}
   gameManager: {fileID: 2197613}
   searchRoute: 1
+  lowFloor:
+  - {fileID: 2832314512658233924, guid: f5503b1775fe6b04398c6429f05c1647, type: 3}
+  - {fileID: 5954483517375672540, guid: 098f27aafb62f424db5dfdb26cef5089, type: 3}
+  middleFloor:
+  - {fileID: 105961756208750700, guid: 8162a73a26fc8694caaf3124d284e514, type: 3}
+  - {fileID: 1824282708982822592, guid: a579b9f660b32b94b9679326624b1f9e, type: 3}
+  highFloor:
+  - {fileID: 2832314512658233924, guid: f5503b1775fe6b04398c6429f05c1647, type: 3}
+  - {fileID: 5954483517375672540, guid: 098f27aafb62f424db5dfdb26cef5089, type: 3}
+  - {fileID: 1824282708982822592, guid: a579b9f660b32b94b9679326624b1f9e, type: 3}
+  - {fileID: 105961756208750700, guid: 8162a73a26fc8694caaf3124d284e514, type: 3}
 --- !u!1 &666663093
 GameObject:
   m_ObjectHideFlags: 0

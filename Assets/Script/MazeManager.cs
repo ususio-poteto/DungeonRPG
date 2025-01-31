@@ -46,7 +46,6 @@ public class MazeManager : MonoBehaviour
     [SerializeField] 
     GameObject player;
 
-    [SerializeField] 
     GameObject enemy;
 
     [SerializeField] 
@@ -74,6 +73,15 @@ public class MazeManager : MonoBehaviour
     string callClass;
 
     public bool searchRoute = true;
+
+    [SerializeField]
+    List<GameObject> lowFloor;
+
+    [SerializeField]
+    List<GameObject> middleFloor;
+
+    [SerializeField]
+    List<GameObject> highFloor;
 
     void Start()
     { 
@@ -173,6 +181,7 @@ public class MazeManager : MonoBehaviour
 
     void CreateEnemy(int enemyNum)
     {
+        stageLevel = gameManager.GetStageLevel();
         for(int i = 0; i < enemyNum; i++)
         {
             var rnd = Random.Range(0, pathPosition.Count);
@@ -180,6 +189,23 @@ public class MazeManager : MonoBehaviour
             Vector2Int randomPosition = pathPosition[rnd];
 
             Vector3 worldPosition = tilemap.GetCellCenterLocal(new Vector3Int(randomPosition.x, randomPosition.y, 0));
+            if (stageLevel <= 3)
+            {
+                var index = Random.Range(0, lowFloor.Count);
+                enemy = lowFloor[index];
+            }
+
+            else if (stageLevel >= 4 && stageLevel < 9)
+            {
+                var index = Random.Range(0, middleFloor.Count);
+                enemy = middleFloor[index];
+            }
+
+            else if (stageLevel >= 10 && stageLevel <= 15)
+            {
+                var index = Random.Range(0, highFloor.Count);
+                enemy = highFloor[index];
+            }
             var createEnemy = Instantiate(enemy, worldPosition, Quaternion.identity);
             var enemyCharactor = createEnemy.GetComponent<EnemyCharactor>();
             enemies.Add(createEnemy);
@@ -233,26 +259,29 @@ public class MazeManager : MonoBehaviour
         stageLevel = gameManager.GetStageLevel();
         searchRoute = true;
 
-        if (stageLevel <= 3)
-        {
-            //Debug.Log("StageManager:MazeBarMethod");
-            MazeBarMethod(20, 20);
-            CreateEnemy(1);
-        }
+        MazeBarMethod(20, 20);
+        CreateEnemy(10);
 
-        else if (stageLevel >= 4 && stageLevel < 9)
-        {
-            //Debug.Log("StageManager:MazeDigMethod");
-            MazeDigMethod(20, 20);
-            CreateEnemy(1);
-        }
+        //if (stageLevel <= 16)
+        //{
+        //    //Debug.Log("StageManager:MazeBarMethod");
+        //    MazeBarMethod(20, 20);
+        //    CreateEnemy(1);
+        //}
 
-        else if (stageLevel >= 10 && stageLevel <= 15)
-        {
-            //Debug.Log("StageManager:MazeWallMethod");
-            MazeWallMethod(20, 20);
-            CreateEnemy(1);
-        }
+        //else if (stageLevel >= 17 && stageLevel < 18)
+        //{
+        //    //Debug.Log("StageManager:MazeDigMethod");
+        //    MazeDigMethod(20, 20);
+        //    CreateEnemy(1);
+        //}
+
+        //else if (stageLevel >= 17 && stageLevel <= 18)
+        //{
+        //    //Debug.Log("StageManager:MazeWallMethod");
+        //    MazeWallMethod(20, 20);
+        //    CreateEnemy(1);
+        //}
     }
 
     ///<summary>

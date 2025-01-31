@@ -228,25 +228,26 @@ public class MazeManager : MonoBehaviour
 
     void CreateMaze()
     {
+        stageLevel = gameManager.GetStageLevel();
         searchRoute = true;
 
-        if (stageLevel <= 10)
+        if (stageLevel <= 3)
         {
-            //Debug.Log("StageManager:MazeBarMethod");
+            Debug.Log("StageManager:MazeBarMethod");
             MazeBarMethod(20, 20);
             CreateEnemy(1);
         }
 
-        else if (stageLevel >= 11 && stageLevel < 20)
+        else if (stageLevel >= 4 && stageLevel < 9)
         {
-            //Debug.Log("StageManager:MazeDigMethod");
+            Debug.Log("StageManager:MazeDigMethod");
             MazeDigMethod(20, 20);
             CreateEnemy(1);
         }
 
-        else if (stageLevel >= 21 && stageLevel <= 30)
+        else if (stageLevel >= 10 && stageLevel <= 15)
         {
-            //Debug.Log("StageManager:MazeWallMethod");
+            Debug.Log("StageManager:MazeWallMethod");
             MazeWallMethod(20, 20);
             CreateEnemy(1);
         }

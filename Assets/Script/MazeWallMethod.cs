@@ -87,10 +87,10 @@ public class MazeWallMethod : MonoBehaviour
     {
         //伸ばす事ができる方向(1マス先が通路で2マス先まで範囲内)
         var direction = new List<directions>();
-        if (maze[row, col - 1] == path && !IsCurrentWall(row, col - 2)) direction.Add(directions.up);
-        if (maze[row + 1, col] == path && !IsCurrentWall(row + 2, col)) direction.Add(directions.right);
-        if (maze[row, col + 1] == path && !IsCurrentWall(row, col + 2)) direction.Add(directions.down);
-        if (maze[row - 1, col] == path && !IsCurrentWall(row - 2, col)) direction.Add(directions.left);
+        if (col - 2 >= 0 && maze[row, col - 1] == path && !IsCurrentWall(row, col - 2)) direction.Add(directions.up);
+        if (row + 2 < width && maze[row + 1, col] == path && !IsCurrentWall(row + 2, col)) direction.Add(directions.right);
+        if (col + 2 < height && maze[row, col + 1] == path && !IsCurrentWall(row, col + 2)) direction.Add(directions.down);
+        if (row - 2 >= 0 && maze[row - 1, col] == path && !IsCurrentWall(row - 2, col)) direction.Add(directions.left);
 
         //ランダムに伸ばす
         if (direction.Count > 0)

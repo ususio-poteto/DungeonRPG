@@ -176,11 +176,12 @@ MonoBehaviour:
   path_tile: {fileID: 0}
   goal_tile: {fileID: 0}
   route_tile: {fileID: 0}
-  AttackEffect: {fileID: 0}
+  AttackEffect: {fileID: 4575226819550314904, guid: 86620e4ff78457343ba90cbd97d0ae6c, type: 3}
   eState: 0
-  attackDistance: 0.5
-  canMoveDistance: 0.5
-  attackValue: 0
+  attackDistance: 0.6
+  canMoveDistance: 0.6
+  attackValue: 5
+  animator: {fileID: 8411597884049128819}
 --- !u!114 &621189278575065399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,8 +194,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36afc6a4a21c9641bc489fd404f4755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoint: 25
-  EXP: 0
+  maxHitPoint: 10
+  hitPoint: 0
+  EXP: 10
   num: 0
 --- !u!95 &8411597884049128819
 Animator:

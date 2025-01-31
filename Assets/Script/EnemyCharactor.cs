@@ -27,7 +27,7 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
     void Awake()
     {
         hitPoint = maxHitPoint;
-        Debug.Log($"hp:{hitPoint}");
+        //Debug.Log($"hp:{hitPoint}");
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         mazeManager = GameObject.Find("MazeManager").GetComponent<MazeManager>();
     }
@@ -54,7 +54,7 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
 
     void Death()
     {
-        Debug.Log("Ž€‚ñ‚¾!");
+        //Debug.Log("Ž€‚ñ‚¾!");
         var playerCharactor = player.GetComponent<PlayerCharacter>();
         playerCharactor.GetEXP(EXP);
         Destroy(this.gameObject);

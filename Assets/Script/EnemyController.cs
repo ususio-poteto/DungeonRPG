@@ -53,15 +53,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     state eState = state.patrol;
 
-    enum nowDirection
-    {
-        up,
-        down,
-        left,
-        right
-    }
-
-    nowDirection eNowDirection;
+    Vector3 direction;
 
     [SerializeField]
     float attackDistance;
@@ -75,6 +67,9 @@ public class EnemyController : MonoBehaviour
     Vector3 playerPos;
 
     private Vector3 previousPosition;
+
+    [SerializeField]
+    Animator animator;
 
     void Start()
     {
@@ -105,7 +100,7 @@ public class EnemyController : MonoBehaviour
         //}
         var playerRoute = SearchPlayer(player.transform.position);
         if (playerRoute.Count < 3) eState = state.attack;
-        else if (playerRoute.Count <= 300) eState = state.tracking;
+        else if (playerRoute.Count <= 10) eState = state.tracking;
         else eState = state.patrol;
 
         if (eState == state.patrol) RandomMove();
@@ -156,18 +151,19 @@ public class EnemyController : MonoBehaviour
         Vector3 targetPos = tilemap.GetCellCenterLocal(new Vector3Int(targetPosition.x,targetPosition.y,0));
         transform.position = Vector3.Lerp(transform.position, targetPos, 1f);
         currentGridPosition = tilemap.WorldToCell(targetPos);
-        Vector3 direction = transform.position - previousPosition;
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        Vector3 moveDirection = transform.position - previousPosition;
+        if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
         {
-            if (direction.x > 0) eNowDirection = nowDirection.right;
-            else eNowDirection = nowDirection.left;
+            if (moveDirection.x > 0) direction = Vector3.right;
+            else direction = Vector3.left;
         }
         else
         {
-            if (direction.y > 0) eNowDirection = nowDirection.up;
-            else eNowDirection = nowDirection.down;
+            if (moveDirection.y > 0) direction = Vector3.up;
+            else direction = Vector3.down;
         }
         previousPosition = transform.position;
+        RotateAndPlayAnimation(direction);
     }
 
     /// <summary>
@@ -177,6 +173,7 @@ public class EnemyController : MonoBehaviour
     {
         var rnd = Random.Range(0, directions.Length);
         StartCoroutine(MoveToCell(directions[rnd]));
+        RotateAndPlayAnimation(directions[rnd]);
     }
 
     System.Collections.IEnumerator MoveToCell(Vector3Int direction)
@@ -213,5 +210,32 @@ public class EnemyController : MonoBehaviour
     {
         TileBase tile = tilemap.GetTile(gridPosition);
         return tile == path_tile || tile == goal_tile;
+    }
+
+    void RotateAndPlayAnimation(Vector3 direction)
+    {
+        if (direction == Vector3.up)
+        {
+            animator.SetFloat("X", 0);
+            animator.SetFloat("Y", 1);
+        }
+
+        else if (direction == Vector3.down) 
+        {
+            animator.SetFloat("X", 0);
+            animator.SetFloat("Y", -1);
+        }
+
+        else if (direction == Vector3.left)
+        {
+            animator.SetFloat("X", -1);
+            animator.SetFloat("Y", 0);
+        }
+
+        else if (direction == Vector3.right)
+        {
+            animator.SetFloat("X", 1);
+            animator.SetFloat("Y", 0);
+        }
     }
 }

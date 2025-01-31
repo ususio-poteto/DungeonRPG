@@ -94,6 +94,8 @@ public class MazeManager : MonoBehaviour
         {
             DestroyEnemy();
         }
+
+        Debug.Log($"stageLevel:{stageLevel}");
     }
 #endif
 
@@ -143,7 +145,7 @@ public class MazeManager : MonoBehaviour
     {
         List<Vector2Int> position = new List<Vector2Int>();
 
-        Debug.Log($"MazeSize{maze.GetLength(0)}*{maze.GetLength(1)}");
+        //Debug.Log($"MazeSize{maze.GetLength(0)}*{maze.GetLength(1)}");
 
         for (int row = 0; row < maze.GetLength(1); row++)
         {
@@ -228,23 +230,24 @@ public class MazeManager : MonoBehaviour
 
     void CreateMaze()
     {
+        stageLevel = gameManager.GetStageLevel();
         searchRoute = true;
 
-        if (stageLevel <= 10)
+        if (stageLevel <= 3)
         {
             //Debug.Log("StageManager:MazeBarMethod");
             MazeBarMethod(20, 20);
             CreateEnemy(1);
         }
 
-        else if (stageLevel >= 11 && stageLevel < 20)
+        else if (stageLevel >= 4 && stageLevel < 9)
         {
             //Debug.Log("StageManager:MazeDigMethod");
             MazeDigMethod(20, 20);
             CreateEnemy(1);
         }
 
-        else if (stageLevel >= 21 && stageLevel <= 30)
+        else if (stageLevel >= 10 && stageLevel <= 15)
         {
             //Debug.Log("StageManager:MazeWallMethod");
             MazeWallMethod(20, 20);
@@ -255,9 +258,9 @@ public class MazeManager : MonoBehaviour
     ///<summary>
     ///ñ_ì|Çµñ@Çé¿çsÇ∑ÇÈÇΩÇﬂÇÃä÷êî
     ///</summary>
-    public void MazeBarMethod(int x,int y)
+    public void MazeBarMethod(int row,int col)
     {
-        maze = mazeBarMethod.GenarateMaze(x, y);
+        maze = mazeBarMethod.GenarateMaze(row, col);
 
         CreateGoal();
 
@@ -273,9 +276,9 @@ public class MazeManager : MonoBehaviour
     ///<summary>
     ///åäå@ÇËñ@Çé¿çsÇ∑ÇÈÇΩÇﬂÇÃä÷êî
     /// </summary>
-    public void MazeDigMethod(int x,int y)
+    public void MazeDigMethod(int row,int col)
     {
-        mazeDigMethod.Initialize(x, y);
+        mazeDigMethod.Initialize(row, col);
         maze = mazeDigMethod.CreateMaze();
 
         CreateGoal();
@@ -292,9 +295,9 @@ public class MazeManager : MonoBehaviour
     ///<summary>
     ///ï«êLÇŒÇµñ@Çé¿çsÇ∑ÇÈÇΩÇﬂÇÃä÷êî
     /// </summary>
-    public void MazeWallMethod(int x,int y)
+    public void MazeWallMethod(int row,int col)
     {
-        mazeWallMethod.Initialize(x, y);
+        mazeWallMethod.Initialize(row, col);
         maze = mazeWallMethod.CreateMaze();
 
         CreateGoal();

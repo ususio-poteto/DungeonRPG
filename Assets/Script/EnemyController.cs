@@ -106,7 +106,6 @@ public class EnemyController : MonoBehaviour
         if (eState == state.patrol) RandomMove();
         else if (eState == state.tracking) TrackingMove(playerRoute[1]);
         else if (eState == state.attack) AttackPlayer();
-
     }
 
     /// <summary>

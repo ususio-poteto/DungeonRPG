@@ -14,7 +14,7 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
 
     int maxHP;
 
-    int baseExp = 50;
+    int baseExp = 10;
 
     int increment = 100;
 

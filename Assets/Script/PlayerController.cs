@@ -147,8 +147,8 @@ public class PlayerController : MonoBehaviour
 
                 if (moveDirection != Vector3Int.zero)
                 {
-                    //turnManager.SwitchTurn();
                     StartCoroutine(MoveToCell(moveDirection));
+                    turnManager.SwitchTurn();
                 }
             }
 
@@ -170,6 +170,7 @@ public class PlayerController : MonoBehaviour
                     direction = eDirection.up;
                     playerAnim.SetFloat("X", 0);
                     playerAnim.SetFloat("Y", 1);
+                    turnManager.SwitchTurn();
                 }
 
                 if (Input.GetKeyDown(KeyCode.S))
@@ -177,6 +178,7 @@ public class PlayerController : MonoBehaviour
                     direction = eDirection.down;
                     playerAnim.SetFloat("X", 0);
                     playerAnim.SetFloat("Y", -1);
+                    turnManager.SwitchTurn();
                 }
 
                 if (Input.GetKeyDown(KeyCode.A))
@@ -184,6 +186,7 @@ public class PlayerController : MonoBehaviour
                     direction = eDirection.left;
                     playerAnim.SetFloat("X", -1);
                     playerAnim.SetFloat("Y", 0);
+                    turnManager.SwitchTurn();
                 }
 
                 if(Input.GetKeyDown(KeyCode.D))
@@ -191,6 +194,7 @@ public class PlayerController : MonoBehaviour
                     direction = eDirection.right;
                     playerAnim.SetFloat("X", 1);
                     playerAnim.SetFloat("Y", 0);
+                    turnManager.SwitchTurn();
                 }
             }
 
@@ -224,9 +228,10 @@ public class PlayerController : MonoBehaviour
                 isAttack = true;
                 var cteateObject = Instantiate(attackEffect, createPosition, Quaternion.identity);
                 if (hit.collider != null) Attack(hit);
-            }               
+                turnManager.SwitchTurn();   
+            }          
         }
-        
+
 #if UNITY_EDITOR
         //ç≈íZåoòHíTçı
         if (Input.GetKeyDown(KeyCode.F4))
@@ -282,11 +287,8 @@ public class PlayerController : MonoBehaviour
                 gameManager.isGoal();
                 mazeManager.RecreateMaze();
             }
-        }   
+        }
         isMoving = false;
-        //é¿ç€Ç…ÇÕà⁄ìÆÇµÇƒÇ¢Ç»Ç¢Ç™É^Å[ÉìÇ™ïœÇÌÇÈÇÃÇ≈óvèCê≥
-        //turnManager.SwitchTurn();
-        
     }
 
     bool CanMoveToTile(Vector3Int gridPosition)

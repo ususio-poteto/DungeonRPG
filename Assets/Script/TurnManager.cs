@@ -52,8 +52,8 @@ public class TurnManager : MonoBehaviour
                 var enemyController = enemy.GetComponent<EnemyController>();
                 enemyController.MyTurn();
             }
-            
         }
+        SwitchTurn();
     }
 
     public void RemoveEnemies(int num)

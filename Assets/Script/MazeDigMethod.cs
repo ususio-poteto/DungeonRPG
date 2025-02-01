@@ -68,7 +68,7 @@ public class MazeDigMethod : MonoBehaviour
         {
             var direction = new List<directions>();
             if (maze[row, col - 1] == wall && maze[row, col - 2] == wall) direction.Add(directions.up);
-            if (maze[row + 1, col] == wall && maze[row + 1, col] == wall) direction.Add(directions.right);
+            if (maze[row + 1, col] == wall && maze[row + 2, col] == wall) direction.Add(directions.right);
             if (maze[row, col + 1] == wall && maze[row, col + 2] == wall) direction.Add(directions.down);
             if (maze[row - 1, col] == wall && maze[row - 2, col] == wall) direction.Add(directions.left);
 

@@ -271,8 +271,14 @@ public class MazeManager : MonoBehaviour
         stageLevel = gameManager.GetStageLevel();
         searchRoute = true;
 
-        MazeBarMethod(20, 20);
+        //MazeBarMethod(20, 20);
+        //CreateEnemy(6);
+
+        MazeDigMethod(20, 20);
         CreateEnemy(6);
+
+        //MazeBarMethod(20, 20);
+        //CreateEnemy(6);
 
         //if (stageLevel <= 16)
         //{

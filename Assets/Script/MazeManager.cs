@@ -103,7 +103,7 @@ public class MazeManager : MonoBehaviour
             DestroyEnemy();
         }
 
-        Debug.Log($"stageLevel:{stageLevel}");
+        //Debug.Log($"stageLevel:{stageLevel}");
     }
 #endif
 
@@ -260,7 +260,7 @@ public class MazeManager : MonoBehaviour
         searchRoute = true;
 
         MazeBarMethod(20, 20);
-        CreateEnemy(10);
+        CreateEnemy(6);
 
         //if (stageLevel <= 16)
         //{

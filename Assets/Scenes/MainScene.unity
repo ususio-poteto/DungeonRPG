@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67b47365e39d5c48bad9833e361ad0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageLevel: 1
+  stageLevel: 5
   stageText: {fileID: 58429027}
   mazeManager: {fileID: 581389541}
 --- !u!1 &52149113
@@ -932,7 +932,6 @@ MonoBehaviour:
   gameManager: {fileID: 2197613}
   searchRoute: 1
   lowFloor:
-  - {fileID: 2832314512658233924, guid: f5503b1775fe6b04398c6429f05c1647, type: 3}
   - {fileID: 5954483517375672540, guid: 098f27aafb62f424db5dfdb26cef5089, type: 3}
   middleFloor:
   - {fileID: 105961756208750700, guid: 8162a73a26fc8694caaf3124d284e514, type: 3}

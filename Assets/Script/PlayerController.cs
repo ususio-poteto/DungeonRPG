@@ -32,6 +32,9 @@ public class PlayerController : MonoBehaviour
 
     GameManager gameManager;
 
+    [SerializeField]
+    PlayerCharacter playerCharacter;
+
     bool isMoving = false;
 
     bool isAttack = false;
@@ -106,6 +109,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.rotation= Quaternion.identity;
         //Debug.Log(direction);
         if (turnManager.GetPlayerTurn()) 
         {
@@ -148,6 +152,7 @@ public class PlayerController : MonoBehaviour
                 if (moveDirection != Vector3Int.zero)
                 {
                     StartCoroutine(MoveToCell(moveDirection));
+                    playerCharacter.Healing(5);
                     turnManager.SwitchTurn();
                 }
             }
@@ -170,7 +175,6 @@ public class PlayerController : MonoBehaviour
                     direction = eDirection.up;
                     playerAnim.SetFloat("X", 0);
                     playerAnim.SetFloat("Y", 1);
-                    turnManager.SwitchTurn();
                 }
 
                 if (Input.GetKeyDown(KeyCode.S))
@@ -178,7 +182,6 @@ public class PlayerController : MonoBehaviour
                     direction = eDirection.down;
                     playerAnim.SetFloat("X", 0);
                     playerAnim.SetFloat("Y", -1);
-                    turnManager.SwitchTurn();
                 }
 
                 if (Input.GetKeyDown(KeyCode.A))
@@ -186,7 +189,6 @@ public class PlayerController : MonoBehaviour
                     direction = eDirection.left;
                     playerAnim.SetFloat("X", -1);
                     playerAnim.SetFloat("Y", 0);
-                    turnManager.SwitchTurn();
                 }
 
                 if(Input.GetKeyDown(KeyCode.D))
@@ -194,7 +196,6 @@ public class PlayerController : MonoBehaviour
                     direction = eDirection.right;
                     playerAnim.SetFloat("X", 1);
                     playerAnim.SetFloat("Y", 0);
-                    turnManager.SwitchTurn();
                 }
             }
 
@@ -205,29 +206,29 @@ public class PlayerController : MonoBehaviour
                 {
                     case eDirection.up:
                         createPosition = transform.position + new Vector3(0, 1, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(0, 0.5f, 0), Vector2.up, distance);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(0, 1f, 0), Vector2.up, distance);
                         Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), Vector2.up * distance, Color.red, 1f);
                         break;
                     case eDirection.down:
                         createPosition = transform.position + new Vector3(0, -1, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(0, -0.5f, 0), Vector2.down, distance);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(0, -1f, 0), Vector2.down, distance);
                         Debug.DrawRay(transform.position + new Vector3(0, -0.5f, 0), Vector2.down * distance, Color.red, 1f);
                         break;
                     case eDirection.left:
                         createPosition = transform.position + new Vector3(-1, 0, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(-0.5f, 0, 0), Vector2.left, distance);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(-1f, 0, 0), Vector2.left, distance);
                         Debug.DrawRay(transform.position + new Vector3(-0.5f, 0, 0), Vector2.left * distance, Color.red, 1f);
                         break;
                     case eDirection.right:
                         createPosition = transform.position + new Vector3(1, 0, 0.5f);
-                        hit = Physics2D.Raycast(transform.position + new Vector3(0.5f, 0, 0), Vector2.right, distance);
+                        hit = Physics2D.Raycast(transform.position + new Vector3(1f, 0, 0), Vector2.right, distance);
                         Debug.DrawRay(transform.position + new Vector3(0.5f , 0, 0), Vector2.right * distance, Color.red, 1f);
                         break;
                 }
                 Debug.Log($"hit:{hit.collider.name}");
                 isAttack = true;
                 var cteateObject = Instantiate(attackEffect, createPosition, Quaternion.identity);
-                if (hit.collider != null) Attack(hit);
+                if (hit.collider != null && hit.collider.tag == "Enemy") Attack(hit);
                 turnManager.SwitchTurn();   
             }          
         }

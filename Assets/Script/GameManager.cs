@@ -40,10 +40,9 @@ public class GameManager : MonoBehaviour
     }
 
     public void isDead()
-    {
-        mazeManager.RecreateMaze();
-        level = 1;
+    {   level = 1;
         stageLevel = 1;
+        mazeManager.RecreateMaze();      
     }
 
     public Vector3 GetPlayerPosition()

@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
 using TreeEditor;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEditor.Tilemaps;
 using UnityEditor.U2D.Aseprite;
 using UnityEngine;
@@ -90,22 +91,18 @@ public class EnemyController : MonoBehaviour
     {
         var player = GameObject.FindWithTag("Player");        
         if (player == null) Debug.Log("見つかりません。");
-        //ここでrayを飛ばしてtagがenemyに当たればターンを終了させる。
-        //foreach (Vector3 direction in directions)
-        //{
-        //    var hit = Physics2D.Raycast(transform.position, direction, canMoveDistance);
-        //    Debug.Log(hit.collider.name);
-        //    Debug.DrawRay(transform.position, direction * canMoveDistance, Color.red, 0.5f);
-        //    if (hit.collider != null) return;
-        //}
-        var playerRoute = SearchPlayer(player.transform.position);
-        if (playerRoute.Count < 3) eState = state.attack;
-        else if (playerRoute.Count <= 10) eState = state.tracking;
-        else eState = state.patrol;
+        if (!CanMove())
+        {
+            var playerRoute = SearchPlayer(player.transform.position);
+            if (playerRoute.Count < 3) eState = state.attack;
+            else if (playerRoute.Count <= 100) eState = state.tracking;
+            else eState = state.patrol;
 
-        if (eState == state.patrol) RandomMove();
-        else if (eState == state.tracking) TrackingMove(playerRoute[1]);
-        else if (eState == state.attack) AttackPlayer();
+            if (eState == state.patrol) RandomMove();
+            else if (eState == state.tracking) TrackingMove(playerRoute[1]);
+            else if (eState == state.attack) AttackPlayer();
+        }
+        else return;
     }
 
     /// <summary>
@@ -209,6 +206,32 @@ public class EnemyController : MonoBehaviour
     {
         TileBase tile = tilemap.GetTile(gridPosition);
         return tile == path_tile || tile == goal_tile;
+    }
+
+    bool CanMove()
+    {
+        foreach(Vector3 direction in directions)
+        {
+            var hit = Physics2D.Raycast(transform.position, direction, 1f);
+            if (hit.collider != null && hit.collider.tag == "Enemy" && hit.collider.gameObject != this.gameObject)
+            {
+                Debug.Log("1マスヒット");
+                return true;
+            }
+
+            hit = Physics2D.Raycast(transform.position, direction, 2f);
+            if (hit.collider != null && hit.collider.tag == "Enemy" && hit.collider.gameObject != this.gameObject)
+            {
+                var enemyCharactor=hit.collider.GetComponent<EnemyCharactor>();
+                var myEnemyCharactor=this.GetComponent<EnemyCharactor>();
+                if(enemyCharactor != null && enemyCharactor.GetNum()<myEnemyCharactor.GetNum()) 
+                {
+                    Debug.Log("2マスヒット");
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     void RotateAndPlayAnimation(Vector3 direction)

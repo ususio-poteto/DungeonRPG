@@ -128,9 +128,9 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
         Destroy(gameObject);
     }
 
-    public void Healing()
+    public void Healing(int value)
     {
-        HP += 20;
+        HP += value;
         if (HP > maxHP)
         {
             HP = maxHP;

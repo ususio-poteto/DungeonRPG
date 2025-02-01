@@ -77,7 +77,7 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
                 case 2:
                     //HP‚ğˆê’è—Ê‘¦‰ñ•œ
                     var playerCharactor = player.GetComponent<PlayerCharacter>();
-                    playerCharactor.Healing();
+                    playerCharactor.Healing(20);
                     break;
                 case 3:
                     //Å’ZŒo˜H’Tõ
@@ -91,6 +91,11 @@ public class EnemyCharactor : MonoBehaviour, IDamagable
     public void SetNum(int setNum)
     {
         num = setNum;
+    }
+
+    public int GetNum()
+    {
+        return num;
     }
 
     public void DecrementNum()

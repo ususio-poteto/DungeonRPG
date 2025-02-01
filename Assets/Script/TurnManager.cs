@@ -45,6 +45,7 @@ public class TurnManager : MonoBehaviour
 
     void MoveEnemy()
     {
+        Debug.Log($"enemiesCount:{enemies.Count}");
         foreach (var enemy in enemies)
         {
             if (enemies != null)

@@ -119,7 +119,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1198973090556277434}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -198,6 +198,7 @@ MonoBehaviour:
   moveSpeed: 1
   playerAnim: {fileID: 5497147908363590937}
   attackEffect: {fileID: 6548927186152549506, guid: 10fbccf199faae4488086fa98e134708, type: 3}
+  playerCharacter: {fileID: 7129378279749116138}
   path_tile: {fileID: 11400000, guid: cbaeaf258c61e5045ad468510a5545fd, type: 2}
   goal_tile: {fileID: 11400000, guid: 984033a3d1ad5ae4fae87eaf154eae74, type: 2}
   route_tile: {fileID: 11400000, guid: 60244e4b34a850f40b16682f2383f167, type: 2}

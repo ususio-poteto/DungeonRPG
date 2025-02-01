@@ -274,11 +274,11 @@ public class MazeManager : MonoBehaviour
         //MazeBarMethod(20, 20);
         //CreateEnemy(6);
 
-        MazeDigMethod(20, 20);
-        CreateEnemy(6);
-
-        //MazeBarMethod(20, 20);
+        //MazeDigMethod(20, 20);
         //CreateEnemy(6);
+
+        MazeWallMethod(20, 20);
+        CreateEnemy(6);
 
         //if (stageLevel <= 16)
         //{

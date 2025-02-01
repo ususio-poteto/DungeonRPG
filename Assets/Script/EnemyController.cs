@@ -91,18 +91,14 @@ public class EnemyController : MonoBehaviour
     {
         var player = GameObject.FindWithTag("Player");        
         if (player == null) Debug.Log("見つかりません。");
-        if (!CanMove())
-        {
-            var playerRoute = SearchPlayer(player.transform.position);
-            if (playerRoute.Count < 3) eState = state.attack;
-            else if (playerRoute.Count <= 100) eState = state.tracking;
-            else eState = state.patrol;
+        var playerRoute = SearchPlayer(player.transform.position);
+        if (playerRoute.Count < 3) eState = state.attack;
+        else if (playerRoute.Count <= 100) eState = state.tracking;
+        else eState = state.patrol;
 
-            if (eState == state.patrol) RandomMove();
-            else if (eState == state.tracking) TrackingMove(playerRoute[1]);
-            else if (eState == state.attack) AttackPlayer();
-        }
-        else return;
+        if (eState == state.patrol) RandomMove();
+        else if (eState == state.tracking) TrackingMove(playerRoute[1]);
+        else if (eState == state.attack) AttackPlayer();
     }
 
     /// <summary>
@@ -145,9 +141,7 @@ public class EnemyController : MonoBehaviour
     void TrackingMove(Vector2Int targetPosition)
     {
         Vector3 targetPos = tilemap.GetCellCenterLocal(new Vector3Int(targetPosition.x,targetPosition.y,0));
-        transform.position = Vector3.Lerp(transform.position, targetPos, 1f);
-        currentGridPosition = tilemap.WorldToCell(targetPos);
-        Vector3 moveDirection = transform.position - previousPosition;
+        Vector3 moveDirection = targetPos - transform.position;
         if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
         {
             if (moveDirection.x > 0) direction = Vector3.right;
@@ -158,6 +152,9 @@ public class EnemyController : MonoBehaviour
             if (moveDirection.y > 0) direction = Vector3.up;
             else direction = Vector3.down;
         }
+        if (mazeManager.CheakPosition(targetPos)) return;
+        transform.position = Vector3.Lerp(transform.position, targetPos, 1f);
+        currentGridPosition = tilemap.WorldToCell(targetPos);
         previousPosition = transform.position;
         RotateAndPlayAnimation(direction);
     }
@@ -168,6 +165,8 @@ public class EnemyController : MonoBehaviour
     void RandomMove()
     {
         var rnd = Random.Range(0, directions.Length);
+        var targetPosition = transform.position + directions[rnd];
+        if(mazeManager.CheakPosition(targetPosition)) return;
         StartCoroutine(MoveToCell(directions[rnd]));
         RotateAndPlayAnimation(directions[rnd]);
     }
@@ -196,10 +195,10 @@ public class EnemyController : MonoBehaviour
             }
 
             transform.position = targetPosition;
+            previousPosition = transform.position;
             currentGridPosition = targetGridPosition; // 現在のグリッド位置を更新
         }
         isMoving = false;
-        //turnManager.SwitchTurn();
     }
 
     bool CanMoveToTile(Vector3Int gridPosition)
@@ -208,28 +207,14 @@ public class EnemyController : MonoBehaviour
         return tile == path_tile || tile == goal_tile;
     }
 
-    bool CanMove()
+    bool CanMove(Vector3 moveDirection)
     {
-        foreach(Vector3 direction in directions)
+        var hit = Physics2D.Raycast(transform.position + moveDirection, moveDirection, 2f);
+        Debug.DrawRay(transform.position + direction, direction * 2f, Color.red, 1f);
+        if (hit.collider != null && hit.collider.tag == "Enemy" && hit.collider.gameObject != this.gameObject)
         {
-            var hit = Physics2D.Raycast(transform.position, direction, 1f);
-            if (hit.collider != null && hit.collider.tag == "Enemy" && hit.collider.gameObject != this.gameObject)
-            {
-                Debug.Log("1マスヒット");
-                return true;
-            }
-
-            hit = Physics2D.Raycast(transform.position, direction, 2f);
-            if (hit.collider != null && hit.collider.tag == "Enemy" && hit.collider.gameObject != this.gameObject)
-            {
-                var enemyCharactor=hit.collider.GetComponent<EnemyCharactor>();
-                var myEnemyCharactor=this.GetComponent<EnemyCharactor>();
-                if(enemyCharactor != null && enemyCharactor.GetNum()<myEnemyCharactor.GetNum()) 
-                {
-                    Debug.Log("2マスヒット");
-                    return true;
-                }
-            }
+            transform.position = previousPosition;
+            return true;
         }
         return false;
     }

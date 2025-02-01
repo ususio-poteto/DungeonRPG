@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -36,7 +37,13 @@ public class GameManager : MonoBehaviour
 
     public void isGoal()
     {
+        
+        if (stageLevel == 15)
+        {
+            SceneManager.LoadScene("ClearScene");
+        }
         stageLevel++;
+        mazeManager.RecreateMaze();
     }
 
     public void isDead()

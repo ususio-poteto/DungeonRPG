@@ -225,7 +225,7 @@ public class PlayerController : MonoBehaviour
                         Debug.DrawRay(transform.position + new Vector3(0.5f , 0, 0), Vector2.right * distance, Color.red, 1f);
                         break;
                 }
-                Debug.Log($"hit:{hit.collider.name}");
+                //Debug.Log($"hit:{hit.collider.name}");
                 isAttack = true;
                 var cteateObject = Instantiate(attackEffect, createPosition, Quaternion.identity);
                 if (hit.collider != null && hit.collider.tag == "Enemy") Attack(hit);
@@ -286,7 +286,6 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("ÉSÅ[Éã!!");
                 gameManager.isGoal();
-                mazeManager.RecreateMaze();
             }
         }
         isMoving = false;

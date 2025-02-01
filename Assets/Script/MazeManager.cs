@@ -214,6 +214,18 @@ public class MazeManager : MonoBehaviour
         }
     }
 
+    public bool CheakPosition(Vector3 targetPos)
+    {
+        foreach(var enemy in enemies) 
+        {
+            if (enemy.transform.position == targetPos)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void DestroyEnemy()
     {
         foreach (var element in enemies)

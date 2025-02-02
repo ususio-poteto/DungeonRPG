@@ -37,8 +37,19 @@ public class GameManager : MonoBehaviour
 #else
             Application.Quit();
 #endif
-
         }
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.F10))
+        {
+            SceneManager.LoadScene("GameOverScene");
+        }
+
+        if (Input.GetKeyDown(KeyCode.F11))
+        {
+            SceneManager.LoadScene("ClearScene");
+        }
+#endif
     }
 
     public int GetStageLevel()

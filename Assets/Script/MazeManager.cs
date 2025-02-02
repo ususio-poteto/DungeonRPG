@@ -271,35 +271,26 @@ public class MazeManager : MonoBehaviour
         stageLevel = gameManager.GetStageLevel();
         searchRoute = true;
 
-        //MazeBarMethod(20, 20);
-        //CreateEnemy(6);
+        if (stageLevel <= 3)
+        {
+            //Debug.Log("StageManager:MazeBarMethod");
+            MazeBarMethod(20, 20);
+            CreateEnemy(10);
+        }
 
-        //MazeDigMethod(20, 20);
-        //CreateEnemy(6);
+        else if (stageLevel >= 4 && stageLevel < 9)
+        {
+            //Debug.Log("StageManager:MazeDigMethod");
+            MazeDigMethod(20, 20);
+            CreateEnemy(10);
+        }
 
-        MazeWallMethod(20, 20);
-        CreateEnemy(6);
-
-        //if (stageLevel <= 16)
-        //{
-        //    //Debug.Log("StageManager:MazeBarMethod");
-        //    MazeBarMethod(20, 20);
-        //    CreateEnemy(1);
-        //}
-
-        //else if (stageLevel >= 17 && stageLevel < 18)
-        //{
-        //    //Debug.Log("StageManager:MazeDigMethod");
-        //    MazeDigMethod(20, 20);
-        //    CreateEnemy(1);
-        //}
-
-        //else if (stageLevel >= 17 && stageLevel <= 18)
-        //{
-        //    //Debug.Log("StageManager:MazeWallMethod");
-        //    MazeWallMethod(20, 20);
-        //    CreateEnemy(1);
-        //}
+        else if (stageLevel >= 10 && stageLevel <= 15)
+        {
+            //Debug.Log("StageManager:MazeWallMethod");
+            MazeWallMethod(20, 20);
+            CreateEnemy(12);
+        }
     }
 
     ///<summary>

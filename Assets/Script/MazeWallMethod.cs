@@ -87,10 +87,16 @@ public class MazeWallMethod : MonoBehaviour
     {
         //伸ばす事ができる方向(1マス先が通路で2マス先まで範囲内)
         var direction = new List<directions>();
-        if (maze[row, col - 1] == path && !IsCurrentWall(row, col - 2)) direction.Add(directions.up);
-        if (maze[row + 1, col] == path && !IsCurrentWall(row + 2, col)) direction.Add(directions.right);
-        if (maze[row, col + 1] == path && !IsCurrentWall(row, col + 2)) direction.Add(directions.down);
-        if (maze[row - 1, col] == path && !IsCurrentWall(row - 2, col)) direction.Add(directions.left);
+        //if (maze[row, col - 1] == path && !IsCurrentWall(row, col - 2)) direction.Add(directions.up);
+        //if (maze[row + 1, col] == path && !IsCurrentWall(row + 2, col)) direction.Add(directions.right);
+        //if (maze[row, col + 1] == path && !IsCurrentWall(row, col + 2)) direction.Add(directions.down);
+        //if (maze[row - 1, col] == path && !IsCurrentWall(row - 2, col)) direction.Add(directions.left);
+
+        // 範囲チェックを追加して境界外アクセスを防ぐ
+        if (col > 1 && maze[row, col - 1] == path && !IsCurrentWall(row, col - 2)) direction.Add(directions.up);
+        if (row < width - 2 && maze[row + 1, col] == path && !IsCurrentWall(row + 2, col)) direction.Add(directions.right);
+        if (col < height - 2 && maze[row, col + 1] == path && !IsCurrentWall(row, col + 2)) direction.Add(directions.down);
+        if (row > 1 && maze[row - 1, col] == path && !IsCurrentWall(row - 2, col)) direction.Add(directions.left);
 
         //ランダムに伸ばす
         if (direction.Count > 0)
@@ -120,8 +126,8 @@ public class MazeWallMethod : MonoBehaviour
                     break;
                 case directions.left:
                     isPath = (maze[row - 2, col] == path);
-                    SetWall(++row, col);
-                    SetWall(++row, col);
+                    SetWall(--row, col);
+                    SetWall(--row, col);
                     break;
             }
 

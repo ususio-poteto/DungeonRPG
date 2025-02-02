@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67b47365e39d5c48bad9833e361ad0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageLevel: 14
+  stageLevel: 1
   stageText: {fileID: 58429027}
   mazeManager: {fileID: 581389541}
 --- !u!1 &52149113

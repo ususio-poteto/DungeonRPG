@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerCharacter : MonoBehaviour, IDamagable
@@ -126,6 +127,7 @@ public class PlayerCharacter : MonoBehaviour, IDamagable
     {
         gameManager.isDead();
         Destroy(gameObject);
+        SceneManager.LoadScene("GameOverScene");
     }
 
     public void Healing(int value)

@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     float moveTime = 0.2f;
 
-    float distance = 1.0f;
+    float distance = 0.5f;
 
     Vector3Int currentGridPosition;
 

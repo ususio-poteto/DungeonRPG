@@ -11,7 +11,7 @@ public class CameraCotroller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        camera = GetComponent<Camera>();
+        camera = this.GetComponent<Camera>();
         camera.orthographicSize = 4;
         transform.parent = player.transform;
         transform.position = new Vector3(0, 0, 0);

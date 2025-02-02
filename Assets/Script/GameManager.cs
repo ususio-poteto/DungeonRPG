@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEditor;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -27,7 +29,16 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        stageText.text = "Stage" + stageLevel; 
+        stageText.text = "Stage" + stageLevel;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+
+        }
     }
 
     public int GetStageLevel()

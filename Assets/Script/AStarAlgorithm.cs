@@ -26,9 +26,7 @@ public class AStarAlgorithm : MonoBehaviour
     public List<Vector2Int> FindPath(int[,] maze,Vector2Int start,Vector2Int goal)
     {
         //í òHÇ∆ï«ÇÃê›íË
-        const int path_num = 0;
         const int wall_num = 1;
-        const int goal_num = 2;
 
         int width = maze.GetLength(0);
         int height = maze.GetLength(1);

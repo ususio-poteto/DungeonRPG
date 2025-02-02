@@ -39,8 +39,6 @@ public class MazeManager : MonoBehaviour
 
     [Header("迷路探索アルゴリズム")]
     [SerializeField]
-    BreadthFirstSearch breadthFirstSearch;
-    [SerializeField]
     AStarAlgorithm aStarAlgorithm;
 
     [SerializeField] 
@@ -102,8 +100,6 @@ public class MazeManager : MonoBehaviour
         {
             DestroyEnemy();
         }
-
-        //Debug.Log($"stageLevel:{stageLevel}");
     }
 #endif
 
@@ -152,8 +148,6 @@ public class MazeManager : MonoBehaviour
     List<Vector2Int> GetPathPosition(int[,] maze)
     {
         List<Vector2Int> position = new List<Vector2Int>();
-
-        //Debug.Log($"MazeSize{maze.GetLength(0)}*{maze.GetLength(1)}");
 
         for (int row = 0; row < maze.GetLength(1); row++)
         {
@@ -348,7 +342,6 @@ public class MazeManager : MonoBehaviour
         //プレイヤーの生成
         CreatePlayer();
     }
-
 
     public Vector2Int GetPlayerStartPosition()
     {

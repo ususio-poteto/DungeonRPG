@@ -92,7 +92,7 @@ public class EnemyController : MonoBehaviour
         var player = GameObject.FindWithTag("Player");        
         if (player == null) Debug.Log("Œ©‚Â‚©‚è‚Ü‚¹‚ñB");
         var playerRoute = SearchPlayer(player.transform.position);
-        if (playerRoute.Count < 3) eState = state.attack;
+        if (playerRoute.Count <= 2) eState = state.attack;
         else if (playerRoute.Count <= 100) eState = state.tracking;
         else eState = state.patrol;
 
